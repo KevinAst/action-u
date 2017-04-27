@@ -2,7 +2,7 @@
   "gitbook":     "3.2.2",
   "root":        "./docs",
   "title":       "action-u",
-  "description": "Redux Action Generator (associating action creators and types)",
+  "description": "Redux Action Generator (promoting action creators and types)",
   "author":      "Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)",
   "structure": { 
     "readme":  "intro.md",

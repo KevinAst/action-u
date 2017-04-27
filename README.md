@@ -1,5 +1,5 @@
 # action-u
-Redux Action Generator (associating action creators and types)
+Redux Action Generator (promoting action creators and types)
 
 ??? RETROFIT THIS
 
