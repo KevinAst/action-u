@@ -98,6 +98,11 @@ docs:prepare ... install gitbook/plugins/dependencies (run once and whenever a p
 docs:build ..... alias to docs script (minus docs:prepare)
 docs:serve ..... build/serve docs (http://localhost:4000/), continuously watching for changes
 
+docs:publish ... publish docs to production web site (tagging with 'docsn.n.n')
+                 NOTE: if 'docsn.n.n' tag pre-exists, you must manually delete
+                       - from github
+                       - purge node_modules/gh-pages/.cache (to remove cached tag info)
+
 docs:jsdoc2md:help ... show jsdoc2md command-line help (convenience)
 docs:gitbook:help .... show GitBook command-line help (convenience)
 
