@@ -4,42 +4,49 @@
 <a id="generateActions"></a>
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
-  generateActions()</h5>
-document this!
+  generateActions(actionGenesis) ⇒ [`ActionStruct`](#ActionStruct)</h5>
+A higher-order function that mirrors the supplied actionGenesisstructure, returning an ActionStruct, injecting machine-generatedaction creators that are decorated with their coresponding actiontypes.
 
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actionGenesis | [`ActionGenesis`](#ActionGenesis) | an "organizational" JSON structure that defines one or more action creators, with implicitly defined action types (gleaned from the structure itself). |
+
+**Returns**: [`ActionStruct`](#ActionStruct) - an action structure (a mirror ofactionGenesis), with machine-generated action creators that aredecorated with their cooresponding action types.  
 
 <br/><br/><br/>
 
-<a id="ActionReducerHash"></a>
+<a id="ActionGenesis"></a>
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
-  ActionReducerHash : Object</h5>
-A hash of reducer functions, indexed by the standard reduxaction.type.
+  ActionGenesis : JSON</h5>
+??? A hash of reducer functions, indexed by the standard reduxaction.type.
 
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| actionType1 | [`reducerFn`](#reducerFn) | The reducer function servicing: 'actionType1'. |
-| actionType2 | [`reducerFn`](#reducerFn) | The reducer function servicing: 'actionType2'. |
-| ...more | [`reducerFn`](#reducerFn) | ...etc. |
+| actionType1 | reducerFn | The reducer function servicing: 'actionType1'. |
+| actionType2 | reducerFn | The reducer function servicing: 'actionType2'. |
+| ...more | reducerFn | ...etc. |
 
 
 <br/><br/><br/>
 
-<a id="reducerFn"></a>
+<a id="ActionStruct"></a>
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
-  reducerFn ⇒ \*</h5>
-A standard [redux reducer function](http://redux.js.org/docs/basics/Reducers.html)that is responsible for state changes.
+  ActionStruct : JSON</h5>
+??? A hash of reducer functions, indexed by the standard reduxaction.type.
 
+**Properties**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | --- | --- | --- |
-| state | \* | The current immutable state that is the reduction target. |
-| action | [`Action`](#Action) | The standard redux action which drives the reduction process. |
+| actionType1 | reducerFn | The reducer function servicing: 'actionType1'. |
+| actionType2 | reducerFn | The reducer function servicing: 'actionType2'. |
+| ...more | reducerFn | ...etc. |
 
-**Returns**: \* - The resulting state after reduction.  
 
 <br/><br/><br/>
 
@@ -55,13 +62,4 @@ A standard [redux Action object](http://redux.js.org/docs/basics/Actions.html)t
 | --- | --- | --- |
 | type | string | The action type. |
 | whatever | \* | Additional app-specific payload (as needed). |
-
-
-<br/><br/><br/>
-
-<a id="InitialState"></a>
-
-<h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
-  InitialState : \*</h5>
-All astx-redux-util reducer creators, expose an `initialState`parameter which optionally provides a fall-back state value to useduring the state initialization boot-strap process.In general, redux expects your state to have concrete values(i.e. something other than `undefined`).  This means that thereduction entry point to each state element should define adefault.  Keeping this in mind, the `initialState` parameter isoptional, because some reducers are "by design" (when combined in acomposition) intended to be mid-stream processors (i.e. NOT thereduction entry point).
 

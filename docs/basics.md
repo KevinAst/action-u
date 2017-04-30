@@ -1,5 +1,6 @@
 # Motivation -or- Intro -or- Background
 
+
 Within the redux framework, actions are the basic building blocks that
 facilitate application activity.  Actions follow a pre-defined
 convention that promote an action type and a type-specific payload.
@@ -17,59 +18,53 @@ corresponding action types, and somehow promote these pairs
 question of organization: How does one intuitively model actions that
 are inner-related?
 
-- ?? HERE IS THE "MONEY QUOTE" (motivations/features)
+
+- ?? "MONEY QUOTE" (WITH motivations/features)
 
 The action-u library addresses all of these areas.  Not only does the
 action-u library auto generate your action creators, but it introduces
-organization to your actions through an actions structure (a JSON
-tree).  This action structure is a key aspect of action-u, it:
+organization to your actions through an ActionStruct (a JSON tree).
+This ActionStruct is a key aspect of action-u, it:
 - implicitly defines your action types, 
 - instinctively groups related actions,
 - and seamlessly promotes both action creators and types throughout
   your application.
 
 
-- ?? STATED MORE EXPLICITLY (without the motivation/background):
+- ?? "MONEY QUOTE" (WITHOUT motivations/features)
 
 The action-u library provides a utility that auto generates your redux
 action creators, and introduces organization to your actions through
-an actions structure (a JSON tree).  This structure instinctively
-groups related actions, implicitly defines your action types, and
-seamlessly promotes both action creators and types throughout your
-application.  This automates a tedious process, and promotes an
-overall organization to your actions.
+an ActionStruct (a JSON tree).  This structure instinctively groups
+related actions, implicitly defines your action types, and seamlessly
+promotes both action creators and types throughout your application.
+This automates a tedious process, and promotes an overall organization
+to your actions.
 
 
 
 # Basics
 
-?? MORE FORMAL DESC (prob for API):
-The generateActions() is a higher-order function that mirrors the
-supplied ActionGenesis structure, returning an ActionsStruct with
-generated action creators, promoting both action creators and types.
-
 Let's take a simple example of displaying a user message.  We will
 want an action to display the message in a dialog, and a corresponding
 action to close the dialog.
 
-Let's generate an actions structure that has two action creators:
+Let's generate an ActionStruct that has two action creators:
  - `actions.userMsg.display(msg)`
  - `actions.userMsg.close()`
 
-Conceptually, here is the actions structure that will be generated:
+Conceptually, here is the ActionStruct that will be machine-generated:
 
 ```js
 const actions = {
   userMsg {
-    display(msg): { ... action creator (implementation omitted)
-      ... properties of the action creator function:
-      type:       'userMsg.display',
-      toString(): { return 'userMsg.display'; }
+    display: {    // display(msg) action creator (implementation omitted)
+      type:       'userMsg.display',            // type promotion
+      toString(): { return 'userMsg.display'; } // ditto
     },
-    close(): { ... action creator (implementation omitted)
-      ... properties of the action creator function:
-      type:       'userMsg.close',
-      toString(): { return 'userMsg.close'; }
+    close: {      // close() action creator (implementation omitted)
+      type:       'userMsg.close',            // type promotion
+      toString(): { return 'userMsg.close'; } // ditto
     }
   }
 }
@@ -82,7 +77,7 @@ const actions = {
     parameters
 
 1. both action creator functions promote their corresponding type
-   through a `.type` property (and a `.toString()` overload) that is
+   through a `.type` property *(and a `.toString()` overload)* that is
    implied from the JSON structure:
 
    ```js
@@ -90,7 +85,7 @@ const actions = {
    ''+actions.userMsg.close     // yields: 'userMsg.close' (via implicit .toString())
    ```
 
-Here is how the actions structure (above) is generated and used:
+Here is how the ActionStruct *(above)* is generated and used:
 
 ```js
 import {generateActions} from 'action-u';
@@ -104,8 +99,7 @@ const actions = generateActions({
       }
     },
     close: {
-      actionMeta: {
-      }
+      actionMeta: {}
     }
   }
 });
@@ -135,7 +129,7 @@ console.log(`Second type is '${actions.userMsg.close.type}'`); // yields: Second
 
    - defines the overall action organization 
 
-1. ActionNodes (ones that are action creator functions) are defined
+1. ActionNodes (ones that promote action creator functions) are defined
    through the `actionMeta` property.
 
    - The `actionMeta.traits` property is a string[] that defines
@@ -147,21 +141,24 @@ console.log(`Second type is '${actions.userMsg.close.type}'`); // yields: Second
      action creator with NO parameters, and consequently no action
      payload properties.
 
-   - There are additional `actionMeta` properties that we will
-     discuss later.
+   - There are more `actionMeta` properties that will be discussed
+     later.
 
 1. All other nodes (like `userMsg`) are merely intermediate nodes that
    organize (i.e. add meaning) to the overall shape of the action
    structure.
 
 
----
-## Various Action Structure Shapes
 
-We have a lot of flexibility in how we organize our action structure.
+
+
+
+## Various ActionStruct Shapes
+
+We have a lot of flexibility in how we organize our ActionStruct.
 
 For example, ActionNodes (i.e. action creators) can even contain
-sub-structure.  As a result, we could define the two actions (above)
+sub-structure.  As a result, we could define the two actions *(above)*
 by removing the `display` nomenclature, making the `userMsg` node an
 action creator, that in turn holds other structure:
 
@@ -180,8 +177,7 @@ const actions = generateActions({
       traits: ['msg']
     },
     close: {
-      actionMeta: {
-      }
+      actionMeta: {}
     }
   }
 });
@@ -203,8 +199,9 @@ console.log(`Second type is '${actions.userMsg.close}'`); // yields: Second type
 ```
 
 
----
-## Action Structure Formatting Preference
+
+
+## ActionStruct Formatting Preference
 
 So as to not confuse the actionMeta property with app-level nodes, I
 prefer to indent it a bit deeper in the structure.  You are free to
@@ -215,20 +212,76 @@ const actions = generateActions({
   userMsg: {  actionMeta: {
                 traits: ['msg']
               },
-    close: {  actionMeta: {
-              }
+    close: {  actionMeta: {}
     }
   }
 });
 ```
 
 
----
+
+## A Closer Look
+
+The basic process of action-u is fairly straight forward, however the
+terminology can be a bit confusing when you try to apply more a formal
+definition that chronicles the process.
+
+Part of the problem is we are dealing with a data structure that
+has depth, and includes arbitrary app-level nodes that have
+meaning only to the application.
+
+Another intricacy is we are dealing with two parallel structures:
+ - one containing the meta information that describes what will be generated
+ - the other parallels the first, but is used by the app at run-time
+
+As the saying goes: *"a picture is worth a thousand words"*.  The
+following picture chronicles our prior example, highlighting the
+formal types.
+
+??? DRAW SVG PICTURE:
+
+```
+META
+ActionGenisis@@
+=============
+{
+  userMsg: {
+    actionMeta: {      <<< ActionMeta@@
+      traits: ['msg']
+    },
+    close: {
+      actionMeta: {}   <<< ActionMeta@@
+    }
+  }
+}
+
+
+---> action-u generateActions() --->
+
+RUN-TIME
+ActionStruct@@
+============
+{
+  userMsg: {      // userMsg(msg) action creator  <<< ActionNode@@
+    type:         'userMsg',
+    toString():   { return 'userMsg'; },
+    close: {      // close() action creator       <<< ActionNode@@
+      type:       'userMsg.close',
+      toString(): { return 'userMsg.close'; }
+    }
+  }
+}
+
+```
+
+
+
+
+
 
 ## ?? discuss OTHER actionMeta options
 
 
 
----
 
 ## ?? discuss various ways to promote actions (modules - one or more)
