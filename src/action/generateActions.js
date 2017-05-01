@@ -124,12 +124,12 @@ generateActions.root = function(actionGenesis) {
  * <li>expected parameter names of the action creator</li>
  * <li>and the Action property names (returned from the action creator)</li>
  * When NO `traits` property is supplied, the Action merely has NO properties
- * other than it's `type` [of course]).
+ * *(other than it's `type` [of course])*.
  *
  * @property {ratifyFn} ratify - An optional hook to validate and/or
- * default action creator parameters.</br>
+ * default action creator parameters.<br/>
  * When NO `ratify` function is supplied, only simple validation is
- * performed (ex: the number of arguments supplied)
+ * performed *(ex: the number of arguments supplied)*.
  */
 
 
@@ -153,16 +153,73 @@ generateActions.root = function(actionGenesis) {
  */
 
 
-
+/**
+ * @typedef {JSON} ActionStruct
+ * 
+ * ActionStruct is a JSON stucture which is a key aspect of action-u.
+ * It:
+ * - implicitly defines your action types, 
+ * - instinctively groups related actions,
+ * - and seamlessly promotes both action creators and types throughout
+ *   your application.
+ * 
+ * ActionStruct is a machine-generated JSON run-time structure (output
+ * from {@link generateActions}) that promotes a series of action
+ * creators and types in an app-specific structure (mirroring the shape
+ * of the ActionGenesis).
+ * 
+ * - The structure is app-specific and can employ depth to highlight
+ *   inner-relationships between various action creators.
+ * 
+ * - The structure defines one or more ActionNodes (i.e. action
+ *   creator functions).  Each ActionNode encapsolates BOTH the action
+ *   creator and it's type.
+ * 
+ *   * The action creator function (the node itself) accepts the
+ *     desired parameters and returns a newly created action.
+ * 
+ *   * The action type is implied from the containing JSON structure
+ *     node accumulation (ex: `'widget.fetch.complete'`) and is
+ *     promoted through a string coercion of the action creator
+ *     function itself (i.e. the function's toString() has been
+ *     overloaded).
+ * 
+ * - All other nodes are merely intermediate nodes that organize
+ *   (i.e. add meaning) to the overall shape of the promoted actions.
+ *   In the example below, `widget` is an intermediate node (i.e. it
+ *   is not an action creator).
+ * 
+ * - Note that even ActionNodes may in turn contain sub-structure
+ *   (i.e. subordinate actions).  In the example below,
+ *   `widget.fetch(selCrit)` is an action creator, an yet contains
+ *   subordinate actions: `widget.fetch.complete(widget)`.
+ * 
+ * @example <caption>showing a standard set of fetch/complete/fail actions</caption>
+ * {
+ *   widget: {
+ *     fetch(selCrit): {      // action creator (impl omitted) - type promoted via string coercion of funct
+ *       complete(widget): {} // action creator (impl omitted) - type promoted via string coercion of funct
+ *       fail(err): {}        // action creator (impl omitted) - type promoted via string coercion of funct
+ *     }
+ *   }
+ * }
+ */
 
 
 /**
- * @typedef {JSON} ActionStruct
+ * @function ActionNode
  *
- * ??? A hash of reducer functions, indexed by the standard redux
- * action.type.
- *
- * @property {reducerFn} actionType1 - The reducer function servicing: 'actionType1'.
- * @property {reducerFn} actionType2 - The reducer function servicing: 'actionType2'.
- * @property {reducerFn} ...more - ...etc.
+ * @description
+ * ActionNode is a machine-generated action creator function that
+ * lives as a JSON node in the ActionStruct.
+ * 
+ * The ActionNode promotes it's action type through a string coercion
+ * of the action creator function itself (i.e. the function's
+ * toString() has been overloaded).
+ * 
+ * @param {...*} args - the parameters are app-specific to this action
+ * type.
+ * 
+ * @returns {Action} a standard redux Action, specific to this action
+ * type.
  */

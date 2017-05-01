@@ -46,6 +46,21 @@ An optional hook of [ActionMeta](#ActionMeta) to validate and/or defaultaction 
 
 <br/><br/><br/>
 
+<a id="ActionNode"></a>
+
+<h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
+  ActionNode(...args) ⇒ [`Action`](#Action)</h5>
+ActionNode is a machine-generated action creator function thatlives as a JSON node in the ActionStruct.The ActionNode promotes it's action type through a string coercionof the action creator function itself (i.e. the function'stoString() has been overloaded).
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...args | \* | the parameters are app-specific to this action type. |
+
+**Returns**: [`Action`](#Action) - a standard redux Action, specific to this actiontype.  
+
+<br/><br/><br/>
+
 <a id="ActionGenesis"></a>
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
@@ -84,8 +99,8 @@ An ActionMeta is a sub-node (named `actionMeta`) in theActionGenesis that ident
 
 | Name | Type | Description |
 | --- | --- | --- |
-| traits | Array.&lt;string&gt; | An array of names that serve BOTH as the: <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO `traits` property is supplied, the Action merely has NO properties other than it's `type` [of course]). |
-| ratify | [`ratifyFn`](#ratifyFn) | An optional hook to validate and/or default action creator parameters.</br> When NO `ratify` function is supplied, only simple validation is performed (ex: the number of arguments supplied) |
+| traits | Array.&lt;string&gt; | An array of names that serve BOTH as the: <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO `traits` property is supplied, the Action merely has NO properties *(other than it's `type` [of course])*. |
+| ratify | [`ratifyFn`](#ratifyFn) | An optional hook to validate and/or default action creator parameters.<br/> When NO `ratify` function is supplied, only simple validation is performed *(ex: the number of arguments supplied)*. |
 
 
 <br/><br/><br/>
@@ -94,16 +109,19 @@ An ActionMeta is a sub-node (named `actionMeta`) in theActionGenesis that ident
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
   ActionStruct : JSON</h5>
-??? A hash of reducer functions, indexed by the standard reduxaction.type.
+ActionStruct is a JSON stucture which is a key aspect of action-u.It:- implicitly defines your action types, - instinctively groups related actions,- and seamlessly promotes both action creators and types throughout  your application.ActionStruct is a machine-generated JSON run-time structure (outputfrom [generateActions](#generateActions)) that promotes a series of actioncreators and types in an app-specific structure (mirroring the shapeof the ActionGenesis).- The structure is app-specific and can employ depth to highlight  inner-relationships between various action creators.- The structure defines one or more ActionNodes (i.e. action  creator functions).  Each ActionNode encapsolates BOTH the action  creator and it's type.  * The action creator function (the node itself) accepts the    desired parameters and returns a newly created action.  * The action type is implied from the containing JSON structure    node accumulation (ex: `'widget.fetch.complete'`) and is    promoted through a string coercion of the action creator    function itself (i.e. the function's toString() has been    overloaded).- All other nodes are merely intermediate nodes that organize  (i.e. add meaning) to the overall shape of the promoted actions.  In the example below, `widget` is an intermediate node (i.e. it  is not an action creator).- Note that even ActionNodes may in turn contain sub-structure  (i.e. subordinate actions).  In the example below,  `widget.fetch(selCrit)` is an action creator, an yet contains  subordinate actions: `widget.fetch.complete(widget)`.
 
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| actionType1 | reducerFn | The reducer function servicing: 'actionType1'. |
-| actionType2 | reducerFn | The reducer function servicing: 'actionType2'. |
-| ...more | reducerFn | ...etc. |
-
+**Example** *(showing a standard set of fetch/complete/fail actions)*  
+```js
+{
+  widget: {
+    fetch(selCrit): {      // action creator (impl omitted) - type promoted via string coercion of funct
+      complete(widget): {} // action creator (impl omitted) - type promoted via string coercion of funct
+      fail(err): {}        // action creator (impl omitted) - type promoted via string coercion of funct
+    }
+  }
+}
+```
 
 <br/><br/><br/>
 
