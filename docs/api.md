@@ -5,7 +5,7 @@
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
   generateActions(actionGenesis) ⇒ [`ActionStruct`](#ActionStruct)</h5>
-A higher-order function that mirrors the supplied actionGenesisstructure, returning an ActionStruct, injecting machine-generatedaction creators that are decorated with their coresponding actiontypes.
+A higher-order function that mirrors the supplied actionGenesisstructure, returning an ActionStruct, injecting machine-generatedaction creators that are decorated with their coresponding actiontypes.?? test link: [root](#generateActions.root)
 
 
 | Param | Type | Description |
@@ -13,6 +13,21 @@ A higher-order function that mirrors the supplied actionGenesisstructure, retur
 | actionGenesis | [`ActionGenesis`](#ActionGenesis) | an "organizational" JSON structure that defines one or more action creators, with implicitly defined action types (gleaned from the structure itself). |
 
 **Returns**: [`ActionStruct`](#ActionStruct) - an action structure (a mirror ofactionGenesis), with machine-generated action creators that aredecorated with their cooresponding action types.  
+
+<br/><br/><br/>
+
+<a id="generateActions_root"></a>
+
+<h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
+  generateActions.root(actionGenesis) ⇒ [`ActionStruct`](#ActionStruct)</h5>
+??? A higher-order function that mirrors the supplied actionGenesisstructure, returning an ActionStruct, injecting machine-generatedaction creators that are decorated with their coresponding actiontypes.?? test link: [generateActions](#generateActions)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actionGenesis | [`ActionGenesis`](#ActionGenesis) | an "organizational" JSON structure that defines one or more action creators, with implicitly defined action types (gleaned from the structure itself). |
+
+**Returns**: [`ActionStruct`](#ActionStruct) - ??? an action structure (a mirror ofactionGenesis), with machine-generated action creators that aredecorated with their cooresponding action types.  
 
 <br/><br/><br/>
 

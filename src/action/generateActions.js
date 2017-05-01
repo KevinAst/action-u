@@ -8,6 +8,8 @@
  * action creators that are decorated with their coresponding action
  * types.
  * 
+ * ?? test link: {@link generateActions.root}
+ * 
  * @param {ActionGenesis} actionGenesis - an "organizational" JSON
  * structure that defines one or more action creators, with implicitly
  * defined action types (gleaned from the structure itself).
@@ -16,9 +18,32 @@
  * actionGenesis), with machine-generated action creators that are
  * decorated with their cooresponding action types.
  */
-export default function generateActions() {
+export default function generateActions(actionGenesis) {
   return 123;
 }
+
+
+/**
+ * ??? A higher-order function that mirrors the supplied actionGenesis
+ * structure, returning an ActionStruct, injecting machine-generated
+ * action creators that are decorated with their coresponding action
+ * types.
+ * 
+ * ?? test link: {@link generateActions}
+ * 
+ * @param {ActionGenesis} actionGenesis - an "organizational" JSON
+ * structure that defines one or more action creators, with implicitly
+ * defined action types (gleaned from the structure itself).
+ * 
+ * @returns {ActionStruct} ??? an action structure (a mirror of
+ * actionGenesis), with machine-generated action creators that are
+ * decorated with their cooresponding action types.
+ */
+generateActions.root = function(actionGenesis) {
+  return 123;
+}
+
+
 
 
 //***

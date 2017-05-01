@@ -7,6 +7,7 @@
 ----
 * [API Reference](api.md)
   * [generateActions](api.md#generateActions)
+  * [generateActions.root](api.md#generateActions_root)
   * Meta Inputs ...
     * [ActionGenesis](api.md#ActionGenesis)
     * [ActionMeta](api.md#ActionMeta)

@@ -1,17 +1,15 @@
 {{!-- 
 
 ORIGINAL: node_modules/dmd/partials/all-docs/docs/header.hbs
-========
-<a name="{{{anchorName}}}"></a>
 
-{{>heading-indent}}{{>sig-name}}
-
-
-GOALS:
-=====
+ENHANCEMENTS:
+============
   - make indexable using markdown #section
       CHANGE: name=
       TO:     id=
+
+  - protect anchor ids with special characters (via escapeAnchor)
+    ... a limitation of GitBook
 
   - more distinct section header
     * with bordered h5 tag
@@ -26,7 +24,7 @@ GOALS:
 
 <br/><br/><br/>
 
-<a id="{{{anchorName}}}"></a>
+<a id="{{{escapeAnchor (anchorName)}}}"></a>
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
   {{>sig-name}}
