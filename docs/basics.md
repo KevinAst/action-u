@@ -58,14 +58,8 @@ Conceptually, here is the ActionStruct that will be machine-generated:
 ```js
 const actions = {
   userMsg {
-    display: {    // display(msg) action creator (implementation omitted)
-      type:       'userMsg.display',            // type promotion
-      toString(): { return 'userMsg.display'; } // ditto
-    },
-    close: {      // close() action creator (implementation omitted)
-      type:       'userMsg.close',            // type promotion
-      toString(): { return 'userMsg.close'; } // ditto
-    }
+    display(msg): {}, // action creator (impl omitted) - type promoted via string coercion of funct
+    close():      {}, // action creator (impl omitted) - type promoted via string coercion of funct
   }
 }
 ```
@@ -76,13 +70,16 @@ const actions = {
 1. `actions.userMsg.close()` is the 2nd action creator, and accepts no
     parameters
 
-1. both action creator functions promote their corresponding type
-   through a `.type` property *(and a `.toString()` overload)* that is
-   implied from the JSON structure:
+1. Action types are implied from the JSON structure, and are promoted
+   through a string coercion of the action creator function itself
+   (i.e. the function's toString() has been overloaded).  In many
+   contexts, this happens implicitly (such as astx-redux-util
+   reducerHash()).  In other cases, this must be explicitly done (for
+   example in a switch statement).
 
    ```js
-   actions.userMsg.display.type // yields: 'userMsg.display'
-   ''+actions.userMsg.close     // yields: 'userMsg.close' (via implicit .toString())
+   String(actions.userMsg.display) // yields: 'userMsg.display'
+   ''+actions.userMsg.close        // yields: 'userMsg.close'
    ```
 
 Here is how the ActionStruct *(above)* is generated and used:
@@ -105,19 +102,21 @@ const actions = generateActions({
 });
 
 // USAGE:
-const userMsg = actions.userMsg.display('Hello action-u'); // dispatch this action
-                                                           //   {
-                                                           //     type: 'userMsg.display',
-                                                           //     msg:  'Hello action-u'
-                                                           //   }
-const closeIt = actions.userMsg.close();                   // dispatch this action
-                                                           //   {
-                                                           //     type: 'userMsg.close'
-                                                           //   }
+const userMsg = actions.userMsg.display('Hello action-u');
+      // userMsg yeilds the following action (which can be dispatched):
+      //   {
+      //     type: 'userMsg.display',
+      //     msg:  'Hello action-u'
+      //   }
 
-console.log(`First  type is '${actions.userMsg.display}'`);    // yields: First  type is 'userMsg.display'
-                                                               // ... NOTE: implicit toString() usage
-console.log(`Second type is '${actions.userMsg.close.type}'`); // yields: Second type is 'userMsg.close'
+const closeIt = actions.userMsg.close();
+      // closeIt yeilds the following action (which can be dispatched):
+      //   {
+      //     type: 'userMsg.close'
+      //   }
+
+console.log(`First  type is '${actions.userMsg.display}'`); // yields: First  type is 'userMsg.display'
+console.log(`Second type is '${actions.userMsg.close}'`);   // yields: Second type is 'userMsg.close'
 ```
 
 1. The generateActions() function accepts a single ActionGenesis
@@ -127,7 +126,7 @@ console.log(`Second type is '${actions.userMsg.close.type}'`); // yields: Second
 
    - implies the action types from the JSON structure
 
-   - defines the overall action organization 
+   - defines the overall ActionStruct organization 
 
 1. ActionNodes (ones that promote action creator functions) are defined
    through the `actionMeta` property.
@@ -183,19 +182,21 @@ const actions = generateActions({
 });
 
 // USAGE:
-const userMsg = actions.userMsg('Hello action-u'); // dispatch this action
-                                                   //   {
-                                                   //     type: 'userMsg',
-                                                   //     msg:  'Hello action-u'
-                                                   //   }
-const closeIt = actions.userMsg.close();           // dispatch this action
-                                                   //   {
-                                                   //     type: 'userMsg.close'
-                                                   //   }
+const userMsg = actions.userMsg('Hello action-u');
+      // userMsg yeilds the following action (which can be dispatched):
+      //   {
+      //     type: 'userMsg',
+      //     msg:  'Hello action-u'
+      //   }
 
-console.log(`First  type is '${actions.userMsg.type}'`);  // yields: First  type is 'userMsg'
+const closeIt = actions.userMsg.close();
+      // closeIt yeilds the following action (which can be dispatched):
+      //   {
+      //     type: 'userMsg.close'
+      //   }
+
+console.log(`First  type is '${actions.userMsg}'`);       // yields: First  type is 'userMsg'
 console.log(`Second type is '${actions.userMsg.close}'`); // yields: Second type is 'userMsg.close'
-                                                          // ... NOTE: implicit toString() usage
 ```
 
 
@@ -205,7 +206,7 @@ console.log(`Second type is '${actions.userMsg.close}'`); // yields: Second type
 
 So as to not confuse the actionMeta property with app-level nodes, I
 prefer to indent it a bit deeper in the structure.  You are free to
-disregard this advice *(some may think it a bit weird)*.
+disregard this advice *(some may think it a bit odd)*.
 
 ```js
 const actions = generateActions({
@@ -245,12 +246,10 @@ META
 ActionGenisis@@
 =============
 {
-  userMsg: {
-    actionMeta: {      <<< ActionMeta@@
-      traits: ['msg']
-    },
-    close: {
-      actionMeta: {}   <<< ActionMeta@@
+  userMsg: {  actionMeta: {     <<< ActionMeta@@
+                traits: ['msg']
+              },
+    close: {  actionMeta: {}    <<< ActionMeta@@
     }
   }
 }
@@ -258,16 +257,13 @@ ActionGenisis@@
 
 ---> action-u generateActions() --->
 
+
 RUN-TIME
 ActionStruct@@
 ============
 {
-  userMsg: {      // userMsg(msg) action creator  <<< ActionNode@@
-    type:         'userMsg',
-    toString():   { return 'userMsg'; },
-    close: {      // close() action creator       <<< ActionNode@@
-      type:       'userMsg.close',
-      toString(): { return 'userMsg.close'; }
+  userMsg(msg): { // action creator (impl omitted) - type promoted via string coercion of funct <<< ActionNode@@
+    close(): {    // action creator (impl omitted) - type promoted via string coercion of funct <<< ActionNode@@
     }
   }
 }
