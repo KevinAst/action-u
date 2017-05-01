@@ -59,8 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="api.html" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="basics.html" />
     
 
     </head>
@@ -104,7 +106,27 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2" data-path="api.html">
+        <li class="chapter " data-level="1.2" data-path="basics.html">
+            
+                <a href="basics.html">
+            
+                    
+                    Basics
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="2.1" data-path="api.html">
             
                 <a href="api.html">
             
@@ -114,6 +136,141 @@
                 </a>
             
 
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="api.html">
+            
+                <a href="api.html#generateActions">
+            
+                    
+                    generateActions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="api.html">
+            
+                <a href="api.html#generateActions_root">
+            
+                    
+                    generateActions.root
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" >
+            
+                <span>
+            
+                    
+                    Meta Inputs ...
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.3.1" data-path="api.html">
+            
+                <a href="api.html#ActionGenesis">
+            
+                    
+                    ActionGenesis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.2" data-path="api.html">
+            
+                <a href="api.html#ActionMeta">
+            
+                    
+                    ActionMeta
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.3" data-path="api.html">
+            
+                <a href="api.html#ratifyFn">
+            
+                    
+                    ratifyFn
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4" >
+            
+                <span>
+            
+                    
+                    Run-Time Outputs ...
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.4.1" data-path="api.html">
+            
+                <a href="api.html#ActionStruct">
+            
+                    
+                    ActionStruct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4.2" data-path="api.html">
+            
+                <a href="api.html#ActionNode">
+            
+                    
+                    ActionNode
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -165,16 +322,195 @@
                                 <p><br><br><br></p>
 <p><a id="generateActions"></a></p>
 <p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
---generateactions">
-  generateActions()</h5>
-document this!<p></p>
+--generateactionsactiongenesis-&#x21D2;-actionstruct">
+  generateActions(actionGenesis) &#x21D2; <a href="#ActionStruct"><code>ActionStruct</code></a></h5>
+A higher-order function that mirrors the supplied actionGenesis
+structure, returning an ActionStruct, injecting machine-generated
+action creators that are decorated with their coresponding action
+types.<p></p>
+<p>?? test link: <a href="#generateActions.root">root</a></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>actionGenesis</td>
+<td><a href="#ActionGenesis"><code>ActionGenesis</code></a></td>
+<td>an &quot;organizational&quot; JSON structure that defines one or more action creators, with implicitly defined action types (gleaned from the structure itself).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong>: <a href="#ActionStruct"><code>ActionStruct</code></a> - an action structure (a mirror of
+actionGenesis), with machine-generated action creators that are
+decorated with their cooresponding action types.  </p>
 <p><br><br><br></p>
-<p><a id="ActionReducerHash"></a></p>
+<p><a id="generateActions_root"></a></p>
 <p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
---actionreducerhash--object">
-  ActionReducerHash : Object</h5>
-A hash of reducer functions, indexed by the standard redux
-action.type.<p></p>
+--generateactionsrootactiongenesis-&#x21D2;-actionstruct">
+  generateActions.root(actionGenesis) &#x21D2; <a href="#ActionStruct"><code>ActionStruct</code></a></h5>
+??? A higher-order function that mirrors the supplied actionGenesis
+structure, returning an ActionStruct, injecting machine-generated
+action creators that are decorated with their coresponding action
+types.<p></p>
+<p>?? test link: <a href="#generateActions">generateActions</a></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>actionGenesis</td>
+<td><a href="#ActionGenesis"><code>ActionGenesis</code></a></td>
+<td>an &quot;organizational&quot; JSON structure that defines one or more action creators, with implicitly defined action types (gleaned from the structure itself).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong>: <a href="#ActionStruct"><code>ActionStruct</code></a> - ??? an action structure (a mirror of
+actionGenesis), with machine-generated action creators that are
+decorated with their cooresponding action types.  </p>
+<p><br><br><br></p>
+<p><a id="ratifyFn"></a></p>
+<p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
+--ratifyfnargs-&#x21D2;-args">
+  ratifyFn(...args) &#x21D2; args</h5>
+An optional hook of <a href="#ActionMeta">ActionMeta</a> to validate and/or default
+action creator parameters.<p></p>
+<ul>
+<li><p>validation is accomplished by app-specific means (typically
+thrown exceptions)</p>
+</li>
+<li><p>default parameters are accomplished by applying default semantics
+and returning the arguments</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>...args</td>
+<td>*</td>
+<td>the parameters to this function should match that of the action creator it is defining</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong>: args - an array of the arguments passed in (potentially defaulted)  </p>
+<p><br><br><br></p>
+<p><a id="ActionNode"></a></p>
+<p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
+--actionnodeargs-&#x21D2;-action">
+  ActionNode(...args) &#x21D2; <a href="#Action"><code>Action</code></a></h5>
+ActionNode is a machine-generated action creator function that
+lives as a JSON node in the ActionStruct.<p></p>
+<p>The ActionNode promotes it&apos;s action type through a string coercion
+of the action creator function itself (i.e. the function&apos;s
+toString() has been overloaded).</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>...args</td>
+<td>*</td>
+<td>the parameters are app-specific to this action type.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong>: <a href="#Action"><code>Action</code></a> - a standard redux Action, specific to this action
+type.  </p>
+<p><br><br><br></p>
+<p><a id="ActionGenesis"></a></p>
+<p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
+--actiongenesis--json">
+  ActionGenesis : JSON</h5>
+ActionGenesis is a JSON meta structure (used by <a href="#generateActions">generateActions</a>)
+that provides the master definition for the machine-generated
+<a href="#ActionStruct">ActionStruct</a>, promoting one or more action creators and types.<p></p>
+<ul>
+<li><p>The structure is app-specific and can employ depth to highlight
+inner-relationships between various action creators.</p>
+</li>
+<li><p>Ultimately the structure defines one or more action creator
+function nodes.  Each of these nodes promote:</p>
+<ul>
+<li><p>the action creator function itself, and</p>
+</li>
+<li><p>the action type, which is implicitly gleaned from the containing JSON
+structure node accumulation (ex: <code>&apos;widget.fetch&apos;</code>)</p>
+</li>
+</ul>
+</li>
+<li><p>Nodes containing an <code>actionMeta</code> property define an ActionNode
+(i.e. an action creator).</p>
+<ul>
+<li><p>The resultant corresponding node will be an action creator
+function.  The characteristics of this function is further
+defined by <code>actionMeta</code> sub-properties (see <a href="#ActionMeta">ActionMeta</a>).</p>
+</li>
+<li><p>The action type is implied from the containing JSON structure
+node accumulation (ex: <code>&apos;widget.fetch.complete&apos;</code>) and is promoted through
+a string coercion of the action creator function itself
+(i.e. the function&apos;s toString() has been overloaded).</p>
+</li>
+</ul>
+</li>
+<li><p>All other nodes are merely intermediate nodes that organize
+(i.e. add meaning) to the overall shape of the promoted actions.
+In the example below, <code>widget</code> is an intermediate node (i.e. it
+is not an action creator).</p>
+</li>
+<li><p>Note that even ActionNodes may in turn contain sub-structure
+(i.e. subordinate actions).  In the example below,
+<code>widget.fetch(selCrit)</code> is an action creator, an yet contains
+subordinate actions: <code>widget.fetch.complete(widget)</code>.</p>
+</li>
+</ul>
+<p><strong>Example</strong> <em>(showing a standard set of fetch/complete/fail actions)</em>  </p>
+<pre><code class="lang-js">{
+  widget: {
+    fetch: {      actionMeta: {
+                    traits: [<span class="hljs-string">&apos;selCrit&apos;</span>]
+                  },
+      complete: { actionMeta: {
+                    traits: [<span class="hljs-string">&apos;widget&apos;</span>]
+                  }
+      },
+      fail: {     actionMeta: {
+                    traits: [<span class="hljs-string">&apos;err&apos;</span>]
+                  }
+      }
+    }
+  }
+}
+</code></pre>
+<p><br><br><br></p>
+<p><a id="ActionMeta"></a></p>
+<p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
+--actionmeta--json">
+  ActionMeta : JSON</h5>
+An ActionMeta is a sub-node (named <code>actionMeta</code>) in the
+ActionGenesis that identifies it&apos;s parent as being an ActionNode
+(i.e. an action creator).<p></p>
+<p>Supported properties of ActionMeta are:</p>
 <p><strong>Properties</strong></p>
 <table>
 <thead>
@@ -186,51 +522,74 @@ action.type.<p></p>
 </thead>
 <tbody>
 <tr>
-<td>actionType1</td>
-<td><a href="#reducerFn"><code>reducerFn</code></a></td>
-<td>The reducer function servicing: &apos;actionType1&apos;.</td>
+<td>traits</td>
+<td>Array.&lt;string&gt;</td>
+<td>An array of names that serve BOTH as the: <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO <code>traits</code> property is supplied, the Action merely has NO properties <em>(other than it&apos;s <code>type</code> [of course])</em>.</td>
 </tr>
 <tr>
-<td>actionType2</td>
-<td><a href="#reducerFn"><code>reducerFn</code></a></td>
-<td>The reducer function servicing: &apos;actionType2&apos;.</td>
-</tr>
-<tr>
-<td>...more</td>
-<td><a href="#reducerFn"><code>reducerFn</code></a></td>
-<td>...etc.</td>
+<td>ratify</td>
+<td><a href="#ratifyFn"><code>ratifyFn</code></a></td>
+<td>An optional hook to validate and/or default action creator parameters.<br> When NO <code>ratify</code> function is supplied, only simple validation is performed <em>(ex: the number of arguments supplied)</em>.</td>
 </tr>
 </tbody>
 </table>
 <p><br><br><br></p>
-<p><a id="reducerFn"></a></p>
+<p><a id="ActionStruct"></a></p>
 <p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
---reducerfn-&#x21D2;-">
-  reducerFn &#x21D2; *</h5>
-A standard <a href="http://redux.js.org/docs/basics/Reducers.html" target="_blank">redux reducer function</a>
-that is responsible for state changes.<p></p>
-<table>
-<thead>
-<tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>state</td>
-<td>*</td>
-<td>The current immutable state that is the reduction target.</td>
-</tr>
-<tr>
-<td>action</td>
-<td><a href="#Action"><code>Action</code></a></td>
-<td>The standard redux action which drives the reduction process.</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns</strong>: * - The resulting state after reduction.  </p>
+--actionstruct--json">
+  ActionStruct : JSON</h5>
+ActionStruct is a JSON stucture which is a key aspect of action-u.
+It:<p></p>
+<ul>
+<li>implicitly defines your action types, </li>
+<li>instinctively groups related actions,</li>
+<li>and seamlessly promotes both action creators and types throughout
+your application.</li>
+</ul>
+<p>ActionStruct is a machine-generated JSON run-time structure (output
+from <a href="#generateActions">generateActions</a>) that promotes a series of action
+creators and types in an app-specific structure (mirroring the shape
+of the ActionGenesis).</p>
+<ul>
+<li><p>The structure is app-specific and can employ depth to highlight
+inner-relationships between various action creators.</p>
+</li>
+<li><p>The structure defines one or more ActionNodes (i.e. action
+creator functions).  Each ActionNode encapsolates BOTH the action
+creator and it&apos;s type.</p>
+<ul>
+<li><p>The action creator function (the node itself) accepts the
+desired parameters and returns a newly created action.</p>
+</li>
+<li><p>The action type is implied from the containing JSON structure
+node accumulation (ex: <code>&apos;widget.fetch.complete&apos;</code>) and is
+promoted through a string coercion of the action creator
+function itself (i.e. the function&apos;s toString() has been
+overloaded).</p>
+</li>
+</ul>
+</li>
+<li><p>All other nodes are merely intermediate nodes that organize
+(i.e. add meaning) to the overall shape of the promoted actions.
+In the example below, <code>widget</code> is an intermediate node (i.e. it
+is not an action creator).</p>
+</li>
+<li><p>Note that even ActionNodes may in turn contain sub-structure
+(i.e. subordinate actions).  In the example below,
+<code>widget.fetch(selCrit)</code> is an action creator, an yet contains
+subordinate actions: <code>widget.fetch.complete(widget)</code>.</p>
+</li>
+</ul>
+<p><strong>Example</strong> <em>(showing a standard set of fetch/complete/fail actions)</em>  </p>
+<pre><code class="lang-js">{
+  widget: {
+    fetch(selCrit): {      <span class="hljs-comment">// action creator (impl omitted) - type promoted via string coercion of funct</span>
+      complete(widget): {} <span class="hljs-comment">// action creator (impl omitted) - type promoted via string coercion of funct</span>
+      fail(err): {}        <span class="hljs-comment">// action creator (impl omitted) - type promoted via string coercion of funct</span>
+    }
+  }
+}
+</code></pre>
 <p><br><br><br></p>
 <p><a id="Action"></a></p>
 <p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
@@ -260,21 +619,6 @@ that drives the reduction process.<p></p>
 </tr>
 </tbody>
 </table>
-<p><br><br><br></p>
-<p><a id="InitialState"></a></p>
-<p></p><h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;" id="
---initialstate--">
-  InitialState : *</h5>
-All astx-redux-util reducer creators, expose an <code>initialState</code>
-parameter which optionally provides a fall-back state value to use
-during the state initialization boot-strap process.<p></p>
-<p>In general, redux expects your state to have concrete values
-(i.e. something other than <code>undefined</code>).  This means that the
-reduction entry point to each state element should define a
-default.  Keeping this in mind, the <code>initialState</code> parameter is
-optional, because some reducers are &quot;by design&quot; (when combined in a
-composition) intended to be mid-stream processors (i.e. NOT the
-reduction entry point).</p>
 
                                 
                                 </section>
@@ -302,10 +646,14 @@ reduction entry point).</p>
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Introduction">
+                <a href="basics.html" class="navigation navigation-prev " aria-label="Previous page: Basics">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="api.html#generateActions" class="navigation navigation-next " aria-label="Next page: generateActions">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -314,7 +662,7 @@ reduction entry point).</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"API Reference","level":"1.2","depth":1,"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","ext":"[`Extending action-u`](/extending/ext.md)","start":"[`Getting Started`](/start.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","concepts":"[`Concepts`](/concepts/README.md)","conceptJoin":"[`Joining Reducers`](/concepts/joinReducers.md)","history":"[`Revision History`](/history.md)","originalReducerState":"[`originalReducerState`](/originalReducerState.md)","conceptHash":"[`Basics`](/concepts/reducerHash.md)","fullExample":"[`A Most Excellent Example`](/fullExample.md)","logExt":"[`Logging Extension`](/extending/logExt.md)","conceptConditional":"[`Conditional Reduction`](/concepts/conditionalReducer.md)"},"api":{"ref":"[`API Reference`](/api.md)","conditionalReducer":"[`conditionalReducer()`](/api.md#conditionalReducer)","conditionalReducerCB":"[`conditionalReducerCB()`](/api.md#conditionalReducerCB)","joinReducers":"[`joinReducers()`](/api.md#joinReducers)","reducerHash":"[`reducerHash()`](/api.md#reducerHash)","InitialState":"[`InitialState`](/api.md#InitialState)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"api.md","mtime":"2017-04-28T12:24:16.248Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-28T12:24:17.800Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"API Reference","level":"2.1","depth":1,"next":{"title":"generateActions","level":"2.1.1","depth":2,"anchor":"#generateActions","path":"api.md","ref":"api.md#generateActions","articles":[]},"previous":{"title":"Basics","level":"1.2","depth":1,"path":"basics.md","ref":"basics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar","livereload"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","ext":"[`Extending action-u`](/extending/ext.md)","start":"[`Getting Started`](/start.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","concepts":"[`Concepts`](/concepts/README.md)","conceptJoin":"[`Joining Reducers`](/concepts/joinReducers.md)","history":"[`Revision History`](/history.md)","originalReducerState":"[`originalReducerState`](/originalReducerState.md)","conceptHash":"[`Basics`](/concepts/reducerHash.md)","fullExample":"[`A Most Excellent Example`](/fullExample.md)","logExt":"[`Logging Extension`](/extending/logExt.md)","conceptConditional":"[`Conditional Reduction`](/concepts/conditionalReducer.md)"},"api":{"ref":"[`API Reference`](/api.md)","conditionalReducer":"[`conditionalReducer()`](/api.md#conditionalReducer)","conditionalReducerCB":"[`conditionalReducerCB()`](/api.md#conditionalReducerCB)","joinReducers":"[`joinReducers()`](/api.md#joinReducers)","reducerHash":"[`reducerHash()`](/api.md#reducerHash)","InitialState":"[`InitialState`](/api.md#InitialState)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"api.md","mtime":"2017-05-01T17:23:10.680Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-01T17:23:12.430Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
