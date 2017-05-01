@@ -41,7 +41,7 @@ export default function generateActions(actionGenesis) {
  */
 generateActions.root = function(actionGenesis) {
   return 123;
-}
+};
 
 
 
