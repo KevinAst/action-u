@@ -1,23 +1,45 @@
 # action-u
 
-??? RETROFIT THIS ... ver WowZee 789
+Within the redux framework, actions are the basic building blocks that
+facilitate application activity.  Actions follow a pre-defined
+convention that promote an action type and a type-specific payload.
+Best practices prescribe that actions should be created by action
+creators (functions that return actions).
 
-The action-u library promotes several redux reducer composition
-utilities, which blend multiple reducers together forming a richer
-abstraction through functional decomposition (i.e. higher-order
-functions).
+- ??link: redux: http://redux.js.org/
+- ??link: actions: http://redux.js.org/docs/basics/Actions.html
+- ??link: "action creator functions": http://redux.js.org/docs/basics/Actions.html#action-creators
 
-Reducer composition is not new.  Redux itself provides the innovative
-[combineReducers](http://redux.js.org/docs/api/combineReducers.html)
-utility which allows you to fuse individual reducers together to build
-up the overall shape of your application state.
+While writing action creators is a simple task, it is tedious and
+potentially error prone.  In addition, one has to define a set of
+corresponding action types, and somehow promote these pairs
+(creators/types) throughout your application.  And then there is the
+question of organization: How does one intuitively model actions that
+are inner-related?
 
-The most prevalent action-u utility is {{book.api.reducerHash}},
-which lets you combine sub-reducers in such a way as to eliminate
-the switch statement commonly used to delineate action type.  
+The action-u library addresses all of these areas.  Not only does it
+auto generate your action creators, but it introduces organization to
+your actions through a JSON-based ActionStruct.  This ActionStruct is
+a key aspect of action-u, it:
+- implicitly defines your action types, 
+- instinctively groups related actions,
+- and seamlessly promotes both action creators and types throughout
+  your application.
 
-Additionally, action-u promotes other reducer compositions that
-can be used in conjunction with one another.
+
+<!-- ??? "MONEY QUOTE" (WITHOUT motivations/features)
+
+The action-u library provides a utility that auto generates your redux
+action creators, and introduces organization to your actions through
+a JSON-based ActionStruct.  This structure instinctively groups
+related actions, implicitly defines your action types, and seamlessly
+promotes both action creators and types throughout your application.
+This automates a tedious process, and promotes an overall organization
+to your actions.
+
+## ?? discuss various ways to promote actions (modules - one or more)
+
+-->
 
 <!--- Badges for CI Builds ---> 
 [![Build Status](https://travis-ci.org/KevinAst/action-u.svg?branch=master)](https://travis-ci.org/KevinAst/action-u)
@@ -27,6 +49,8 @@ can be used in conjunction with one another.
 [![NPM Version Badge](https://img.shields.io/npm/v/action-u.svg)](https://www.npmjs.com/package/action-u)
 
 ## At a Glance
+
+??? RETROFIT THIS
 
 - {{book.guide.start}} ... installation and access
 
