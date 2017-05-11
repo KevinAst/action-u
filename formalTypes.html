@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Basics · action-u</title>
+        <title>Formal Types · action-u</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="formalTypes.html" />
+    <link rel="next" href="shapes.html" />
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="basics.html" />
     
 
     </head>
@@ -106,7 +106,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2" data-path="basics.html">
+        <li class="chapter " data-level="1.2" data-path="basics.html">
             
                 <a href="basics.html">
             
@@ -119,7 +119,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="formalTypes.html">
+        <li class="chapter active" data-level="1.3" data-path="formalTypes.html">
             
                 <a href="formalTypes.html">
             
@@ -356,7 +356,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Basics</a>
+        <a href="." >Formal Types</a>
     </h1>
 </div>
 
@@ -371,116 +371,32 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="basics">Basics</h1>
-<p>As a simple example, let&apos;s say we want to display a user message.  We
-will need:</p>
+                                <h2 id="formal-types-a-closer-look">Formal Types (a closer look)</h2>
+<p>The basic process of action-u is very straight forward, however the
+terminology can become a bit confusing when applying a more formal
+definition that chronicles the process.</p>
+<p>Part of the problem is we are dealing with a data structure that
+has depth, and includes arbitrary app-level nodes that have
+meaning only to the application.</p>
+<p>Another intricacy is we are dealing with two parallel structures:</p>
 <ul>
-<li>an action to display the message in a dialog, </li>
-<li>and a corresponding action to close the dialog.</li>
+<li>one containing the meta information that describes what will be generated ... ActionGenesis</li>
+<li>the other parallels the first, but is used by the app at run-time ... ActionStruct</li>
 </ul>
-<p>Because these two actions are inner-related, we will package them in
-an app-specific structure that highlights these relationship through
-it&apos;s shape.  Here is the ActionStruct that will eventually be
-auto-generated:</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> actions = {
-  userMsg {
-    display(msg): {}, <span class="hljs-comment">// action creator - type promoted via string coercion of funct</span>
-    close():      {}, <span class="hljs-comment">// action creator - type promoted via string coercion of funct</span>
-  }
-};
-</code></pre>
-<p>The action creator implementations are ommitted.</p>
-<ol>
-<li><p><code>actions.userMsg.display(msg)</code> is the <strong>1st action creator</strong>, and
-accepts a single <code>msg</code> parameter</p>
-</li>
-<li><p><code>actions.userMsg.close()</code> is the <strong>2nd action creator</strong>, and
- accepts no parameters</p>
-</li>
-<li><p><strong>Action types</strong> are implied from the JSON structure, and are promoted
-through a string coercion of the action creator function itself
-(i.e. the function&apos;s toString() has been overloaded).  In many
-contexts, this coercion happens implicitly (such as astx-redux-util
-reducerHash()), while in other cases it must be explicitly done (for
-example in a switch statement).</p>
-<pre><code class="lang-js"><span class="hljs-built_in">String</span>(actions.userMsg.display) <span class="hljs-comment">// yields: &apos;userMsg.display&apos;</span>
-<span class="hljs-string">&apos;&apos;</span>+actions.userMsg.close        <span class="hljs-comment">// yields: &apos;userMsg.close&apos;</span>
-</code></pre>
-</li>
-</ol>
-<p><strong>Generation</strong>:</p>
-<p>The structure above is auto-generated through the <code>generateActions()</code>
-function.  </p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
-
-<span class="hljs-keyword">const</span> actions = generateActions({
-  userMsg: {
-    display: {
-                actionMeta: {
-                  traits: [<span class="hljs-string">&apos;msg&apos;</span>]
-                }
-    },
-    close: {
-                actionMeta: {}
-    }
-  }
-});
-</code></pre>
-<ol>
-<li><p>The generateActions() function accepts a single ActionGenesis
-parameter that:</p>
+<p>To better understand the the process, the following picture chronicles
+our prior example, highlighting the formal types.</p>
+<p><img src="img/userMsg.svg" alt="userMsg"></p>
+<p><strong>Meta Input</strong></p>
 <ul>
-<li><p>defines one or more action creators</p>
-</li>
-<li><p>implies the action types from the JSON structure</p>
-</li>
-<li><p>defines the overall ActionStruct organization </p>
-</li>
+<li>ActionGenesis: ??link a JSON structure providing the master definition of what will be generated</li>
+<li>ActionMeta: ??link a sub-node in the ActionGenesis that defines it&apos;s parent to be an ActionNode</li>
 </ul>
-</li>
-<li><p>ActionNodes (ones that promote action creator functions) are defined
-through the <code>actionMeta</code> property.</p>
+<p><strong>Run-Time Output</strong></p>
 <ul>
-<li><p>The <code>actionMeta.traits</code> property is a string array that defines
-<em>both</em> the parameter names (of the action creator) and ultimately
-the property names of the action (returned from the action
-creator).</p>
-</li>
-<li><p>An empty <code>actionMeta</code> object (see <code>close</code>) merely defines an
-action creator with NO parameters, and consequently no action
-payload properties.</p>
-</li>
-<li><p>There are more <code>actionMeta</code> properties that we will discuss
-later.</p>
-<p><strong>Formatting Preference</strong>: So as to not confuse the actionMeta
-property with app-level nodes, I prefer to indent them a bit deeper in
-the structure <em>(you are free to disregard this advice)</em>.</p>
-</li>
+<li>ActionStruct: ??link the generated app-specific structure that mirrors the ActionGenesis,
+promoting a series of action creators and types</li>
+<li>ActionNode: ??link a node in the ActionStruct that promotes both an action creator and type</li>
 </ul>
-</li>
-<li><p>All other nodes (like <code>userMsg</code>) are merely intermediate nodes that
-organize (i.e. add meaning) to the overall shape of the action
-structure.</p>
-</li>
-</ol>
-<p><strong>Usage</strong>:</p>
-<p>Here is how the generated ActionStruct <em>(above)</em> is used:</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> userMsg = actions.userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>);
-      <span class="hljs-comment">// yeilds the following action (which can be dispatched):</span>
-      <span class="hljs-comment">//   {</span>
-      <span class="hljs-comment">//     type: &apos;userMsg.display&apos;,</span>
-      <span class="hljs-comment">//     msg:  &apos;Hello action-u&apos;</span>
-      <span class="hljs-comment">//   }</span>
-
-<span class="hljs-keyword">const</span> closeIt = actions.userMsg.close();
-      <span class="hljs-comment">// yeilds the following action (which can be dispatched):</span>
-      <span class="hljs-comment">//   {</span>
-      <span class="hljs-comment">//     type: &apos;userMsg.close&apos;</span>
-      <span class="hljs-comment">//   }</span>
-
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`First  type is &apos;<span class="hljs-subst">${actions.userMsg.display}</span>&apos;`</span>); <span class="hljs-comment">// yields: First  type is &apos;userMsg.display&apos;</span>
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Second type is &apos;<span class="hljs-subst">${actions.userMsg.close}</span>&apos;`</span>);   <span class="hljs-comment">// yields: Second type is &apos;userMsg.close&apos;</span>
-</code></pre>
 
                                 
                                 </section>
@@ -508,12 +424,12 @@ structure.</p>
 
             
                 
-                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Introduction">
+                <a href="basics.html" class="navigation navigation-prev " aria-label="Previous page: Basics">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="formalTypes.html" class="navigation navigation-next " aria-label="Next page: Formal Types">
+                <a href="shapes.html" class="navigation navigation-next " aria-label="Next page: ActionStruct Shapes">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -524,7 +440,7 @@ structure.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Basics","level":"1.2","depth":1,"next":{"title":"Formal Types","level":"1.3","depth":1,"path":"formalTypes.md","ref":"formalTypes.md","articles":[]},"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar","livereload"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","ext":"[`Extending action-u`](/extending/ext.md)","start":"[`Getting Started`](/start.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","concepts":"[`Concepts`](/concepts/README.md)","conceptJoin":"[`Joining Reducers`](/concepts/joinReducers.md)","history":"[`Revision History`](/history.md)","originalReducerState":"[`originalReducerState`](/originalReducerState.md)","conceptHash":"[`Basics`](/concepts/reducerHash.md)","fullExample":"[`A Most Excellent Example`](/fullExample.md)","logExt":"[`Logging Extension`](/extending/logExt.md)","conceptConditional":"[`Conditional Reduction`](/concepts/conditionalReducer.md)"},"api":{"ref":"[`API Reference`](/api.md)","conditionalReducer":"[`conditionalReducer()`](/api.md#conditionalReducer)","conditionalReducerCB":"[`conditionalReducerCB()`](/api.md#conditionalReducerCB)","joinReducers":"[`joinReducers()`](/api.md#joinReducers)","reducerHash":"[`reducerHash()`](/api.md#reducerHash)","InitialState":"[`InitialState`](/api.md#InitialState)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"basics.md","mtime":"2017-05-11T20:55:48.682Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-11T21:46:01.736Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Formal Types","level":"1.3","depth":1,"next":{"title":"ActionStruct Shapes","level":"1.4","depth":1,"path":"shapes.md","ref":"shapes.md","articles":[]},"previous":{"title":"Basics","level":"1.2","depth":1,"path":"basics.md","ref":"basics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar","livereload"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","ext":"[`Extending action-u`](/extending/ext.md)","start":"[`Getting Started`](/start.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","concepts":"[`Concepts`](/concepts/README.md)","conceptJoin":"[`Joining Reducers`](/concepts/joinReducers.md)","history":"[`Revision History`](/history.md)","originalReducerState":"[`originalReducerState`](/originalReducerState.md)","conceptHash":"[`Basics`](/concepts/reducerHash.md)","fullExample":"[`A Most Excellent Example`](/fullExample.md)","logExt":"[`Logging Extension`](/extending/logExt.md)","conceptConditional":"[`Conditional Reduction`](/concepts/conditionalReducer.md)"},"api":{"ref":"[`API Reference`](/api.md)","conditionalReducer":"[`conditionalReducer()`](/api.md#conditionalReducer)","conditionalReducerCB":"[`conditionalReducerCB()`](/api.md#conditionalReducerCB)","joinReducers":"[`joinReducers()`](/api.md#joinReducers)","reducerHash":"[`reducerHash()`](/api.md#reducerHash)","InitialState":"[`InitialState`](/api.md#InitialState)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"formalTypes.md","mtime":"2017-05-11T20:55:42.764Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-11T21:46:01.736Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
