@@ -1,13 +1,14 @@
 ## ActionStruct Shapes
 
-The shape of the ActionStruct shape is ultimatly an app-specific
-requirement.
+The shape of the {{book.api.ActionStruct}} shape is ultimatly an
+app-specific requirement.
 
-We have a lot of flexibility in how we organize our ActionStruct.
-For example, ActionNodes (i.e. action creators) can even contain
-sub-structure.  As a result, we could define the two actions *(from
-our prior example)* by **removing the `display` nomenclature**, making the
-`userMsg` node an action creator, that in turn holds other structure:
+We have a lot of flexibility in how we organize our
+{{book.api.ActionStruct}}.  For example, {{book.api.ActionNodes}}
+(i.e. action creators) can even contain sub-structure.  As a result,
+we could define the two actions *(from our prior example)* by
+**removing the `display` nomenclature**, making the `userMsg` node an
+action creator, that in turn holds other structure:
 
  - `actions.userMsg(msg)`
  - `actions.userMsg.close()`

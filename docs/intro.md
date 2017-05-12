@@ -1,16 +1,13 @@
 # action-u
 
-Within the redux framework, actions are the basic building blocks that
-facilitate application activity.  Actions follow a pre-defined
-convention that promote an action type and a type-specific payload.
-Best practices prescribe that actions should be created by action
-creators (functions that return actions).
+Within the {{book.ext.redux}} framework, {{book.ext.actions}} are the
+basic building blocks that facilitate application activity.  Actions
+follow a pre-defined convention that promote an action type and a
+type-specific payload.  Best practices prescribe that actions should
+be created by {{book.ext.actionCreators}} (functions that return
+actions).
 
-- ??link: redux: http://redux.js.org/
-- ??link: actions: http://redux.js.org/docs/basics/Actions.html
-- ??link: "action creator functions": http://redux.js.org/docs/basics/Actions.html#action-creators
-
-While writing action creators is a simple task, it is tedious and
+While writing {{book.ext.actionCreators}} is a simple task, it is tedious and
 potentially error prone.  In addition, one has to define a set of
 corresponding action types, and somehow promote these pairs
 (creators/types) throughout your application.  And then there is the
@@ -18,22 +15,22 @@ question of organization: How does one intuitively model actions that
 are inner-related?
 
 The action-u library addresses all of these areas.  Not only does it
-auto generate your action creators, but it introduces organization to
-your actions through a JSON-based ActionStruct.  This ActionStruct is
+auto generate your {{book.ext.actionCreators}}, but it introduces organization to
+your actions through a JSON-based {{book.api.ActionStruct}}.  This {{book.api.ActionStruct}} is
 a key aspect of action-u, it:
 - implicitly defines your action types, 
 - instinctively groups related actions,
-- and seamlessly promotes both action creators and types throughout
+- and seamlessly promotes both {{book.ext.actionCreators}} and types throughout
   your application.
 
 
 <!-- ??? "MONEY QUOTE" (WITHOUT motivations/features)
 
 The action-u library provides a utility that auto generates your redux
-action creators, and introduces organization to your actions through
-a JSON-based ActionStruct.  This structure instinctively groups
+{{book.ext.actionCreators}}, and introduces organization to your actions through
+a JSON-based {{book.api.ActionStruct}}.  This structure instinctively groups
 related actions, implicitly defines your action types, and seamlessly
-promotes both action creators and types throughout your application.
+promotes both {{book.ext.actionCreators}} and types throughout your application.
 This automates a tedious process, and promotes an overall organization
 to your actions.
 

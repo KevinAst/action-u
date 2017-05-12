@@ -13,11 +13,11 @@ exception will be thrown:
   ```
 
 You can provide app-specific parameter validation by using the
-`actionMeta.ratify` property.  This is an app-supplied function
-(ratifyFn) that accepts the same set of parameters defined in
-`actionMeta.traits`, and performs validation via an app-specific
-means (typically thrown exceptions), returning an array of the
-arguments passed in.
+{{book.api.actionMetaDOTratify}} property.  This is an app-supplied
+function ({{book.api.ratifyFn}}) that accepts the same set of
+parameters defined in {{book.api.actionMetaDOTtraits}}, and performs
+validation via an app-specific means (typically thrown exceptions),
+returning an array of the arguments passed in.
 
 As an example, to insure only strings are passed into
 `actions.userMsg(msg)`, do the following:

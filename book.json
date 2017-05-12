@@ -36,33 +36,46 @@
   },
   "variables": { 
     "guide": {
-      "devGuide":             "[**Dev Guide**](/index.html)",
+      "devGuide":               "[**Dev Guide**](/index.html)",
 
-      "conceptConditional":   "[`Conditional Reduction`](/concepts/conditionalReducer.md)",
-      "conceptJoin":          "[`Joining Reducers`](/concepts/joinReducers.md)",
-      "concepts":             "[`Concepts`](/concepts/README.md)",
-      "conceptHash":          "[`Basics`](/concepts/reducerHash.md)",
+      "start":                  "[`Getting Started`](/XXstart.md)",
 
-      "dist":                 "[`Distribution`](/dist.md)",
+      "basics":                 "[`Basics`](/basics.md)",
+      "formalTypes":            "[`Formal Types`](/formalTypes.md)",
+      "shapes":                 "[`ActionStruct Shapes`](/shapes.md)",
+      "validation":             "[`Parameter Validation`](/validation.md)",
+      "default":                "[`Defaulting Parameters`](/default.md)",
 
-      "ext":                  "[`Extending action-u`](/extending/ext.md)",
-      "logExt":               "[`Logging Extension`](/extending/logExt.md)",
-
-      "fullExample":          "[`A Most Excellent Example`](/fullExample.md)",
-      "history":              "[`Revision History`](/history.md)",
-      "LICENSE":              "[`MIT License`](/LICENSE.md)",
-      "originalReducerState": "[`originalReducerState`](/originalReducerState.md)",
-      "start":                "[`Getting Started`](/start.md)",
-      "why":                  "[`Why action-u?`](/why.md)"
+      "dist":                   "[`Distribution`](/XXdist.md)",
+      "why":                    "[`Why action-u?`](/XXwhy.md)",
+      "history":                "[`Revision History`](/XXhistory.md)",
+      "LICENSE":                "[`MIT License`](/XXLICENSE.md)"
     },
 
     "api": {
-      "ref":                  "[`API Reference`](/api.md)",
-      "conditionalReducer":   "[`conditionalReducer()`](/api.md#conditionalReducer)",
-      "conditionalReducerCB": "[`conditionalReducerCB()`](/api.md#conditionalReducerCB)",
-      "joinReducers":         "[`joinReducers()`](/api.md#joinReducers)",
-      "reducerHash":          "[`reducerHash()`](/api.md#reducerHash)",
-      "InitialState":          "[`InitialState`](/api.md#InitialState)"
+      "ref":                    "[`API Reference`](/api.md)",
+
+      "generateActions":        "[`generateActions()`](/api.md#generateActions)",
+      "generateActionsDOTroot": "[`generateActions.root()`](/api.md#generateActions_root)",
+
+      "ActionGenesis":          "[`ActionGenesis`](/api.md#ActionGenesis)",
+      "actionGenesis":          "[`actionGenesis`](/api.md#ActionGenesis)",
+      "ActionMeta":             "[`ActionMeta`](/api.md#ActionMeta)",
+      "actionMeta":             "[`actionMeta`](/api.md#ActionMeta)",
+      "actionMetaDOTratify":    "[`actionMeta.ratify`](/api.md#ActionMeta)",
+      "actionMetaDOTtraits":    "[`actionMeta.traits`](/api.md#ActionMeta)",
+      "ratifyFn":               "[`ratifyFn()`](/api.md#ratifyFn)",
+
+      "ActionStruct":           "[`ActionStruct`](/api.md#ActionStruct)",
+      "ActionNode":             "[`ActionNode`](/api.md#ActionNode)",
+      "ActionNodes":            "[`ActionNodes`](/api.md#ActionNode)"
+    },
+
+    "ext": {
+      "redux":                  "[`redux`](http://redux.js.org/)",
+      "actions":                "[`actions`](http://redux.js.org/docs/basics/Actions.html)",
+      "actionCreator":          "[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)",
+      "actionCreators":         "[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"
     }
   }
 }
