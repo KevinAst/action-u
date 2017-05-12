@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · action-u</title>
+        <title>MIT License · action-u</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="start.html" />
     
+    <link rel="prev" href="history.html" />
     
 
     </head>
@@ -91,7 +91,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -390,7 +390,7 @@
             
         </li>
     
-        <li class="chapter " data-level="4.4" data-path="LICENSE.html">
+        <li class="chapter active" data-level="4.4" data-path="LICENSE.html">
             
                 <a href="LICENSE.html">
             
@@ -433,7 +433,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Introduction</a>
+        <a href="." >MIT License</a>
     </h1>
 </div>
 
@@ -448,75 +448,24 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="action-u">action-u</h1>
-<p>Within the <a href="http://redux.js.org/" target="_blank"><code>redux</code></a> framework, <a href="http://redux.js.org/docs/basics/Actions.html" target="_blank"><code>actions</code></a> are the
-basic building blocks that facilitate application activity.  Actions
-follow a pre-defined convention that promote an action type and a
-type-specific payload.  Best practices prescribe that actions should
-be created by <a href="http://redux.js.org/docs/basics/Actions.html#action-creators" target="_blank"><code>action creators</code></a> (functions that return
-actions).</p>
-<p>While writing <a href="http://redux.js.org/docs/basics/Actions.html#action-creators" target="_blank"><code>action creators</code></a> is a simple task, it is tedious and
-potentially error prone.  In addition, one has to define a set of
-corresponding action types, and somehow promote these pairs
-(creators/types) throughout your application.  And then there is the
-question of organization: How does one intuitively model actions that
-are inner-related?</p>
-<p>The action-u library addresses all of these areas.  Not only does it
-auto generate your <a href="http://redux.js.org/docs/basics/Actions.html#action-creators" target="_blank"><code>action creators</code></a>, but it introduces organization to
-your actions through a JSON-based <a href="api.html#ActionStruct"><code>ActionStruct</code></a>.  This <a href="api.html#ActionStruct"><code>ActionStruct</code></a> is
-a key aspect of action-u, it:</p>
-<ul>
-<li>implicitly defines your action types, </li>
-<li>instinctively groups related actions,</li>
-<li>and seamlessly promotes both <a href="http://redux.js.org/docs/basics/Actions.html#action-creators" target="_blank"><code>action creators</code></a> and types throughout
-your application.</li>
-</ul>
-<!--- Badges for CI Builds ---> 
-<p><a href="https://travis-ci.org/KevinAst/action-u" target="_blank"><img src="https://travis-ci.org/KevinAst/action-u.svg?branch=master" alt="Build Status"></a>
-<a href="https://www.codacy.com/app/KevinAst/action-u?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KevinAst/action-u&amp;utm_campaign=Badge_Grade" target="_blank"><img src="https://api.codacy.com/project/badge/Grade/ab82e305bb24440281337ca3a1a732c0" alt="Codacy Badge"></a>
-<a href="https://www.codacy.com/app/KevinAst/action-u?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KevinAst/action-u&amp;utm_campaign=Badge_Coverage" target="_blank"><img src="https://api.codacy.com/project/badge/Coverage/ab82e305bb24440281337ca3a1a732c0" alt="Codacy Badge"></a>
-<a href="https://snyk.io/test/github/kevinast/action-u" target="_blank"><img src="https://snyk.io/test/github/kevinast/action-u/badge.svg" alt="Known Vulnerabilities"></a>
-<a href="https://www.npmjs.com/package/action-u" target="_blank"><img src="https://img.shields.io/npm/v/action-u.svg" alt="NPM Version Badge"></a></p>
-<h2 id="at-a-glance">At a Glance</h2>
-<ul>
-<li><p><a href="start.html"><code>Getting Started</code></a> ... installation and access</p>
-</li>
-<li><p>Concepts:</p>
-<ul>
-<li><p><a href="basics.html"><code>Basics</code></a> ... learn the basics of <a href="api.html#generateActions"><code>generateActions()</code></a></p>
-</li>
-<li><p><a href="formalTypes.html"><code>Formal Types</code></a> ... take a closer look at what is going on</p>
-</li>
-<li><p><a href="shapes.html"><code>ActionStruct Shapes</code></a> ... there is a lot of flexibility in how you
-organize your <a href="api.html#ActionStruct"><code>ActionStruct</code></a></p>
-</li>
-<li><p><a href="validation.html"><code>Parameter Validation</code></a> ... learn how to inject app-specific
-validation</p>
-</li>
-<li><p><a href="default.html"><code>Defaulting Parameters</code></a> ... learn how to apply default semantics to
-your action creator parameters</p>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p><a href="api.html"><code>API Reference</code></a> ... details the low-level functional API</p>
-</li>
-<li><p>Misc:</p>
-<ul>
-<li><p><a href="dist.html"><code>Distribution</code></a> ... where to find this utility <strong>(and a local
-copy of the docs)</strong></p>
-</li>
-<li><p><a href="why.html"><code>Why action-u?</code></a> ... why was action-u created, and how does it
-compare to other utilities</p>
-</li>
-<li><p><a href="history.html"><code>Revision History</code></a> ... peruse various revisions</p>
-</li>
-<li><p><a href="LICENSE.html"><code>MIT License</code></a> ... legal stuff</p>
-</li>
-</ul>
-</li>
-</ul>
+                                <h1 id="mit-license">MIT License</h1>
+<p>MIT License</p>
+<p>Copyright (c) 2017 Kevin Bridges</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
 
                                 
                                 </section>
@@ -544,10 +493,10 @@ compare to other utilities</p>
 
             
                 
-                
-                <a href="start.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Getting Started">
-                    <i class="fa fa-angle-right"></i>
+                <a href="history.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Revision History">
+                    <i class="fa fa-angle-left"></i>
                 </a>
+                
                 
             
         
@@ -556,7 +505,7 @@ compare to other utilities</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Getting Started","level":"1.2","depth":1,"path":"start.md","ref":"start.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`Formal Types`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"intro.md","mtime":"2017-05-12T15:11:33.583Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-12T15:15:23.553Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"MIT License","level":"4.4","depth":1,"previous":{"title":"Revision History","level":"4.3","depth":1,"path":"history.md","ref":"history.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`Formal Types`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"LICENSE.md","mtime":"2017-05-12T14:51:37.153Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-12T15:15:23.553Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

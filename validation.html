@@ -106,7 +106,27 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="basics.html">
+        <li class="chapter " data-level="1.2" data-path="start.html">
+            
+                <a href="start.html">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="basics.html">
             
                 <a href="basics.html">
             
@@ -119,7 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="formalTypes.html">
+        <li class="chapter " data-level="2.2" data-path="formalTypes.html">
             
                 <a href="formalTypes.html">
             
@@ -132,7 +152,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="shapes.html">
+        <li class="chapter " data-level="2.3" data-path="shapes.html">
             
                 <a href="shapes.html">
             
@@ -145,7 +165,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="validation.html">
+        <li class="chapter active" data-level="2.4" data-path="validation.html">
             
                 <a href="validation.html">
             
@@ -158,7 +178,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="default.html">
+        <li class="chapter " data-level="2.5" data-path="default.html">
             
                 <a href="default.html">
             
@@ -178,7 +198,7 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="api.html">
+        <li class="chapter " data-level="3.1" data-path="api.html">
             
                 <a href="api.html">
             
@@ -192,7 +212,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="api.html">
+        <li class="chapter " data-level="3.1.1" data-path="api.html">
             
                 <a href="api.html#generateActions">
             
@@ -205,7 +225,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.2" data-path="api.html">
+        <li class="chapter " data-level="3.1.2" data-path="api.html">
             
                 <a href="api.html#generateActions_root">
             
@@ -218,7 +238,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3" >
+        <li class="chapter " data-level="3.1.3" >
             
                 <span>
             
@@ -232,7 +252,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.3.1" data-path="api.html">
+        <li class="chapter " data-level="3.1.3.1" data-path="api.html">
             
                 <a href="api.html#ActionGenesis">
             
@@ -245,7 +265,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3.2" data-path="api.html">
+        <li class="chapter " data-level="3.1.3.2" data-path="api.html">
             
                 <a href="api.html#ActionMeta">
             
@@ -258,7 +278,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3.3" data-path="api.html">
+        <li class="chapter " data-level="3.1.3.3" data-path="api.html">
             
                 <a href="api.html#ratifyFn">
             
@@ -276,7 +296,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.4" >
+        <li class="chapter " data-level="3.1.4" >
             
                 <span>
             
@@ -290,7 +310,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.4.1" data-path="api.html">
+        <li class="chapter " data-level="3.1.4.1" data-path="api.html">
             
                 <a href="api.html#ActionStruct">
             
@@ -303,7 +323,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.4.2" data-path="api.html">
+        <li class="chapter " data-level="3.1.4.2" data-path="api.html">
             
                 <a href="api.html#ActionNode">
             
@@ -323,6 +343,65 @@
     
 
             </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="dist.html">
+            
+                <a href="dist.html">
+            
+                    
+                    Distribution
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="why.html">
+            
+                <a href="why.html">
+            
+                    
+                    Why action-u?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="history.html">
+            
+                <a href="history.html">
+            
+                    
+                    Revision History
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="LICENSE.html">
+            
+                <a href="LICENSE.html">
+            
+                    
+                    MIT License
+            
+                </a>
+            
+
             
         </li>
     
@@ -380,11 +459,11 @@ number of parameters are provided.  As an example, if you invoke the
 exception will be thrown:</p>
 <pre><code>  ERROR: Action Creator userMsg(msg) expecting 1 parameter, but received 0
 </code></pre><p>You can provide app-specific parameter validation by using the
-<code>actionMeta.ratify</code> property.  This is an app-supplied function
-(ratifyFn) that accepts the same set of parameters defined in
-<code>actionMeta.traits</code>, and performs validation via an app-specific
-means (typically thrown exceptions), returning an array of the
-arguments passed in.</p>
+<a href="api.html#ActionMeta"><code>actionMeta.ratify</code></a> property.  This is an app-supplied
+function (<a href="api.html#ratifyFn"><code>ratifyFn()</code></a>) that accepts the same set of
+parameters defined in <a href="api.html#ActionMeta"><code>actionMeta.traits</code></a>, and performs
+validation via an app-specific means (typically thrown exceptions),
+returning an array of the arguments passed in.</p>
 <p>As an example, to insure only strings are passed into
 <code>actions.userMsg(msg)</code>, do the following:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
@@ -447,7 +526,7 @@ arguments passed in.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Parameter Validation","level":"1.5","depth":1,"next":{"title":"Defaulting Parameters","level":"1.6","depth":1,"path":"default.md","ref":"default.md","articles":[]},"previous":{"title":"ActionStruct Shapes","level":"1.4","depth":1,"path":"shapes.md","ref":"shapes.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar","livereload"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","ext":"[`Extending action-u`](/extending/ext.md)","start":"[`Getting Started`](/start.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","concepts":"[`Concepts`](/concepts/README.md)","conceptJoin":"[`Joining Reducers`](/concepts/joinReducers.md)","history":"[`Revision History`](/history.md)","originalReducerState":"[`originalReducerState`](/originalReducerState.md)","conceptHash":"[`Basics`](/concepts/reducerHash.md)","fullExample":"[`A Most Excellent Example`](/fullExample.md)","logExt":"[`Logging Extension`](/extending/logExt.md)","conceptConditional":"[`Conditional Reduction`](/concepts/conditionalReducer.md)"},"api":{"ref":"[`API Reference`](/api.md)","conditionalReducer":"[`conditionalReducer()`](/api.md#conditionalReducer)","conditionalReducerCB":"[`conditionalReducerCB()`](/api.md#conditionalReducerCB)","joinReducers":"[`joinReducers()`](/api.md#joinReducers)","reducerHash":"[`reducerHash()`](/api.md#reducerHash)","InitialState":"[`InitialState`](/api.md#InitialState)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"validation.md","mtime":"2017-05-11T21:45:35.958Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-11T21:46:01.736Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Parameter Validation","level":"2.4","depth":1,"next":{"title":"Defaulting Parameters","level":"2.5","depth":1,"path":"default.md","ref":"default.md","articles":[]},"previous":{"title":"ActionStruct Shapes","level":"2.3","depth":1,"path":"shapes.md","ref":"shapes.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`Formal Types`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"validation.md","mtime":"2017-05-12T13:37:42.882Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-12T15:15:23.553Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
