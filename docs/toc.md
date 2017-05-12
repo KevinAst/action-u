@@ -1,12 +1,15 @@
 # Table of content 
 
 ### action-u (0.1.0)
+* [Getting Started](start.md)
 
+----
 * [Basics](basics.md)
 * [Formal Types](formalTypes.md)
 * [ActionStruct Shapes](shapes.md)
 * [Parameter Validation](validation.md)
 * [Defaulting Parameters](default.md)
+
 ----
 * [API Reference](api.md)
   * [generateActions](api.md#generateActions)
@@ -18,3 +21,9 @@
   * Run-Time Outputs ...
     * [ActionStruct](api.md#ActionStruct)
     * [ActionNode](api.md#ActionNode)
+
+----
+* [Distribution](dist.md)
+* [Why action-u?](why.md)
+* [Revision History](history.md)
+* [MIT License](LICENSE.md)

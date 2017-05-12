@@ -24,20 +24,6 @@ a key aspect of action-u, it:
   your application.
 
 
-<!-- ??? "MONEY QUOTE" (WITHOUT motivations/features)
-
-The action-u library provides a utility that auto generates your redux
-{{book.ext.actionCreators}}, and introduces organization to your actions through
-a JSON-based {{book.api.ActionStruct}}.  This structure instinctively groups
-related actions, implicitly defines your action types, and seamlessly
-promotes both {{book.ext.actionCreators}} and types throughout your application.
-This automates a tedious process, and promotes an overall organization
-to your actions.
-
-## ?? discuss various ways to promote actions (modules - one or more)
-
--->
-
 <!--- Badges for CI Builds ---> 
 [![Build Status](https://travis-ci.org/KevinAst/action-u.svg?branch=master)](https://travis-ci.org/KevinAst/action-u)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ab82e305bb24440281337ca3a1a732c0)](https://www.codacy.com/app/KevinAst/action-u?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KevinAst/action-u&amp;utm_campaign=Badge_Grade)
@@ -47,45 +33,34 @@ to your actions.
 
 ## At a Glance
 
-??? RETROFIT THIS
-
 - {{book.guide.start}} ... installation and access
 
-- {{book.guide.concepts}}:
+- Concepts:
 
-  - {{book.guide.conceptHash}} ... using {{book.api.reducerHash}}, eliminate
-    the switch statement commonly found in reducers *("look ma, no
-    switch")*
+  - {{book.guide.basics}} ... learn the basics of {{book.api.generateActions}}
 
-  - {{book.guide.conceptConditional}} ... using
-    {{book.api.conditionalReducer}}, invoke a reducer only when
-    certain constraints are met *("to reduce or NOT to reduce; that is
-    the question")*
+  - {{book.guide.formalTypes}} ... take a closer look at what is going on
 
-  - {{book.guide.conceptJoin}} ... using {{book.api.joinReducers}}, team up
-    multiple reducers to promote higher order functionality *("working
-    together is success" - Henry Ford)*
+  - {{book.guide.shapes}} ... there is a lot of flexibility in how you
+    organize your {{book.api.ActionStruct}}
 
-- {{book.guide.fullExample}} ... a more complete example employing many
-  of the action-u utility functions
+  - {{book.guide.validation}} ... learn how to inject app-specific
+    validation
+
+  - {{book.guide.default}} ... learn how to apply default semantics to
+    your action creator parameters
+
 
 - {{book.api.ref}} ... details the low-level functional API
 
-- {{book.guide.originalReducerState}} ... a sidebar discussion of
-  originalReducerState
+- Misc:
 
-- {{book.guide.ext}} ... how would one extend action-u?
+  - {{book.guide.dist}} ... where to find this utility **(and a local
+    copy of the docs)**
 
-  - {{book.guide.logExt}} ... a concrete example of reducer-based
-    centralized logging *("smarter logging")*
+  - {{book.guide.why}} ... why was action-u created, and how does it
+    compare to other utilities
 
+  - {{book.guide.history}} ... peruse various revisions
 
-- {{book.guide.dist}} ... where to find this utility **(and a local
-  copy of the docs)**
-
-- {{book.guide.why}} ... why was action-u created, and how does it
-  compare to other utilities
-
-- {{book.guide.history}} ... peruse various revisions
-
-- {{book.guide.LICENSE}} ... legal stuff
+  - {{book.guide.LICENSE}} ... legal stuff
