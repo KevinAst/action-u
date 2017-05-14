@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>A Closer Look · action-u</title>
+        <title>Action Promotion · action-u</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="shapes.html" />
+    <link rel="next" href="promotion.html" />
     
     
-    <link rel="prev" href="basics.html" />
+    <link rel="prev" href="api.html" />
     
 
     </head>
@@ -139,7 +139,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.2" data-path="formalTypes.html">
+        <li class="chapter " data-level="2.2" data-path="formalTypes.html">
             
                 <a href="formalTypes.html">
             
@@ -353,7 +353,7 @@
         
         
     
-        <li class="chapter " data-level="4.1" data-path="promotion.html">
+        <li class="chapter active" data-level="4.1" data-path="promotion.html">
             
                 <a href="promotion.html">
             
@@ -513,7 +513,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >A Closer Look</a>
+        <a href="." >Action Promotion</a>
     </h1>
 </div>
 
@@ -528,36 +528,170 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="a-closer-look">A Closer Look</h2>
-<p>The basic process of action-u is very straight forward, however the
-terminology can become a bit confusing when applying a more formal
-definition that chronicles the process.</p>
-<p>Part of the problem is we are dealing with a data structure with depth
-that includes arbitrary app-level nodes that only has meaning to the
-application.</p>
-<p>Another intricacy is we are dealing with two parallel structures:</p>
+                                <h1 id="action-promotion">Action Promotion</h1>
+<p>This section discusses the various options available in maintaining
+and promoting actions within your application.</p>
+<p>For sake of example, lets say we have two sets of inner-related
+actions.  <em>Obviously a real application will have more, but this is
+enough to illustrate the various promotion techniques.</em></p>
+<h2 id="single-module">Single Module</h2>
+<p>It is not uncommon to maintain a single JavaScript module to promote
+all actions of an application.  This is actually feasible, due to the
+concise definitions made possible by action-u <em>(at least in small
+apps)</em>.</p>
+<p><strong>Generation</strong>:</p>
 <ul>
-<li>one containing the meta information that describes what will be generated ... <a href="api.html#ActionGenesis"><code>ActionGenesis</code></a></li>
-<li>the other mirrors the first, but is used by the app at run-time ... <a href="api.html#ActionStruct"><code>ActionStruct</code></a></li>
+<li><p><strong>actions.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions({
+  userMsg: {
+    display: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;msg&apos;</span>]
+                  }
+    },
+    close: {
+                  actionMeta: {}
+    }
+  },
+  widget: {
+    fetch: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;selCrit&apos;</span>]
+                  },
+      complete: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;widget&apos;</span>]
+                  }
+      },
+      fail: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;err&apos;</span>]
+                  }
+      }
+    }
+  }
+});
+</code></pre>
+</li>
 </ul>
-<p>To better understand the the process, the following diagram chronicles
-our prior example, highlighting the <strong>formal types</strong>.</p>
-<p><img src="img/userMsg.svg" alt="userMsg"></p>
-<p><strong>Meta Input</strong></p>
+<p><strong>Usage:</strong></p>
+<p>In this scenario, we merely import/use one central actions object, which
+holds all our actions.</p>
 <ul>
-<li><a href="api.html#ActionGenesis"><code>ActionGenesis</code></a>: a JSON structure providing the master
-definition of what will be generated</li>
-<li><a href="api.html#ActionMeta"><code>ActionMeta</code></a>: a sub-node in the
-<a href="api.html#ActionGenesis"><code>ActionGenesis</code></a> that defines it&apos;s parent to be an
-<a href="api.html#ActionNode"><code>ActionNode</code></a></li>
+<li><p><strong>foo.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> actions <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions&apos;</span>;
+
+...
+
+dispatch( actions.userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
+</code></pre>
+</li>
 </ul>
-<p><strong>Run-Time Output</strong></p>
+<h2 id="multiple-modules">Multiple Modules</h2>
+<p>This technique breaks up our actions into separate modules (typically
+within an <code>actions/</code> directory).</p>
+<p><strong>Generation</strong>:</p>
+<p>Notice that we use the <a href="api.html#generateActions_root"><code>generateActions.root()</code></a> function,
+which promotes the single root node of the ActionStruct, rather than
+the entire structure.</p>
 <ul>
-<li><a href="api.html#ActionStruct"><code>ActionStruct</code></a>: the generated app-specific structure that
-mirrors the <a href="api.html#ActionGenesis"><code>ActionGenesis</code></a>, promoting a series of action
-creators and types</li>
-<li><a href="api.html#ActionNode"><code>ActionNode</code></a>: a node in the <a href="api.html#ActionStruct"><code>ActionStruct</code></a>
-that promotes both an action creator and type</li>
+<li><p><strong>actions/userMsg.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions.root({
+  userMsg: {
+    display: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;msg&apos;</span>]
+                  }
+    },
+    close: {
+                  actionMeta: {}
+    }
+  }
+});
+</code></pre>
+</li>
+<li><p><strong>actions/widget.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions.root({
+  widget: {
+    fetch: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;selCrit&apos;</span>]
+                  },
+      complete: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;widget&apos;</span>]
+                  }
+      },
+      fail: {
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;err&apos;</span>]
+                  }
+      }
+    }
+  }
+});
+</code></pre>
+</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<p>In this scenario, we import/use the specific action module of interest.</p>
+<ul>
+<li><p><strong>foo.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> userMsg <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions/userMsg&apos;</span>;
+
+...
+
+dispatch( userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
+</code></pre>
+</li>
+</ul>
+<h2 id="hybrid">Hybrid</h2>
+<p>This strategy combines the best of both worlds.  It is a hybrid
+technique where we maintain inner-related actions within their own
+separate modules, but promote them via a single central module.  In
+essence it is a <strong>Multiple Modules - Single Import</strong> tactic.</p>
+<p>This is the <strong>preferred approach</strong> for most projects.</p>
+<p><strong>Generation</strong>:</p>
+<ul>
+<li><strong>actions/userMsg.js</strong> ... same as above</li>
+<li><strong>actions/widget.js</strong> ... same as above</li>
+<li><p><strong>actions/index.js</strong></p>
+<pre><code class="lang-js">import userMsg from &apos;./userMsg&apos;;
+import widget  from &apos;./widget;
+
+export default {
+  userMsg,
+  widget
+};
+</code></pre>
+</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<p>Using this technique, we may choose to import either a specific
+action, or the combined actions.</p>
+<ul>
+<li><p><strong>foo1.js</strong> <em>(combined actions)</em></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> userMsg <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions&apos;</span>;
+
+...
+
+dispatch( actions.userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
+</code></pre>
+</li>
+<li><p><strong>foo2.js</strong> <em>(specific action)</em></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> userMsg <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions/userMsg&apos;</span>;
+
+...
+
+dispatch( userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
+</code></pre>
+</li>
 </ul>
 
                                 
@@ -586,12 +720,12 @@ that promotes both an action creator and type</li>
 
             
                 
-                <a href="basics.html" class="navigation navigation-prev " aria-label="Previous page: Basics">
+                <a href="api.html#ActionNode" class="navigation navigation-prev " aria-label="Previous page: ActionNode">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="shapes.html" class="navigation navigation-next " aria-label="Next page: ActionStruct Shapes">
+                <a href="promotion.html#single-module" class="navigation navigation-next " aria-label="Next page: Single Module">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -602,7 +736,7 @@ that promotes both an action creator and type</li>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"A Closer Look","level":"2.2","depth":1,"next":{"title":"ActionStruct Shapes","level":"2.3","depth":1,"path":"shapes.md","ref":"shapes.md","articles":[]},"previous":{"title":"Basics","level":"2.1","depth":1,"path":"basics.md","ref":"basics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"formalTypes.md","mtime":"2017-05-12T15:50:43.759Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-14T13:45:53.598Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Action Promotion","level":"4.1","depth":1,"next":{"title":"Single Module","level":"4.1.1","depth":2,"anchor":"#single-module","path":"promotion.md","ref":"promotion.md#single-module","articles":[]},"previous":{"title":"ActionNode","level":"3.1.4.2","depth":3,"anchor":"#ActionNode","path":"api.md","ref":"api.md#ActionNode","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"promotion.md","mtime":"2017-05-14T12:20:59.633Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-14T13:45:53.598Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

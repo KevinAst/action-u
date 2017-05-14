@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>A Closer Look · action-u</title>
+        <title>Action Documentation · action-u</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="shapes.html" />
+    <link rel="next" href="dist.html" />
     
     
-    <link rel="prev" href="basics.html" />
+    <link rel="prev" href="promotion.html" />
     
 
     </head>
@@ -139,7 +139,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.2" data-path="formalTypes.html">
+        <li class="chapter " data-level="2.2" data-path="formalTypes.html">
             
                 <a href="formalTypes.html">
             
@@ -411,7 +411,7 @@
             
         </li>
     
-        <li class="chapter " data-level="4.2" data-path="actionDoc.html">
+        <li class="chapter active" data-level="4.2" data-path="actionDoc.html">
             
                 <a href="actionDoc.html">
             
@@ -513,7 +513,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >A Closer Look</a>
+        <a href="." >Action Documentation</a>
     </h1>
 </div>
 
@@ -528,37 +528,53 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="a-closer-look">A Closer Look</h2>
-<p>The basic process of action-u is very straight forward, however the
-terminology can become a bit confusing when applying a more formal
-definition that chronicles the process.</p>
-<p>Part of the problem is we are dealing with a data structure with depth
-that includes arbitrary app-level nodes that only has meaning to the
-application.</p>
-<p>Another intricacy is we are dealing with two parallel structures:</p>
+                                <h1 id="action-documentation">Action Documentation</h1>
+<p>In order to gain a a better understanding of any reactive application,
+it is important to fully understand it&apos;s emitted actions.</p>
+<p>One of the goals of action-u is to implicitly promote intuitive
+meaning to your actions through the shape of your
+<a href="api.html#ActionStruct"><code>ActionStruct</code></a>.</p>
+<h2 id="description">Description</h2>
+<p>It is not uncommon to provide a short description for each action,
+<em>&quot;explainin&apos; what each one was, to be used as evidence against us&quot;</em>
+(<a href="http://www.azlyrics.com/lyrics/arloguthrie/alicesrestaurantmassacree.html" target="_blank"><strong>Alice&apos;s
+Restaurant</strong></a>).
+This provides additional context to better understand each action.</p>
+<p>?? example code</p>
+<h2 id="intent">Intent</h2>
+<p>Sometimes it is helpful to promote the <strong>intent</strong> of each action.
+As an example, you may have actions that are intended to be used
+internally <em>(by say a logic module)</em>, and therefore are of no interest
+to a reducer.  This is especially useful when using a dedicated logic
+framework - such as
+<a href="https://www.npmjs.com/package/redux-logic" target="_blank">redux-logic</a> <strong>(I highly
+recommend this utility)</strong>!</p>
 <ul>
-<li>one containing the meta information that describes what will be generated ... <a href="api.html#ActionGenesis"><code>ActionGenesis</code></a></li>
-<li>the other mirrors the first, but is used by the app at run-time ... <a href="api.html#ActionStruct"><code>ActionStruct</code></a></li>
+<li><p>To that end, I utilize the following hash-tags to further document
+each action:</p>
+<pre><code>#byUser:    dispatched by user action      (i.e. initiated directly from UI)
+#byLogic:   dispatched by app logic        (i.e. sourced from other actions)
+#reducer:   of interest to reducer         (i.e. state should change as a result)
+#noReducer: of NO real interest to reducer (i.e. used to stimulate logic)
+</code></pre></li>
+<li><p>Here is a concrete note from my
+<a href="https://github.com/KevinAst/GeekU" target="_blank">GeekU</a> sandbox application:</p>
+<pre><code>/**
+ * The &apos;selCrit.edit.save&apos; action is of no interest to reducers
+ * (#noReducer) because application logic monitoring this action
+ * will emit a more general action &apos;selCrit.changed&apos; which provides
+ * a more central opportunity to maintain our state (#byLogic,
+ * #reducer).
+ */
+</code></pre></li>
 </ul>
-<p>To better understand the the process, the following diagram chronicles
-our prior example, highlighting the <strong>formal types</strong>.</p>
-<p><img src="img/userMsg.svg" alt="userMsg"></p>
-<p><strong>Meta Input</strong></p>
-<ul>
-<li><a href="api.html#ActionGenesis"><code>ActionGenesis</code></a>: a JSON structure providing the master
-definition of what will be generated</li>
-<li><a href="api.html#ActionMeta"><code>ActionMeta</code></a>: a sub-node in the
-<a href="api.html#ActionGenesis"><code>ActionGenesis</code></a> that defines it&apos;s parent to be an
-<a href="api.html#ActionNode"><code>ActionNode</code></a></li>
-</ul>
-<p><strong>Run-Time Output</strong></p>
-<ul>
-<li><a href="api.html#ActionStruct"><code>ActionStruct</code></a>: the generated app-specific structure that
-mirrors the <a href="api.html#ActionGenesis"><code>ActionGenesis</code></a>, promoting a series of action
-creators and types</li>
-<li><a href="api.html#ActionNode"><code>ActionNode</code></a>: a node in the <a href="api.html#ActionStruct"><code>ActionStruct</code></a>
-that promotes both an action creator and type</li>
-</ul>
+<p>?? example code   </p>
+<h2 id="javadoc">JavaDoc</h2>
+<p>If you are &quot;in to&quot; <a href="http://usejsdoc.org/" target="_blank">JSDoc</a> (a descendant of
+<a href="https://en.wikipedia.org/wiki/Javadoc" target="_blank">JavaDoc</a>), you can apply more
+formal documentation to your actions.</p>
+<p>?? example code</p>
+<p>?? screen print</p>
 
                                 
                                 </section>
@@ -586,12 +602,12 @@ that promotes both an action creator and type</li>
 
             
                 
-                <a href="basics.html" class="navigation navigation-prev " aria-label="Previous page: Basics">
+                <a href="promotion.html#hybrid" class="navigation navigation-prev " aria-label="Previous page: Hybrid">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="shapes.html" class="navigation navigation-next " aria-label="Next page: ActionStruct Shapes">
+                <a href="dist.html" class="navigation navigation-next " aria-label="Next page: Distribution">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -602,7 +618,7 @@ that promotes both an action creator and type</li>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"A Closer Look","level":"2.2","depth":1,"next":{"title":"ActionStruct Shapes","level":"2.3","depth":1,"path":"shapes.md","ref":"shapes.md","articles":[]},"previous":{"title":"Basics","level":"2.1","depth":1,"path":"basics.md","ref":"basics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"formalTypes.md","mtime":"2017-05-12T15:50:43.759Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-14T13:45:53.598Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Action Documentation","level":"4.2","depth":1,"next":{"title":"Distribution","level":"5.1","depth":1,"path":"dist.md","ref":"dist.md","articles":[]},"previous":{"title":"Hybrid","level":"4.1.3","depth":2,"anchor":"#hybrid","path":"promotion.md","ref":"promotion.md#hybrid","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"actionDoc.md","mtime":"2017-05-14T13:44:27.585Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-14T13:45:53.598Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
