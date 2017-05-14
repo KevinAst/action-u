@@ -41,10 +41,12 @@
       "start":                  "[`Getting Started`](/start.md)",
 
       "basics":                 "[`Basics`](/basics.md)",
-      "formalTypes":            "[`Formal Types`](/formalTypes.md)",
+      "formalTypes":            "[`A Closer Look`](/formalTypes.md)",
       "shapes":                 "[`ActionStruct Shapes`](/shapes.md)",
       "validation":             "[`Parameter Validation`](/validation.md)",
       "default":                "[`Defaulting Parameters`](/default.md)",
+
+      "promotion":              "[`Action Promotion`](/promotion.md)",
 
       "dist":                   "[`Distribution`](/dist.md)",
       "why":                    "[`Why action-u?`](/why.md)",

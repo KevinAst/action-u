@@ -5,7 +5,7 @@
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
   generateActions(actionGenesis) ⇒ [`ActionStruct`](#ActionStruct)</h5>
-A higher-order function that mirrors the supplied{{book.api.actionGenesis}} structure, returning an{{book.api.ActionStruct}}, injecting generated action creators thatare decorated with their coresponding action types.The {{book.guide.formalTypes}} discusion has a diagram that shedslight on this process.
+A higher-order function that mirrors the supplied{{book.api.actionGenesis}} structure, returning an{{book.api.ActionStruct}}, injecting generated action creators thatare decorated with their coresponding action types.The {{book.guide.formalTypes}} section has a diagram that shedslight on this process.
 
 
 | Param | Type | Description |
@@ -20,7 +20,7 @@ A higher-order function that mirrors the supplied{{book.api.actionGenesis}} str
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
   generateActions.root(actionGenesis) ⇒ [`ActionStruct`](#ActionStruct)</h5>
-The `generateActions.root()` function is identical to{{book.api.generateActions}}, except it returns the single rootnode of the {{book.api.ActionStruct}}, rather than the entirestructure.  *This is useful for projects that organize their actionsin individual JavaScript modules.*
+The `generateActions.root()` function is identical to{{book.api.generateActions}}, except it returns the single rootnode of the {{book.api.ActionStruct}}, rather than the entirestructure.  *This is useful for projects that organize theiractions in seperate JavaScript modules (see{{book.guide.promotion}})*.
 
 
 | Param | Type | Description |

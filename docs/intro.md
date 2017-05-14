@@ -39,7 +39,8 @@ a key aspect of action-u, it:
 
   - {{book.guide.basics}} ... learn the basics of {{book.api.generateActions}}
 
-  - {{book.guide.formalTypes}} ... take a closer look at what is going on
+  - {{book.guide.formalTypes}} ... a valuable diagram detailing
+    exactly what is going on!
 
   - {{book.guide.shapes}} ... there is a lot of flexibility in how you
     organize your {{book.api.ActionStruct}}

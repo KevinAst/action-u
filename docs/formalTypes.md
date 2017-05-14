@@ -1,4 +1,4 @@
-## Formal Types (a closer look)
+## A Closer Look
 
 The basic process of action-u is very straight forward, however the
 terminology can become a bit confusing when applying a more formal
@@ -13,7 +13,7 @@ Another intricacy is we are dealing with two parallel structures:
  - the other mirrors the first, but is used by the app at run-time ... {{book.api.ActionStruct}}
 
 To better understand the the process, the following diagram chronicles
-our prior example, highlighting the formal types.
+our prior example, highlighting the **formal types**.
 
 ![userMsg](img/userMsg.svg)
 

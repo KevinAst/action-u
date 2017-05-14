@@ -4,7 +4,7 @@
  * {{book.api.ActionStruct}}, injecting generated action creators that
  * are decorated with their coresponding action types.
  * 
- * The {{book.guide.formalTypes}} discusion has a diagram that sheds
+ * The {{book.guide.formalTypes}} section has a diagram that sheds
  * light on this process.
  * 
  * @param {ActionGenesis} actionGenesis - an "organizational" JSON
@@ -24,8 +24,9 @@ export default function generateActions(actionGenesis) {
  * The `generateActions.root()` function is identical to
  * {{book.api.generateActions}}, except it returns the single root
  * node of the {{book.api.ActionStruct}}, rather than the entire
- * structure.  *This is useful for projects that organize their actions
- * in individual JavaScript modules.*
+ * structure.  *This is useful for projects that organize their
+ * actions in seperate JavaScript modules (see
+ * {{book.guide.promotion}})*.
  * 
  * @param {ActionGenesis} actionGenesis - an "organizational" JSON
  * structure that defines one or more action creators, with implicitly

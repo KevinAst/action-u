@@ -5,7 +5,7 @@
 
 ----
 * [Basics](basics.md)
-* [Formal Types](formalTypes.md)
+* [A Closer Look](formalTypes.md)
 * [ActionStruct Shapes](shapes.md)
 * [Parameter Validation](validation.md)
 * [Defaulting Parameters](default.md)
@@ -21,6 +21,12 @@
   * Run-Time Outputs ...
     * [ActionStruct](api.md#ActionStruct)
     * [ActionNode](api.md#ActionNode)
+
+----
+* [Action Promotion](promotion.md)
+  * [Single Module](promotion.md#single-module)
+  * [Multiple Modules](promotion.md#multiple-modules)
+  * [Hybrid](promotion.md#hybrid)
 
 ----
 * [Distribution](dist.md)
