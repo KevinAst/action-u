@@ -23,8 +23,8 @@ This provides additional context to better understand each action.
 ## Intent
 
 Sometimes it is helpful to promote the **intent** of each action.
-As an example, you may have actions that are intended to be used
-internally *(by say a logic module)*, and therefore are of no interest
+As an example, you may have actions that are exclusively intended to be used
+internally *(say by a logic module)*, and therefore are of no interest
 to a reducer.  This is especially useful when using a dedicated logic
 framework - such as
 [redux-logic](https://www.npmjs.com/package/redux-logic) **(I highly
@@ -34,9 +34,9 @@ recommend this utility)**!
   each action:
 
   ```
-  #byUser:    dispatched by user action      (i.e. initiated directly from UI)
+  #byUser:    dispatched by a user action    (i.e. initiated directly from UI)
   #byLogic:   dispatched by app logic        (i.e. sourced from other actions)
-  #reducer:   of interest to reducer         (i.e. state should change as a result)
+  #reducer:   of interest to a reducer       (i.e. state should change as a result)
   #noReducer: of NO real interest to reducer (i.e. used to stimulate logic)
   ```
 
