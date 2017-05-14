@@ -27,6 +27,7 @@
   * [Single Module](promotion.md#single-module)
   * [Multiple Modules](promotion.md#multiple-modules)
   * [Hybrid](promotion.md#hybrid)
+* [Action Documentation](actionDoc.md)
 
 ----
 * [Distribution](dist.md)

@@ -47,6 +47,7 @@
       "default":                "[`Defaulting Parameters`](/default.md)",
 
       "promotion":              "[`Action Promotion`](/promotion.md)",
+      "actionDoc":              "[`Action Documentation`](/actionDoc.md)",
 
       "dist":                   "[`Distribution`](/dist.md)",
       "why":                    "[`Why action-u?`](/why.md)",
