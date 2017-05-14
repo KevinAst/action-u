@@ -54,6 +54,14 @@ a key aspect of action-u, it:
 
 - {{book.api.ref}} ... details the low-level functional API
 
+- Organization:
+
+  - {{book.guide.promotion}} ... options to maintain and promote the
+    actions within your application
+
+  - {{book.guide.actionDoc}} ... considerations for documenting your
+    actions
+
 - Misc:
 
   - {{book.guide.dist}} ... where to find this utility **(and a local
