@@ -249,7 +249,7 @@ can use this utility.  The topics that are covered include:
 [generateActions]:        https://action-u.js.org/api.html#generateActions
 [ActionNodes]:            https://action-u.js.org/api.html#ActionNodes
 [ActionGenesis]:          https://action-u.js.org/api.html#ActionGenesis
-[actionMeta]:             https://action-u.js.org/api.html#actionMeta
+[actionMeta]:             https://action-u.js.org/api.html#ActionMeta
 [actionMeta.traits]:      https://action-u.js.org/api.html#ActionMeta
 [ActionStruct]:           https://action-u.js.org/api.html#ActionStruct
 [redux]:                  http://redux.js.org/
