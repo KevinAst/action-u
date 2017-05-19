@@ -183,7 +183,7 @@ action, or the combined actions.
 - **foo1.js** *(combined actions)*
 
   ```js
-  import userMsg from './actions';
+  import actions from './actions';
 
   ...
 
