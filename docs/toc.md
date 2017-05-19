@@ -4,11 +4,12 @@
 * [Getting Started](start.md)
 
 ----
-* [Basics](basics.md)
-* [A Closer Look](formalTypes.md)
-* [ActionStruct Shapes](shapes.md)
-* [Parameter Validation](validation.md)
-* [Defaulting Parameters](default.md)
+* Concepts ...
+  * [Basics](basics.md)
+  * [A Closer Look](formalTypes.md)
+  * [ActionStruct Shapes](shapes.md)
+  * [Parameter Validation](validation.md)
+  * [Defaulting Parameters](default.md)
 
 ----
 * [API Reference](api.md)
@@ -23,11 +24,12 @@
     * [ActionNode](api.md#ActionNode)
 
 ----
-* [Action Promotion](promotion.md)
-  * [Single Module](promotion.md#single-module)
-  * [Multiple Modules](promotion.md#multiple-modules)
-  * [Hybrid](promotion.md#hybrid)
-* [Action Documentation](actionDoc.md)
+* Organization ...
+  * [Action Promotion](promotion.md)
+    * [Single Module](promotion.md#single-module)
+    * [Multiple Modules](promotion.md#multiple-modules)
+    * [Hybrid](promotion.md#hybrid)
+  * [Action Documentation](actionDoc.md)
 
 ----
 * [Distribution](dist.md)

@@ -190,7 +190,7 @@ can use this utility.  The topics that are covered include:
 
 - [Getting Started] ... installation and access
 
-- Concepts:
+- Concepts ...
 
   - [Basics] ... learn the basics of [generateActions]
 
@@ -209,7 +209,7 @@ can use this utility.  The topics that are covered include:
 
 - [API Reference] ... details the low-level functional API
 
-- Organization:
+- Organization ...
 
   - [Action Promotion] ... options to maintain and promote the
     actions within your application
@@ -217,7 +217,7 @@ can use this utility.  The topics that are covered include:
   - [Action Documentation] ... considerations for documenting your
     actions
 
-- Misc:
+- Misc ...
 
   - [Distribution] ... where to find this utility **(and a local
     copy of the docs)**

@@ -35,7 +35,7 @@ a key aspect of action-u, it:
 
 - {{book.guide.start}} ... installation and access
 
-- Concepts:
+- Concepts ...
 
   - {{book.guide.basics}} ... learn the basics of {{book.api.generateActions}}
 
@@ -54,7 +54,7 @@ a key aspect of action-u, it:
 
 - {{book.api.ref}} ... details the low-level functional API
 
-- Organization:
+- Organization ...
 
   - {{book.guide.promotion}} ... options to maintain and promote the
     actions within your application
@@ -62,7 +62,7 @@ a key aspect of action-u, it:
   - {{book.guide.actionDoc}} ... considerations for documenting your
     actions
 
-- Misc:
+- Misc ...
 
   - {{book.guide.dist}} ... where to find this utility **(and a local
     copy of the docs)**
