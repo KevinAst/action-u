@@ -188,7 +188,7 @@ The sample above just scratches the service.  Please refer to the
 full documentation ([action-u]) for a complete explaination of how you
 can use this utility.  The topics that are covered include:
 
-- [Getting Starter] ... installation and access
+- [Getting Started] ... installation and access
 
 - Concepts:
 
