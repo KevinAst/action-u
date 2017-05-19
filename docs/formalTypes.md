@@ -15,7 +15,7 @@ Another intricacy is we are dealing with two parallel structures:
 To better understand the the process, the following diagram chronicles
 our prior example, highlighting the **formal types**.
 
-![userMsg](img/userMsg.svg)
+![userMsg](img/userMsg.png)
 
 **Meta Input**
 - {{book.api.ActionGenesis}}: a JSON structure providing the master

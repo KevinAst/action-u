@@ -150,7 +150,7 @@ const actions = generateActions({
 
 The following diagram details the generation process
 
-![userMsg](docs/img/userMsg.svg?raw=true)
+![userMsg](docs/img/userMsg.png)
 
 
 **Usage**:
