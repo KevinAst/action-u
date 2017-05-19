@@ -1,24 +1,28 @@
 # action-u
-Redux Action Generator (promoting action creators and types)
 
-??? RETROFIT THIS
+Within the [redux] framework, [actions] are the
+basic building blocks that facilitate application activity.  Actions
+follow a pre-defined convention that promote an action type and a
+type-specific payload.  Best practices prescribe that actions should
+be created by [action creators] (functions that return
+actions).
 
-The [action-u] library promotes several redux reducer
-composition utilities, which blend multiple reducers together forming
-a richer abstraction through functional decomposition
-(i.e. higher-order functions).
+While writing [action creators] is a simple task, it is tedious and
+potentially error prone.  In addition, one has to define a set of
+corresponding action types, and somehow promote these pairs
+(creators/types) throughout your application.  And then there is the
+question of organization: How does one intuitively model actions that
+are inner-related?
 
-Reducer composition is not new.  Redux itself provides the innovative
-[combineReducers](http://redux.js.org/docs/api/combineReducers.html)
-utility which allows you to fuse individual reducers together to build
-up the overall shape of your application state.
+The action-u library addresses all of these areas.  Not only does it
+auto generate your [action creators], but it introduces organization to
+your actions through a JSON-based [ActionStruct].  This [ActionStruct] is
+a key aspect of action-u, it:
+- implicitly defines your action types, 
+- instinctively groups related actions,
+- and seamlessly promotes both [action creators] and types throughout
+  your application.
 
-The most prevalent [action-u] utility is **reducerHash()**,
-which lets you combine sub-reducers in such a way as to eliminate
-the switch statement commonly used to delineate action type.  
-
-**Additionally**, [action-u] promotes other reducer compositions that
-can be used in conjunction with one another.
 
 <!--- Badges for CI Builds ---> 
 [![Build Status](https://travis-ci.org/KevinAst/action-u.svg?branch=master)](https://travis-ci.org/KevinAst/action-u)
@@ -26,6 +30,7 @@ can be used in conjunction with one another.
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/ab82e305bb24440281337ca3a1a732c0)](https://www.codacy.com/app/KevinAst/action-u?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KevinAst/action-u&amp;utm_campaign=Badge_Coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/kevinast/action-u/badge.svg)](https://snyk.io/test/github/kevinast/action-u)
 [![NPM Version Badge](https://img.shields.io/npm/v/action-u.svg)](https://www.npmjs.com/package/action-u)
+
 
 ## Comprehensive Documentation
 
@@ -41,127 +46,212 @@ npm install --save action-u
 ```
 
 
-## Examples
+## Sample
 
-### Basics
+As a simple example, let's say we want to facilate an activity to
+display a user message.  We will need:
+- an action to display the message in a dialog, 
+- and a corresponding action to close the dialog.
 
-The following example uses **reducerHash()** to combine a set of
-sub-reducer functions (indexed by the standard action.type),
-eliminating the switch statement commonly used to delineate action
-type.
-
-**Don't miss the [action-u] documentation**, *which fully explores
-this example, and details the API.*
+Because these two actions are inner-related, we will package them in
+an app-specific structure that highlights these relationship through
+it's shape.  Here is our [ActionStruct] that will
+eventually be auto-generated:
 
 ```js
-import { reducerHash } from 'action-u';
+const actions = {
+  userMsg {
+    display(msg): {},
+    close():      {},
+  }
+};
+```
 
-export default reducerHash({
-  "widget.edit":       (widget, action) => action.widget,
-  "widget.edit.close": (widget, action) => null,
-}, null);
+1. The **action creator** signatures are shown, but their
+   implementations are ommitted.
+
+   - `actions.userMsg.display(msg)` is the **1st action creator**, and
+     accepts a single `msg` parameter
+
+   - `actions.userMsg.close()` is the **2nd action creator**, and
+      accepts no parameters
+
+1. The **action types** are implied from the JSON structure, and are
+   promoted through a string coercion of the action creator function
+   itself (the function's toString() has been overloaded).
+
+   In many contexts, this coercion happens implicitly *(such as
+   astx-redux-util reducerHash())*, while in other cases it must be
+   explicitly done *(for example, the case of a switch statement)*.
+
+   ```js
+   String(actions.userMsg.display) // yields: 'userMsg.display'
+   ''+actions.userMsg.close        // yields: 'userMsg.close'
+   ```
+
+
+**Generation**:
+
+The structure above is auto-generated through the [generateActions]
+function.  
+
+```js
+import {generateActions} from 'action-u';
+
+const actions = generateActions({
+  userMsg: {
+    display: {
+                actionMeta: {
+                  traits: ['msg']
+                }
+    },
+    close: {
+                actionMeta: {}
+    }
+  }
+});
+```
+
+1. The [generateActions] function accepts a single
+   [ActionGenesis] parameter that:
+
+   - defines one or more action creators
+
+   - implies the action types from the JSON structure
+
+   - defines the overall [ActionStruct] organization 
+
+1. [ActionNodes] (ones that promote action creator functions) are defined
+   through the [actionMeta] property.
+
+   - The [actionMeta.traits] property is a string array
+     that defines *both* the parameter names (of the action creator)
+     and ultimately the property names of the action (returned from
+     the action creator).
+
+   - An empty [actionMeta] object (see `close`) merely defines an
+     action creator with NO parameters, and consequently no action
+     payload properties.
+
+   - There are more [actionMeta] properties that we will discuss
+     later.
+
+     **Formatting Preference**: So as to not confuse the [actionMeta]
+     property with app-level nodes, I prefer to indent them a bit deeper in
+     the structure *(you are free to disregard this advice)*.
+
+1. All other nodes (like `userMsg`) are merely intermediate nodes that
+   organize (i.e. add meaning) to the overall shape of the action
+   structure.
+
+
+
+**A Closer Look**
+
+The following diagram details the generation process
+
+![userMsg](docs/img/userMsg.png)
+
+
+**Usage**:
+
+Here is how the generated [ActionStruct] *(above)* is used:
+
+```js
+const userMsg = actions.userMsg.display('Hello action-u');
+      // yeilds the following action (which can be dispatched):
+      //   {
+      //     type: 'userMsg.display',
+      //     msg:  'Hello action-u'
+      //   }
+
+const closeIt = actions.userMsg.close();
+      // yeilds the following action (which can be dispatched):
+      //   {
+      //     type: 'userMsg.close'
+      //   }
+
+console.log(`First  type is '${actions.userMsg.display}'`); // yields: First  type is 'userMsg.display'
+console.log(`Second type is '${actions.userMsg.close}'`);   // yields: Second type is 'userMsg.close'
 ```
 
 
-### Joining Reducers
-
-Building on the previous example, our widget now takes on more detail:
- - we manage x/y properties (through the standard
-   [combineReducers](http://redux.js.org/docs/api/combineReducers.html))
- - the widget itself can take on a null value (an indication it is NOT
-   being edited)
-
-We manage these new requirements by combining multiple reducers
-through a functional decomposition (as opposed to procedural code).
-To accomplish this, we add to our repertoire by introducing
-**joinReducers()** and **conditionalReducer()**.
-
-**Did I mention that the [action-u] documentation**, *fully explores
-this example, and details the API?*
-
-```js
-import * as Redux         from 'redux';
-import * as AstxReduxUtil from 'action-u';
-import x                  from '../appReducer/x';
-import y                  from '../appReducer/y';
-
-export default AstxReduxUtil.joinReducers(
-  // FIRST: determine content shape (i.e. {} or null)
-  AstxReduxUtil.reducerHash({
-    "widget.edit":       (widget, action) => action.widget,
-    "widget.edit.close": (widget, action) => null
-  }),
-
-  AstxReduxUtil.conditionalReducer(
-    // SECOND: maintain individual x/y fields
-    //         ONLY when widget has content (i.e. is being edited)
-    (widget, action, originalReducerState) => widget !== null,
-    Redux.combineReducers({
-      x,
-      y
-    })),
-
-  null); // initialState
-```
-
-### Full Example
-
-Building even more on the prior examples:
- - our widget adds a curHash property (which is a determinate of
-   whether application content has changed)
-
-We manage this new property in the parent widget reducer, because it
-has a unique vantage point of knowing when the widget has changed
-(under any circumstance, regardless of how many properties are
-involved).
-
-We accomplish this by simply combining yet another reducer (using a
-functional approach).  This also demonstrates how **composition can be
-nested!**
-
-**Read all about it!  The [action-u] documentation** *fully explores
-this example, and details the API.*
-
-```js
-import * as Redux         from 'redux';
-import * as AstxReduxUtil from 'action-u';
-import x                  from '../appReducer/x';
-import y                  from '../appReducer/y';
-import Widget             from '../appReducer/Widget';
-
-export default AstxReduxUtil.joinReducers(
-  // FIRST: determine content shape (i.e. {} or null)
-  AstxReduxUtil.reducerHash({
-    "widget.edit":       (widget, action) => action.widget,
-    "widget.edit.close": (widget, action) => null
-  }),
-
-  AstxReduxUtil.conditionalReducer(
-    // NEXT: maintain individual x/y fields
-    //       ONLY when widget has content (i.e. is being edited)
-    (widget, action, originalReducerState) => widget !== null,
-    AstxReduxUtil.joinReducers(
-      Redux.combineReducers({
-        x,
-        y,
-        curHash: (s=null)=>s // defaulted state placebo reducer (needed by combineReducers())
-      }),
-      AstxReduxUtil.conditionalReducer(
-        // LAST: maintain curHash
-        //       ONLY when widget has content (see condition above) -AND- has changed
-        (widget, action, originalReducerState) => originalReducerState !== widget,
-        (widget, action) => {
-          widget.curHash = Widget.hash(widget); // OK to mutate (because of changed instance)
-          return widget;
-        })
-    )
-  ), null); // initialState
-```
-
-This represents a very comprehensive example of how **Reducer
-Composition** can **simplify your life**!  We have combined multiple
-reducers into one, applying conditional logic as needed through
-functional decomposition!
 
 
-[action-u]: https://action-u.js.org/
+
+
+
+
+## Full Docs
+
+The sample above just scratches the service.  Please refer to the
+full documentation ([action-u]) for a complete explaination of how you
+can use this utility.  The topics that are covered include:
+
+- [Getting Started] ... installation and access
+
+- Concepts ...
+
+  - [Basics] ... learn the basics of [generateActions]
+
+  - [A Closer Look] ... a valuable diagram detailing
+    exactly what is going on!
+
+  - [ActionStruct Shapes] ... there is a lot of flexibility in how you
+    organize your [ActionStruct]
+
+  - [Parameter Validation] ... learn how to inject app-specific
+    validation
+
+  - [Defaulting Parameters] ... learn how to apply default semantics to
+    your action creator parameters
+
+
+- [API Reference] ... details the low-level functional API
+
+- Organization ...
+
+  - [Action Promotion] ... options to maintain and promote the
+    actions within your application
+
+  - [Action Documentation] ... considerations for documenting your
+    actions
+
+- Misc ...
+
+  - [Distribution] ... where to find this utility **(and a local
+    copy of the docs)**
+
+  - [Why action-u?] ... why was action-u created, and how does it
+    compare to other utilities
+
+  - [Revision History] ... peruse various revisions
+
+  - [MIT License] ... legal stuff
+
+
+
+
+[action-u]:               https://action-u.js.org/
+[Getting Started]:        https://action-u.js.org/start.html
+[Basics]:                 https://action-u.js.org/basics.html
+[A Closer Look]:          https://action-u.js.org/formalTypes.html
+[ActionStruct Shapes]:    https://action-u.js.org/shapes.html
+[Parameter Validation]:   https://action-u.js.org/validation.html
+[Defaulting Parameters]:  https://action-u.js.org/default.html
+[Action Promotion]:       https://action-u.js.org/promotion.html
+[Action Documentation]:   https://action-u.js.org/actionDoc.html
+[Distribution]:           https://action-u.js.org/dist.html
+[Why action-u?]:          https://action-u.js.org/why.html
+[Revision History]:       https://action-u.js.org/history.html
+[MIT License]:            https://action-u.js.org/LICENSE.html
+[API Reference]:          https://action-u.js.org/api.html
+[generateActions]:        https://action-u.js.org/api.html#generateActions
+[ActionNodes]:            https://action-u.js.org/api.html#ActionNodes
+[ActionGenesis]:          https://action-u.js.org/api.html#ActionGenesis
+[actionMeta]:             https://action-u.js.org/api.html#ActionMeta
+[actionMeta.traits]:      https://action-u.js.org/api.html#ActionMeta
+[ActionStruct]:           https://action-u.js.org/api.html#ActionStruct
+[redux]:                  http://redux.js.org/
+[actions]:                http://redux.js.org/docs/basics/Actions.html
+[action creators]:        http://redux.js.org/docs/basics/Actions.html#action-creators

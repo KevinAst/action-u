@@ -1,23 +1,28 @@
 # action-u
 
-??? RETROFIT THIS ... ver WowZee 789
+Within the {{book.ext.redux}} framework, {{book.ext.actions}} are the
+basic building blocks that facilitate application activity.  Actions
+follow a pre-defined convention that promote an action type and a
+type-specific payload.  Best practices prescribe that actions should
+be created by {{book.ext.actionCreators}} (functions that return
+actions).
 
-The action-u library promotes several redux reducer composition
-utilities, which blend multiple reducers together forming a richer
-abstraction through functional decomposition (i.e. higher-order
-functions).
+While writing {{book.ext.actionCreators}} is a simple task, it is tedious and
+potentially error prone.  In addition, one has to define a set of
+corresponding action types, and somehow promote these pairs
+(creators/types) throughout your application.  And then there is the
+question of organization: How does one intuitively model actions that
+are inner-related?
 
-Reducer composition is not new.  Redux itself provides the innovative
-[combineReducers](http://redux.js.org/docs/api/combineReducers.html)
-utility which allows you to fuse individual reducers together to build
-up the overall shape of your application state.
+The action-u library addresses all of these areas.  Not only does it
+auto generate your {{book.ext.actionCreators}}, but it introduces organization to
+your actions through a JSON-based {{book.api.ActionStruct}}.  This {{book.api.ActionStruct}} is
+a key aspect of action-u, it:
+- implicitly defines your action types, 
+- instinctively groups related actions,
+- and seamlessly promotes both {{book.ext.actionCreators}} and types throughout
+  your application.
 
-The most prevalent action-u utility is {{book.api.reducerHash}},
-which lets you combine sub-reducers in such a way as to eliminate
-the switch statement commonly used to delineate action type.  
-
-Additionally, action-u promotes other reducer compositions that
-can be used in conjunction with one another.
 
 <!--- Badges for CI Builds ---> 
 [![Build Status](https://travis-ci.org/KevinAst/action-u.svg?branch=master)](https://travis-ci.org/KevinAst/action-u)
@@ -30,41 +35,41 @@ can be used in conjunction with one another.
 
 - {{book.guide.start}} ... installation and access
 
-- {{book.guide.concepts}}:
+- Concepts ...
 
-  - {{book.guide.conceptHash}} ... using {{book.api.reducerHash}}, eliminate
-    the switch statement commonly found in reducers *("look ma, no
-    switch")*
+  - {{book.guide.basics}} ... learn the basics of {{book.api.generateActions}}
 
-  - {{book.guide.conceptConditional}} ... using
-    {{book.api.conditionalReducer}}, invoke a reducer only when
-    certain constraints are met *("to reduce or NOT to reduce; that is
-    the question")*
+  - {{book.guide.formalTypes}} ... a valuable diagram detailing
+    exactly what is going on!
 
-  - {{book.guide.conceptJoin}} ... using {{book.api.joinReducers}}, team up
-    multiple reducers to promote higher order functionality *("working
-    together is success" - Henry Ford)*
+  - {{book.guide.shapes}} ... there is a lot of flexibility in how you
+    organize your {{book.api.ActionStruct}}
 
-- {{book.guide.fullExample}} ... a more complete example employing many
-  of the action-u utility functions
+  - {{book.guide.validation}} ... learn how to inject app-specific
+    validation
+
+  - {{book.guide.default}} ... learn how to apply default semantics to
+    your action creator parameters
+
 
 - {{book.api.ref}} ... details the low-level functional API
 
-- {{book.guide.originalReducerState}} ... a sidebar discussion of
-  originalReducerState
+- Organization ...
 
-- {{book.guide.ext}} ... how would one extend action-u?
+  - {{book.guide.promotion}} ... options to maintain and promote the
+    actions within your application
 
-  - {{book.guide.logExt}} ... a concrete example of reducer-based
-    centralized logging *("smarter logging")*
+  - {{book.guide.actionDoc}} ... considerations for documenting your
+    actions
 
+- Misc ...
 
-- {{book.guide.dist}} ... where to find this utility **(and a local
-  copy of the docs)**
+  - {{book.guide.dist}} ... where to find this utility **(and a local
+    copy of the docs)**
 
-- {{book.guide.why}} ... why was action-u created, and how does it
-  compare to other utilities
+  - {{book.guide.why}} ... why was action-u created, and how does it
+    compare to other utilities
 
-- {{book.guide.history}} ... peruse various revisions
+  - {{book.guide.history}} ... peruse various revisions
 
-- {{book.guide.LICENSE}} ... legal stuff
+  - {{book.guide.LICENSE}} ... legal stuff
