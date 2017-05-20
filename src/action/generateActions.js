@@ -1,3 +1,10 @@
+import isFunction    from 'lodash.isfunction';
+import isPlainObject from 'lodash.isplainobject';
+import verify        from '../util/verify';
+
+// ## TEST COVERAGE ?? eventually delete ALL ##
+
+
 /**
  * A higher-order function that mirrors the supplied
  * {{book.api.actionGenesis}} structure, returning an
@@ -16,9 +23,17 @@
  * are decorated with their cooresponding action types.
  */
 export default function generateActions(actionGenesis) {
-  return 123;
-}
 
+  // validate actionGenesis
+  // ## test
+  const check = verify.prefix('ActionU.generateActions() parameter violation: ');
+  check(actionGenesis,                'actionGenesis argument is required');
+  check(isPlainObject(actionGenesis), 'actionGenesis argument is NOT an object literal');
+  check(!actionGenesis.actionMeta,    "actionGenesis argument CANNOT have an actionMeta property in the root (i.e. the root cannot be an ActionNode, because it is unnamed)");
+
+  // morph the supplied actionGenesis into an ActionStruct
+  return morph2Runtime(actionGenesis, '');
+}
 
 /**
  * The `generateActions.root()` function is identical to
@@ -39,8 +54,120 @@ export default function generateActions(actionGenesis) {
  * are decorated with their cooresponding action types.
  */
 generateActions.root = function(actionGenesis) {
-  return 123;
+  return 123; // ???
 };
+
+
+
+//***
+//*** Internals ...
+//***
+
+/**
+ * Our default ActionMeta.ratify() function ... simply no-op.
+ * @private
+ */
+function ratifyDefault(...args) {
+  return args;
+}
+
+/**
+ * Morph the supplied genesisNode into a runtime node ... part of the
+ * ActionStruct.
+ * 
+ * @param {JSON-node} genesisNode - a node within the ActionGenisis
+ * structure to be "morphed".
+ * 
+ * @param {string} actionType - the accumulative action type
+ * representing this genesisNode (within the overal ActionGenesis).
+ * 
+ * @returns {JSON-node} a "morphed" run-time node representation of
+ * the supplied genesisNode.
+ * 
+ * @private
+ */
+function morph2Runtime(genesisNode, actionType) {
+
+  // validate genesisNode
+  // ## test
+  const check = verify.prefix(`ActionU.generateActions() actionGenesis node ${actionType}`);
+  check(Object.keys(genesisNode).length > 0, ' must contain at least ONE sub-node (either an app-specific or an actionMeta node)');
+
+  // define our actionMeta (if any)
+  const actionMeta = genesisNode.actionMeta;
+
+  // morph the genesisNode into a runtimeNode (of the ActionStruct)
+  let runtimeNode = null;
+  if (actionMeta) { // *** node is an action creator (an ActionNode)
+    // insure actionMeta is an object literal
+    // ## test
+    check(isPlainObject(actionMeta), '.actionMeta is NOT an object literal');
+
+    // insure actionMeta.traits (if supplied) is a string[]
+    // ## test
+    const traits = actionMeta.traits || [];
+    check(Array.isArray(traits), '.actionMeta.traits is NOT a string[]'); // consider also lodash.isString() on each elm
+
+    // insure actionMeta.ratify (if supplied) is a function
+    // ## test
+    const ratify = actionMeta.ratify || ratifyDefault;
+    check(isFunction(ratify), '.actionMeta.ratify is NOT a function');
+
+    // ***
+    // *** THIS IS IT ... here is a generated action creator (i.e. an ActionNode)
+    // ***
+    runtimeNode = (...args) => {
+
+      // apply app-specific action creator parameter validation/defaults
+      args = ratify(...args);
+      // ## test injecting various ratify hooks (both validation and default)
+
+      // apply standard validation (insuring correct number of arguments passed in)
+      // ## test
+      if (traits.length !== args.length) {
+        // ex: ERROR: action-u action creator: userMsg.display(msg) expecting 1 parameters, but received 0.
+        throw new TypeError(`ERROR: action-u action creator: ${actionType}(${traits.toString()}) expecting ${traits.length} parameters, but received ${args.length}.`);
+      }
+
+      // build/return our action object
+      // ## test
+      const action = { type: actionType }; // baseline action with it's type
+      for (let i=0; i<args.length; i++) {  // inject the arguments into our action
+        action[traits[i]] = args[i];
+      }
+      return action;
+    };
+
+    // overload toString() to promote our action type
+    // ## test
+    runtimeNode.toString = () => actionType;
+  }
+
+  // ?? add support for app-specific data in struct (just copy over if NOT a node)
+  // ... currently undocumented (because I'm not sure it is needed)
+  // ##?? test
+
+  else { // *** node is an app-specific node (who's sub-structure will contain ActionNodes)
+    // this is an app-specific node (who's sub-structure will contain ActionNodes)
+    runtimeNode = {};
+
+    // overload toString() to ERROR (it is NOT an action type)
+    // ex: ERROR: action-u ActionStruct: 'userMsg' is NOT an action type, RATHER an app-specific node.
+    // ## test
+    runtimeNode.toString = () => { throw new TypeError(`ERROR: action-u ActionStruct: '${actionType}' is NOT an action type (rather an app-specific node).`); };
+  }
+
+  // recurse further into the sub-structure
+  for (const subNodeName in genesisNode) {
+    if (subNodeName !== 'actionMeta') { // actionMeta nodes are for internal use only
+      const delim = actionType ? '.' : '';
+      runtimeNode[subNodeName] = morph2Runtime(genesisNode[subNodeName], `${actionType}${delim}${subNodeName}`);
+    }
+  }
+
+  // that's all folks :-)
+  return runtimeNode;
+}
 
 
 

@@ -143,5 +143,9 @@
     "nyc": "^10.2.0",
     "rimraf": "^2.6.1",
     "webpack": "^2.4.1"
+  },
+  "dependencies": {
+    "lodash.isfunction": "^3.0.8",
+    "lodash.isplainobject": "^4.0.6"
   }
 }

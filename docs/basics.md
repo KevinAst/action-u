@@ -89,7 +89,7 @@ const actions = generateActions({
      later.
 
      **Formatting Preference**: So as to not confuse the {{book.api.actionMeta}}
-     property with app-level nodes, I prefer to indent them a bit deeper in
+     property with app-specific nodes, I prefer to indent them a bit deeper in
      the structure *(you are free to disregard this advice)*.
 
 1. All other nodes (like `userMsg`) are merely intermediate nodes that
