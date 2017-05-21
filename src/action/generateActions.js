@@ -2,9 +2,6 @@ import isFunction    from 'lodash.isfunction';
 import isPlainObject from 'lodash.isplainobject';
 import verify        from '../util/verify';
 
-// ## TEST COVERAGE ?? eventually delete ALL ##
-
-
 /**
  * A higher-order function that mirrors the supplied
  * {{book.api.actionGenesis}} structure, returning an
@@ -23,9 +20,7 @@ import verify        from '../util/verify';
  * are decorated with their cooresponding action types.
  */
 export default function generateActions(actionGenesis) {
-
   // validate actionGenesis
-  // ## test
   const check = verify.prefix('ActionU.generateActions() parameter violation: ');
   check(actionGenesis,                'actionGenesis argument is required');
   check(isPlainObject(actionGenesis), 'actionGenesis argument is NOT an object literal');
@@ -54,7 +49,17 @@ export default function generateActions(actionGenesis) {
  * are decorated with their cooresponding action types.
  */
 generateActions.root = function(actionGenesis) {
-  return 123; // ???
+
+  // pass-through to generateActions()
+  const actionStruct  = generateActions(actionGenesis);
+
+  // validae only one root node
+  const rootNodeNames = Object.keys(actionGenesis); // ... use actionGenesis so as NOT to get the injected 'toString' of actionStruct
+  const check         = verify.prefix('ActionU.generateActions.root() parameter violation: ');
+  check(rootNodeNames.length === 1, 'actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}');
+
+  // expose the ActionStruct root
+  return actionStruct[rootNodeNames[0]];
 };
 
 
@@ -89,8 +94,8 @@ function ratifyDefault(...args) {
 function morph2Runtime(genesisNode, actionType) {
 
   // validate genesisNode
-  // ## test
   const check = verify.prefix(`ActionU.generateActions() actionGenesis node ${actionType}`);
+  check(isPlainObject(genesisNode), ' must be an object literal');
   check(Object.keys(genesisNode).length > 0, ' must contain at least ONE sub-node (either an app-specific or an actionMeta node)');
 
   // define our actionMeta (if any)
@@ -100,16 +105,13 @@ function morph2Runtime(genesisNode, actionType) {
   let runtimeNode = null;
   if (actionMeta) { // *** node is an action creator (an ActionNode)
     // insure actionMeta is an object literal
-    // ## test
     check(isPlainObject(actionMeta), '.actionMeta is NOT an object literal');
 
     // insure actionMeta.traits (if supplied) is a string[]
-    // ## test
     const traits = actionMeta.traits || [];
     check(Array.isArray(traits), '.actionMeta.traits is NOT a string[]'); // consider also lodash.isString() on each elm
 
     // insure actionMeta.ratify (if supplied) is a function
-    // ## test
     const ratify = actionMeta.ratify || ratifyDefault;
     check(isFunction(ratify), '.actionMeta.ratify is NOT a function');
 
@@ -120,17 +122,14 @@ function morph2Runtime(genesisNode, actionType) {
 
       // apply app-specific action creator parameter validation/defaults
       args = ratify(...args);
-      // ## test injecting various ratify hooks (both validation and default)
 
       // apply standard validation (insuring correct number of arguments passed in)
-      // ## test
       if (traits.length !== args.length) {
         // ex: ERROR: action-u action creator: userMsg.display(msg) expecting 1 parameters, but received 0.
         throw new TypeError(`ERROR: action-u action creator: ${actionType}(${traits.toString()}) expecting ${traits.length} parameters, but received ${args.length}.`);
       }
 
       // build/return our action object
-      // ## test
       const action = { type: actionType }; // baseline action with it's type
       for (let i=0; i<args.length; i++) {  // inject the arguments into our action
         action[traits[i]] = args[i];
@@ -139,13 +138,8 @@ function morph2Runtime(genesisNode, actionType) {
     };
 
     // overload toString() to promote our action type
-    // ## test
     runtimeNode.toString = () => actionType;
   }
-
-  // ?? add support for app-specific data in struct (just copy over if NOT a node)
-  // ... currently undocumented (because I'm not sure it is needed)
-  // ##?? test
 
   else { // *** node is an app-specific node (who's sub-structure will contain ActionNodes)
     // this is an app-specific node (who's sub-structure will contain ActionNodes)
@@ -153,15 +147,22 @@ function morph2Runtime(genesisNode, actionType) {
 
     // overload toString() to ERROR (it is NOT an action type)
     // ex: ERROR: action-u ActionStruct: 'userMsg' is NOT an action type, RATHER an app-specific node.
-    // ## test
     runtimeNode.toString = () => { throw new TypeError(`ERROR: action-u ActionStruct: '${actionType}' is NOT an action type (rather an app-specific node).`); };
   }
 
   // recurse further into the sub-structure
   for (const subNodeName in genesisNode) {
-    if (subNodeName !== 'actionMeta') { // actionMeta nodes are for internal use only
-      const delim = actionType ? '.' : '';
-      runtimeNode[subNodeName] = morph2Runtime(genesisNode[subNodeName], `${actionType}${delim}${subNodeName}`);
+    if (subNodeName !== 'actionMeta') { // do NOT process actionMeta nodes - they are NOT app-specific
+                                        // ... internal use only (processed by parent node)
+      const subNode = genesisNode[subNodeName];
+      const delim   = actionType ? '.' : '';
+      const subType = `${actionType}${delim}${subNodeName}`;
+      
+      // morph nested sub-structure
+      runtimeNode[subNodeName] = isPlainObject(subNode) 
+                                   ? morph2Runtime(subNode, subType)
+                                   : subNode; // support app-specific data in struct (just copy as is)
+                                              // ... currently undocumented (because I'm not sure it is needed)
     }
   }
 

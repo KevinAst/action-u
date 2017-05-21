@@ -3,7 +3,10 @@ import { generateActions } from '../../../tooling/ModuleUnderTest';
 
 describe('generateActions() tests', () => {
 
+  //****************************************************************************
   describe('basic tests', () => {
+
+    const curDate = new Date();
 
     const actions = generateActions({
       userMsg: {
@@ -12,6 +15,11 @@ describe('generateActions() tests', () => {
                      traits: ['msg']
                    }
         },
+
+        appData1: 123,                // undocumented app-specific data in structure
+        appData2: 'this is app data', // ditto
+        appData3: curDate,            // ditto
+
         close: {
                    actionMeta: {}
         }
@@ -49,10 +57,26 @@ describe('generateActions() tests', () => {
       expect(()=>String(actions.userMsg)).toThrow('is NOT an action type');
     });
 
+
+    // test app-specific data in structure
+    // ... currently undocumented because I'm not sure it is needed
+
+    it('userMsg.appData1 (undocumented app-specific data test)', () => {
+      expect(actions.userMsg.appData1).toBe(123);
+    });
+
+    it('userMsg.appData2 (undocumented app-specific data test)', () => {
+      expect(actions.userMsg.appData2).toBe('this is app data');
+    });
+
+    it('userMsg.appData3 (undocumented app-specific data test)', () => {
+      expect(actions.userMsg.appData3).toBe(curDate);
+    });
+
   });
 
 
-
+  //****************************************************************************
   describe('action creators WITH depth', () => {
 
     const actions = generateActions({
@@ -95,8 +119,70 @@ describe('generateActions() tests', () => {
   });
 
 
+  //****************************************************************************
+  describe('test generateActions.root()', () => {
+
+    const userMsg = generateActions.root({
+      userMsg: {
+        actionMeta: {
+          traits: ['msg']
+        },
+        close: {
+          actionMeta: {}
+        }
+      }
+    });
+
+    it('userMsg() action creator', () => {
+      expect(userMsg('Hello action-u')).toEqual({
+        type: 'userMsg',
+        msg:  'Hello action-u',
+      });
+    });
+
+    it('userMsg type coercion', () => {
+      expect(String(userMsg)).toEqual('userMsg');
+    });
+    
+    it('userMsg.close() action creator', () => {
+      expect(userMsg.close()).toEqual({
+        type: 'userMsg.close',
+      });
+    });
+    
+    it('userMsg.close type coercion via string concatenation', () => {
+      expect(''+userMsg.close).toEqual('userMsg.close');
+    });
+    
+    it('userMsg.close() basic parameter validation - expecting exception', () => {
+      // Error: ERROR: action-u action creator: userMsg.close() expecting 0 parameters, but received 1.
+      expect(()=>userMsg.close('unexpected parameter')).toThrow('userMsg.close() expecting 0 parameters, but received 1');
+    });
 
 
+    it('generateActions.root() actionGenesis argument may ONLY contain a single root node', () => {
+      // Error: ActionU.generateActions.root() parameter violation: actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}
+      expect( () => generateActions.root({
+        userMsg: {
+          actionMeta: {
+            traits: ['msg']
+          },
+          close: {
+            actionMeta: {}
+          }
+        },
+        secondRootBad: {
+          actionMeta: {
+          }
+        }
+      })
+      ).toThrow('actionGenesis argument may ONLY contain a single root node');
+    });
+
+  });
+
+
+  //****************************************************************************
   describe('test actionMeta.ratify (BOTH validate AND default parameters)', () => {
 
     const actions = generateActions({
@@ -138,7 +224,7 @@ describe('generateActions() tests', () => {
   });
 
 
-
+  //****************************************************************************
   describe('generation errors, from generateActions()', () => {
 
     it('actionGenesis argument is required', () => {
@@ -183,6 +269,5 @@ describe('generateActions() tests', () => {
     });
 
   });
-
 
 });
