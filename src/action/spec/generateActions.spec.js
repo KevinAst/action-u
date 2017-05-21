@@ -189,11 +189,10 @@ describe('generateActions() tests', () => {
       userMsg: {
         actionMeta: {
           traits: ['msg'],
-          ratify(msg='app-default') { // ??? USE THIS FORM in our docs
+          ratify(msg='app-default') {
             if (typeof msg !== 'string')
               throw new TypeError(`userMsg(msg) msg is NOT a string: ${msg}`);
-            // console.log(`??? msg: ${msg}, arguments[0]: ${arguments[0]}`); // ??? PROVES IT (see below)
-            return [msg]; // ??? USE THIS FORM in our docs ... arguments is NOT updated with defaults
+            return [msg];
           }
         }
       }

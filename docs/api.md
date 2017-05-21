@@ -42,7 +42,7 @@ An optional hook of {{book.api.ActionMeta}} to validate and/or defaultaction cr
 | --- | --- | --- |
 | ...args | \* | the parameters to this function should match that of the action creator it is defining |
 
-**Returns**: args - an array of the arguments passed in (potentially defaulted)  
+**Returns**: args - an array of the arguments passed in (potentiallydefaulted).  **NOTE**: You should never attempt to return thebuilt-in `arguments` array-like object for two reasons: **1.**applied defaults are NOT reflected in `arguments`, and **2.**`arguments` are not bound to arrow functions.  
 
 <br/><br/><br/>
 

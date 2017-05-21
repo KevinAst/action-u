@@ -31,7 +31,7 @@ const actions = generateActions({
                 traits: ['msg'],
                 ratify(msg) { // NEW
                   assert(isString(msg), `ERROR: userMsg(msg) the supplied msg is NOT a string: ${msg}`);
-                  return [...arguments];
+                  return [msg];
                 }
               },
     close: {
@@ -40,3 +40,10 @@ const actions = generateActions({
   }
 });
 ```
+
+**NOTE**: The reason that {{book.api.ratifyFn}} returns an array of
+the arguments passed in is *to allow it to inject default semantics
+(see: {{book.guide.default}})*.  You should **never** attempt to
+return the built-in `arguments` array-like object for two reasons:
+1. applied defaults are NOT reflected in `arguments`, and
+2. `arguments` are not bound to arrow functions.

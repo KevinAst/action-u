@@ -11,7 +11,7 @@ const actions = generateActions({
   userMsg: {
               actionMeta: {
                 traits: ['msg'],
-                ratify: (msg='Hello action-u') => [...arguments]
+                ratify: (msg='Hello action-u') => [msg]
               },
     close: {
               actionMeta: {}
@@ -20,11 +20,16 @@ const actions = generateActions({
 });
 ```
 
-This is the reason the ratifyFn must return the arguments passed in
-(to potentially inject the default semantics).
+**NOTE**: This is the reason {{book.api.ratifyFn}} must return
+the arguments passed in: *to allow it to inject default semantics*.
+You should **never** attempt to return the built-in `arguments`
+array-like object for two reasons:
+1. applied defaults are NOT reflected in `arguments`, and
+2. `arguments` are not bound to arrow functions.
 
-You can see that the {{book.api.actionMetaDOTratify}} function is used for **both**
-validation and default semantics.  Here is an example employing both:
+As you can see, the {{book.api.actionMetaDOTratify}} function is used
+for **both** validation and default semantics.  Here is an example
+employing both:
 
 ```js
 import {generateActions} from 'action-u';
@@ -35,7 +40,7 @@ const actions = generateActions({
                 traits: ['msg'],
                 ratify(msg='Hello action-u')
                   assert(isString(msg), `ERROR: userMsg(msg) the supplied msg is NOT a string: ${msg}`);
-                  return [...arguments];
+                  return [msg];
                 }
               },
     close: {
