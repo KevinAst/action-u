@@ -5,7 +5,7 @@ terminology can become a bit confusing when applying a more formal
 definition that chronicles the process.
 
 Part of the problem is we are dealing with a data structure with depth
-that includes arbitrary app-level nodes that only has meaning to the
+that includes arbitrary app-specific nodes that only has meaning to the
 application.
 
 Another intricacy is we are dealing with two parallel structures:
