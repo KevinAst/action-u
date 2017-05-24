@@ -59,7 +59,7 @@ shape.  The `actions` [ActionStruct] *(returned above)* conceptually
 looks like this:
 
 ```js
-const actions = {
+const actions = { // auto-generated (from generateActions() - above)
   userMsg {
     display(msg): {},
     close():      {},
@@ -116,8 +116,8 @@ The following diagram summarizes the generation process
      action creator with NO parameters, and consequently no action
      payload properties.
 
-   - There are more [actionMeta] properties that we will discuss
-     later.
+   - There are more [actionMeta] properties that are discussed in the
+     full documentation.
 
      **Formatting Preference**: So as to not confuse the [actionMeta]
      property with app-level nodes, I prefer to indent them a bit deeper in
@@ -133,6 +133,7 @@ The following diagram summarizes the generation process
 Here is how the generated [ActionStruct] *(above)* is used:
 
 ```js
+// action creators ...
 const userMsg = actions.userMsg.display('Hello action-u');
       // yields the following action (which can be dispatched):
       //   {
@@ -146,7 +147,7 @@ const closeIt = actions.userMsg.close();
       //     type: 'userMsg.close'
       //   }
 
-// typically used in reducers
+// action types (typically used in reducers) ...
 console.log(`First  type is '${actions.userMsg.display}'`); // First  type is 'userMsg.display'
 console.log(`Second type is '${actions.userMsg.close}'`);   // Second type is 'userMsg.close'
 ```

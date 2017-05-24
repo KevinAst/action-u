@@ -11,7 +11,7 @@ it's shape.  Here is our {{book.api.ActionStruct}} that will
 eventually be auto-generated:
 
 ```js
-const actions = {
+const actions = { // auto-generated (from generateActions() - below)
   userMsg {
     display(msg): {},
     close():      {},
@@ -102,6 +102,7 @@ const actions = generateActions({
 Here is how the generated {{book.api.ActionStruct}} *(above)* is used:
 
 ```js
+// action creators ...
 const userMsg = actions.userMsg.display('Hello action-u');
       // yields the following action (which can be dispatched):
       //   {
@@ -115,6 +116,7 @@ const closeIt = actions.userMsg.close();
       //     type: 'userMsg.close'
       //   }
 
+// action types (typically used in reducers) ...
 console.log(`First  type is '${actions.userMsg.display}'`); // yields: First  type is 'userMsg.display'
 console.log(`Second type is '${actions.userMsg.close}'`);   // yields: Second type is 'userMsg.close'
 ```
