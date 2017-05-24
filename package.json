@@ -35,7 +35,7 @@
     "clean":                 "npm-run-all build:clean docs:clean cov:clean",
     "cov":                   "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --compilers js:babel-core/register --colors \"src/**/*.spec.js\"",
     "cov:clean":             "rimraf coverage",
-    "cov:publish":           "cat coverage/lcov.info | codacy-coverage",
+    "cov:publish":           "cat coverage/lcov.info | codacy-coverage --verbose",
     "dev":                   "npm run test:lib:watch",
     "docs":                  "npm run docs:prepare && npm run docs:build",
     "docs:api":              "jsdoc2md --configure tooling/docs/jsdoc.json --global-index-format none --helper tooling/docs/escapeAnchor.js --partial tooling/docs/header.hbs --partial tooling/docs/link.hbs --partial tooling/docs/body.hbs --files src/**/*.js > docs/api.md",
