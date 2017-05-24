@@ -18,7 +18,7 @@ Notes](https://github.com/KevinAst/action-u/releases))*.
 
 Release           | What                                   | *When*
 ------------------|----------------------------------------|------------------
-[v0.1.0](#v0_1_0) | Initial Release                        | *May ??, 2017*
+[v0.1.0](#v0_1_0) | Initial Release                        | *May 24, 2017*
 
 
 
@@ -28,7 +28,7 @@ Release           | What                                   | *When*
 <!-- ************************************************************* -->
 <br/><br/><br/>
 <h3 id="v0_1_0" style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
-  v0.1.0 - Initial Release <i>(May ??, 2017)</i>
+  v0.1.0 - Initial Release <i>(May 24, 2017)</i>
 </h3>
 [GitHub Release](https://github.com/KevinAst/action-u/releases/tag/v0.1.0)
 &bull;
