@@ -1,6 +1,6 @@
 # Basics
 
-As a simple example, let's say we want to facilate an activity to
+As a simple example, let's say we want to facilitate an activity to
 display a user message.  We will need:
 - an action to display the message in a dialog, 
 - and a corresponding action to close the dialog.
@@ -11,7 +11,7 @@ it's shape.  Here is our {{book.api.ActionStruct}} that will
 eventually be auto-generated:
 
 ```js
-const actions = {
+const actions = { // auto-generated (from generateActions() - below)
   userMsg {
     display(msg): {},
     close():      {},
@@ -102,19 +102,21 @@ const actions = generateActions({
 Here is how the generated {{book.api.ActionStruct}} *(above)* is used:
 
 ```js
+// action creators ...
 const userMsg = actions.userMsg.display('Hello action-u');
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.display',
       //     msg:  'Hello action-u'
       //   }
 
 const closeIt = actions.userMsg.close();
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.close'
       //   }
 
+// action types (typically used in reducers) ...
 console.log(`First  type is '${actions.userMsg.display}'`); // yields: First  type is 'userMsg.display'
 console.log(`Second type is '${actions.userMsg.close}'`);   // yields: Second type is 'userMsg.close'
 ```

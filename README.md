@@ -1,28 +1,12 @@
 # action-u
 
-Within the [redux] framework, [actions] are the
-basic building blocks that facilitate application activity.  Actions
-follow a pre-defined convention that promote an action type and a
-type-specific payload.  Best practices prescribe that actions should
-be created by [action creators] (functions that return
-actions).
-
-While writing [action creators] is a simple task, it is tedious and
-potentially error prone.  In addition, one has to define a set of
-corresponding action types, and somehow promote these pairs
-(creators/types) throughout your application.  And then there is the
-question of organization: How does one intuitively model actions that
-are inner-related?
-
-The action-u library addresses all of these areas.  Not only does it
-auto generate your [action creators], but it introduces organization to
-your actions through a JSON-based [ActionStruct].  This [ActionStruct] is
-a key aspect of action-u, it:
-- implicitly defines your action types, 
-- instinctively groups related actions,
-- and seamlessly promotes both [action creators] and types throughout
-  your application.
-
+The action-u library provides a utility that auto generates your
+[redux] [action creators], and introduces organization to your
+[actions] through a JSON-based [ActionStruct].  This structure
+instinctively groups related actions, implicitly defines your action
+types, and seamlessly promotes both [action creators] and action types
+throughout your application.  This automates a tedious process, and
+promotes an overall organization to your actions.
 
 <!--- Badges for CI Builds ---> 
 [![Build Status](https://travis-ci.org/KevinAst/action-u.svg?branch=master)](https://travis-ci.org/KevinAst/action-u)
@@ -30,13 +14,6 @@ a key aspect of action-u, it:
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/ab82e305bb24440281337ca3a1a732c0)](https://www.codacy.com/app/KevinAst/action-u?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KevinAst/action-u&amp;utm_campaign=Badge_Coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/kevinast/action-u/badge.svg)](https://snyk.io/test/github/kevinast/action-u)
 [![NPM Version Badge](https://img.shields.io/npm/v/action-u.svg)](https://www.npmjs.com/package/action-u)
-
-
-## Comprehensive Documentation
-
-Complete documentation can be found at
-https://action-u.js.org/, which includes both **API** details,
-and a **Dev Guide** with full and thorough **examples**!
 
 
 ## Install
@@ -48,18 +25,41 @@ npm install --save action-u
 
 ## Sample
 
-As a simple example, let's say we want to facilate an activity to
+As a simple example, let's say we want to facilitate an activity to
 display a user message.  We will need:
 - an action to display the message in a dialog, 
 - and a corresponding action to close the dialog.
 
-Because these two actions are inner-related, we will package them in
-an app-specific structure that highlights these relationship through
-it's shape.  Here is our [ActionStruct] that will
-eventually be auto-generated:
+
+**Generation**:
+
+By simply knowing the properties of each action, we can auto-generate
+our needed [ActionStruct] as follows:
 
 ```js
-const actions = {
+import {generateActions} from 'action-u';
+
+const actions = generateActions({
+  userMsg: {
+    display: {
+                actionMeta: {
+                  traits: ['msg']
+                }
+    },
+    close: {
+                actionMeta: {}
+    }
+  }
+});
+```
+
+Because our two actions are inner-related, we packaged them in an
+app-specific structure that highlights these relationship through it's
+shape.  The `actions` [ActionStruct] *(returned above)* conceptually
+looks like this:
+
+```js
+const actions = { // auto-generated (from generateActions() - above)
   userMsg {
     display(msg): {},
     close():      {},
@@ -68,7 +68,7 @@ const actions = {
 ```
 
 1. The **action creator** signatures are shown, but their
-   implementations are ommitted.
+   implementations are omitted.
 
    - `actions.userMsg.display(msg)` is the **1st action creator**, and
      accepts a single `msg` parameter
@@ -89,28 +89,11 @@ const actions = {
    ''+actions.userMsg.close        // yields: 'userMsg.close'
    ```
 
+**A Closer Look**
 
-**Generation**:
+The following diagram summarizes the generation process
 
-The structure above is auto-generated through the [generateActions]
-function.  
-
-```js
-import {generateActions} from 'action-u';
-
-const actions = generateActions({
-  userMsg: {
-    display: {
-                actionMeta: {
-                  traits: ['msg']
-                }
-    },
-    close: {
-                actionMeta: {}
-    }
-  }
-});
-```
+![userMsg](docs/img/userMsg.png)
 
 1. The [generateActions] function accepts a single
    [ActionGenesis] parameter that:
@@ -133,8 +116,8 @@ const actions = generateActions({
      action creator with NO parameters, and consequently no action
      payload properties.
 
-   - There are more [actionMeta] properties that we will discuss
-     later.
+   - There are more [actionMeta] properties that are discussed in the
+     full documentation.
 
      **Formatting Preference**: So as to not confuse the [actionMeta]
      property with app-level nodes, I prefer to indent them a bit deeper in
@@ -145,90 +128,68 @@ const actions = generateActions({
    structure.
 
 
-
-**A Closer Look**
-
-The following diagram details the generation process
-
-![userMsg](docs/img/userMsg.png)
-
-
 **Usage**:
 
 Here is how the generated [ActionStruct] *(above)* is used:
 
 ```js
+// action creators ...
 const userMsg = actions.userMsg.display('Hello action-u');
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.display',
       //     msg:  'Hello action-u'
       //   }
 
 const closeIt = actions.userMsg.close();
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.close'
       //   }
 
-console.log(`First  type is '${actions.userMsg.display}'`); // yields: First  type is 'userMsg.display'
-console.log(`Second type is '${actions.userMsg.close}'`);   // yields: Second type is 'userMsg.close'
+// action types (typically used in reducers) ...
+console.log(`First  type is '${actions.userMsg.display}'`); // First  type is 'userMsg.display'
+console.log(`Second type is '${actions.userMsg.close}'`);   // Second type is 'userMsg.close'
 ```
 
 
+## Comprehensive Documentation
+
+The sample above just scratches the service!
+
+**Comprehensive Documentation** can be found at https://action-u.js.org/,
+which includes both a **Dev Guide** *(building concepts with full and
+thorough **examples**)*, and a complete **API Reference**.
+
+There is much more to cover in fully understanding this utility,
+including:
+
+- [ActionStruct Shapes] ... there is a lot of flexibility in how you
+  organize your [ActionStruct]
+
+- [Parameter Validation] ... learn how to inject app-specific
+  validation
+
+- [Defaulting Parameters] ... learn how to apply default semantics to
+  your action creator parameters
+
+- [Action Promotion] ... options to maintain and promote the
+  actions within your application
+
+- [Action Documentation] ... considerations for documenting your
+  actions
+
+- [API Reference] ... and *(of course)* the complete functional **API
+  Reference**
 
 
+The action-u library was pulled from a sandbox project
+([GeekU](https://github.com/KevinAst/GeekU)) that I use to study
+several technologies and frameworks.
 
+I hope you enjoy this effort, and comments are always welcome.
 
-
-
-## Full Docs
-
-The sample above just scratches the service.  Please refer to the
-full documentation ([action-u]) for a complete explaination of how you
-can use this utility.  The topics that are covered include:
-
-- [Getting Started] ... installation and access
-
-- Concepts ...
-
-  - [Basics] ... learn the basics of [generateActions]
-
-  - [A Closer Look] ... a valuable diagram detailing
-    exactly what is going on!
-
-  - [ActionStruct Shapes] ... there is a lot of flexibility in how you
-    organize your [ActionStruct]
-
-  - [Parameter Validation] ... learn how to inject app-specific
-    validation
-
-  - [Defaulting Parameters] ... learn how to apply default semantics to
-    your action creator parameters
-
-
-- [API Reference] ... details the low-level functional API
-
-- Organization ...
-
-  - [Action Promotion] ... options to maintain and promote the
-    actions within your application
-
-  - [Action Documentation] ... considerations for documenting your
-    actions
-
-- Misc ...
-
-  - [Distribution] ... where to find this utility **(and a local
-    copy of the docs)**
-
-  - [Why action-u?] ... why was action-u created, and how does it
-    compare to other utilities
-
-  - [Revision History] ... peruse various revisions
-
-  - [MIT License] ... legal stuff
-
+&lt;/Kevin&gt;
 
 
 
