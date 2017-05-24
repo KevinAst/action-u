@@ -22,4 +22,8 @@ several technologies and frameworks.
 
 I hope you enjoy this effort, and comments are always welcome.
 
-&lt;/Kevin&gt;
+**&lt;/Kevin&gt;**
+
+**P.S.** If you are wondering what the "-u" stands for, it is merely a
+succinct suffix that distinguishes a number of my published
+**utilities** *(soon to come)*.
