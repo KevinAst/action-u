@@ -1,6 +1,6 @@
 # Basics
 
-As a simple example, let's say we want to facilate an activity to
+As a simple example, let's say we want to facilitate an activity to
 display a user message.  We will need:
 - an action to display the message in a dialog, 
 - and a corresponding action to close the dialog.
@@ -103,14 +103,14 @@ Here is how the generated {{book.api.ActionStruct}} *(above)* is used:
 
 ```js
 const userMsg = actions.userMsg.display('Hello action-u');
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.display',
       //     msg:  'Hello action-u'
       //   }
 
 const closeIt = actions.userMsg.close();
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.close'
       //   }

@@ -37,14 +37,14 @@ const actions = generateActions({
 
 ```js
 const userMsg = actions.userMsg('Hello action-u');
-      // userMsg yeilds the following action (which can be dispatched):
+      // userMsg yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg',
       //     msg:  'Hello action-u'
       //   }
 
 const closeIt = actions.userMsg.close();
-      // closeIt yeilds the following action (which can be dispatched):
+      // closeIt yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.close'
       //   }

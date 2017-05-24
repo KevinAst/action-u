@@ -25,7 +25,7 @@ npm install --save action-u
 
 ## Sample
 
-As a simple example, let's say we want to facilate an activity to
+As a simple example, let's say we want to facilitate an activity to
 display a user message.  We will need:
 - an action to display the message in a dialog, 
 - and a corresponding action to close the dialog.
@@ -55,7 +55,7 @@ const actions = generateActions({
 
 Because our two actions are inner-related, we packaged them in an
 app-specific structure that highlights these relationship through it's
-shape.  The `actions` [ActionStruct] *(returned above)* conceptionally
+shape.  The `actions` [ActionStruct] *(returned above)* conceptually
 looks like this:
 
 ```js
@@ -68,7 +68,7 @@ const actions = {
 ```
 
 1. The **action creator** signatures are shown, but their
-   implementations are ommitted.
+   implementations are omitted.
 
    - `actions.userMsg.display(msg)` is the **1st action creator**, and
      accepts a single `msg` parameter
@@ -134,14 +134,14 @@ Here is how the generated [ActionStruct] *(above)* is used:
 
 ```js
 const userMsg = actions.userMsg.display('Hello action-u');
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.display',
       //     msg:  'Hello action-u'
       //   }
 
 const closeIt = actions.userMsg.close();
-      // yeilds the following action (which can be dispatched):
+      // yields the following action (which can be dispatched):
       //   {
       //     type: 'userMsg.close'
       //   }
