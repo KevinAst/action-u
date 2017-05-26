@@ -1,6 +1,6 @@
 {
   "name": "action-u",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Redux Action Generator (promoting action creators and types)",
   "main": "lib/index.js",
   "browser": {

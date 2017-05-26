@@ -1,6 +1,6 @@
 # Table of content 
 
-### action-u (0.1.0)
+### action-u (0.2.0)
 * [Getting Started](start.md)
 
 ----
