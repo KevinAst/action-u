@@ -39,6 +39,9 @@ Release           | What                                   | *When*
 
 1. ?? running notes here
 
+1. The {{book.guide.actionDoc}} section was embellished with
+   applicable examples.
+
 
 <!-- ************************************************************* -->
 <br/><br/><br/>
