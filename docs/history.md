@@ -42,6 +42,9 @@ Release           | What                                   | *When*
 1. The {{book.guide.actionDoc}} section was embellished with
    applicable examples.
 
+1. The {{book.guide.dist}} section now highlights how the docs were
+   produced.
+
 
 <!-- ************************************************************* -->
 <br/><br/><br/>
