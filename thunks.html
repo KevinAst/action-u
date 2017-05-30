@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Action Promotion · action-u</title>
+        <title>Thunk Action Creators · action-u</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -59,8 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="promotion.html" />
+    <link rel="next" href="api.html" />
     
+    
+    <link rel="prev" href="default.html" />
     
 
     </head>
@@ -203,7 +205,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.6" data-path="thunks.html">
+        <li class="chapter active" data-level="2.1.6" data-path="thunks.html">
             
                 <a href="thunks.html">
             
@@ -397,7 +399,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="4.1.1" data-path="promotion.html">
+        <li class="chapter " data-level="4.1.1" data-path="promotion.html">
             
                 <a href="promotion.html">
             
@@ -562,7 +564,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Action Promotion</a>
+        <a href="." >Thunk Action Creators</a>
     </h1>
 </div>
 
@@ -577,44 +579,132 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="action-promotion">Action Promotion</h1>
-<p>This section discusses the various options available in maintaining
-and promoting actions within your application.</p>
-<p>For sake of example, lets say we have two sets of inner-related
-actions.  <em>Obviously a real application will have more, but this is
-enough to illustrate the various promotion techniques.</em></p>
-<h2 id="single-module">Single Module</h2>
-<p>It is not uncommon to maintain a single JavaScript module to promote
-all actions of an application.  This is actually feasible, due to the
-concise definitions made possible by action-u <em>(at least in small
-apps)</em>.</p>
-<p><strong>Generation</strong>:</p>
+                                <h1 id="thunk-action-creators">Thunk Action Creators</h1>
+<p>A popular technique to inject business logic into redux-enabled apps
+are thunks.  <a href="https://github.com/gaearon/redux-thunk" target="_blank">Thunks</a> provide
+a mechanism to dispatch actions in either a delayed or conditional
+manor.  Typically they are used in conjunction with asynchronous
+processes, such as a server fetch, etc.</p>
+<p>Thunks are introduced by promoting an action that is a function
+<em>rather than an action object</em>.  In other words, the action creator
+returns a function (i.e. the thunk), that is managed by the redux
+thunk middleware.</p>
 <ul>
-<li><p><strong>actions.js</strong></p>
+<li>A thunk action creator accepts the app-specific contextual business
+parameters <em>(just like all action creators)</em></li>
+<li>and when invoked returns a function (i.e. the thunk)<ul>
+<li>that will in turn be invoked by the redux thunk middleware</li>
+<li>passing (dispatch, getState) parameters</li>
+<li>giving the thunk access to both:<ul>
+<li>the contextual business parameters (through closure)</li>
+<li>and the redux state and dispatch mechanisms</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="thunks-in-action-u">Thunks in action-u</h2>
+<p>Within action-u, thunk action creators are injected into the
+<a href="api.html#ActionStruct"><code>ActionStruct</code></a> using the <a href="api.html#ActionMeta"><code>actionMeta.thunk</code></a>
+property.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
+
+<span class="hljs-keyword">const</span> actions = generateActions({
+
+  widget: {
+
+    fetch: {      <span class="hljs-comment">// widget.fetch(selCrit)</span>
+                  actionMeta: {
+                    thunk(selCrit) {
+                      <span class="hljs-keyword">return</span> (dispatch, getState) =&gt; {
+                        <span class="hljs-keyword">return</span> fetchWidget(selCrit) <span class="hljs-comment">// ... promise-based async fetch </span>
+                          .then( widget =&gt; {
+                            dispatch(actions.widget.fetch.complete(widget));
+                          })
+                          .catch ( err =&gt; {
+                            dispatch(actions.widget.fetch.fail(err));
+                          });
+                      };
+                    }
+                  },
+
+      complete: { <span class="hljs-comment">// widget.fetch.complete(widget)</span>
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;widget&apos;</span>]
+                  }
+      },
+
+      fail: {     <span class="hljs-comment">// widget.fetch.fail(err)</span>
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;err&apos;</span>]
+                  }
+      }
+    }
+  }
+});
+</code></pre>
+<p>The <a href="api.html#ActionMeta"><code>actionMeta.thunk</code></a> property represents the <strong>fully
+implemented</strong> action creator function, and is directly injected into
+the <a href="api.html#ActionStruct"><code>ActionStruct</code></a> as an <a href="api.html#ActionNode"><code>ActionNode</code></a>.  In other
+words, there is <strong>NO generation</strong> <em>(in this case)</em>, rather the entire
+action creator is fully defined by app-specific code.  This merely
+allows thunk action creators to co-exist with all other <em>generated</em>
+action creators in the <a href="api.html#ActionStruct"><code>ActionStruct</code></a>.  As a result,
+<strong><em>when a thunk is used, no other <a href="api.html#ActionMeta"><code>actionMeta</code></a> properties
+are allowed</em></strong>.</p>
+<p><strong>Note 1</strong>: Technically, a thunk is the function returned from a thunk
+action creator, not the action creator itself.  With that said, we
+simplify our terminology by using the <a href="api.html#ActionMeta"><code>actionMeta.thunk</code></a>
+property to refer to the thunk action creator.</p>
+<p><strong>Note 2</strong>: In reality, you can do anything in your app-defined thunk
+action creator.  In other words, action-u provides no validation of
+what your action creator does <em>(i.e. returns)</em>, rather it merely
+injects it into the <a href="api.html#ActionStruct"><code>ActionStruct</code></a> <em>as an
+<a href="api.html#ActionNode"><code>ActionNode</code></a></em>.  By design, it is intended to return a thunk
+<em>(function)</em>, but nothing prevents it from returning, say an action
+object <em>(you probably wouldn&apos;t do this, as it defeats the purpose of
+auto generating your action creators)</em>.</p>
+<h2 id="thunk-modules">Thunk Modules</h2>
+<p>Because thunks typically contain several lines of code, it is common
+to pull them in through a separate module.  Here is the same example
+<em>(from above)</em>:</p>
+<ul>
+<li><p><strong>actions/thunks/widgetFetch.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> actions <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../../actions&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">widgetFetch</span>(<span class="hljs-params">selCrit</span>) </span>{
+  <span class="hljs-keyword">return</span> (dispatch, getState) =&gt; {
+    <span class="hljs-keyword">return</span> fetchWidget(selCrit) <span class="hljs-comment">// ... promise-based async fetch </span>
+      .then( widget =&gt; {
+        dispatch(actions.widget.fetch.complete(widget));
+      })
+      .catch ( err =&gt; {
+        dispatch(actions.widget.fetch.fail(err));
+      });
+  };
+}
+</code></pre>
+</li>
+<li><p><strong>actions/index.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
+<span class="hljs-keyword">import</span> widgetFetch       <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./thunks/widgetFetch&apos;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions({
-  userMsg: {
-    display: {
-                  actionMeta: {
-                    traits: [<span class="hljs-string">&apos;msg&apos;</span>]
-                  }
-    },
-    close: {
-                  actionMeta: {}
-    }
-  },
+
   widget: {
-    fetch: {
+
+    fetch: {      <span class="hljs-comment">// widget.fetch(selCrit)</span>
                   actionMeta: {
-                    traits: [<span class="hljs-string">&apos;selCrit&apos;</span>]
+                    thunk: widgetFetch
                   },
-      complete: {
+
+      complete: { <span class="hljs-comment">// widget.fetch.complete(widget)</span>
                   actionMeta: {
                     traits: [<span class="hljs-string">&apos;widget&apos;</span>]
                   }
       },
-      fail: {
+
+      fail: {     <span class="hljs-comment">// widget.fetch.fail(err)</span>
                   actionMeta: {
                     traits: [<span class="hljs-string">&apos;err&apos;</span>]
                   }
@@ -625,122 +715,45 @@ apps)</em>.</p>
 </code></pre>
 </li>
 </ul>
-<p><strong>Usage:</strong></p>
-<p>In this scenario, we merely import/use one central actions object, which
-holds all our actions.</p>
+<h2 id="sidebar-thunk-alternatives">SideBar: Thunk Alternatives</h2>
+<p>Thunks are merely <strong>one way to inject business logic</strong> into your
+redux-enabled application ... <strong>there are other techniques</strong>!</p>
+<p>Thunk support was added to action-u simply to allow thunk action
+creators to consistently co-exist in the action-u ActionStruct <em>along
+with all other action creators</em>.</p>
+<p>I would encourage you to investigate the alternatives to thunks.  This
+article breaks down the various options: <strong><em><a href="https://medium.com/@jeffbski/where-do-i-put-my-business-logic-in-a-react-redux-application-9253ef91ce1" target="_blank">Where do I put my
+business logic in a React-Redux
+application?</a></em></strong>
+The article is an introduction (and motivation) for the development of
+<strong><em><a href="https://github.com/jeffbski/redux-logic" target="_blank">redux-logic</a></em></strong>
+... <em>redux middleware for organizing all your business logic</em>.</p>
+<p>I have been using
+<strong><a href="https://github.com/jeffbski/redux-logic" target="_blank">redux-logic</a></strong> since it&apos;s
+begining and believe it is the <strong><em>best approach to encapsulate your
+business logic</em></strong>. Prior to redux-logic, my business logic was spread
+out in a variety of different places, including:</p>
 <ul>
-<li><p><strong>foo.js</strong></p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> actions <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions&apos;</span>;
-
-...
-
-dispatch( actions.userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
-</code></pre>
-</li>
+<li>component methods</li>
+<li>thunks</li>
+<li>and middleware injections</li>
 </ul>
-<h2 id="multiple-modules">Multiple Modules</h2>
-<p>This technique breaks up our actions into separate modules (typically
-within an <code>actions/</code> directory).</p>
-<p><strong>Generation</strong>:</p>
-<p>Notice that we use the <a href="api.html#generateActions_root"><code>generateActions.root()</code></a> function,
-which promotes the single root node of the ActionStruct, rather than
-the entire structure.</p>
+<p>In addition, I relied heavily on batched actions, where logic entry
+points would stimulate multiple actions in one procedural chunk of
+code.  Needless to say, this was less than ideal. Even tools like
+redux-dev-tools could not give me adequate insight into &quot;what was
+stimulating what&quot;!</p>
+<p>All of these techniques were replaced with &quot;true&quot; business logic,
+organizing all my logic in one isolated spot, all orchestrated by
+redux-logic!</p>
+<p>My business logic is now:</p>
 <ul>
-<li><p><strong>actions/userMsg.js</strong></p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions.root({
-  userMsg: {
-    display: {
-                  actionMeta: {
-                    traits: [<span class="hljs-string">&apos;msg&apos;</span>]
-                  }
-    },
-    close: {
-                  actionMeta: {}
-    }
-  }
-});
-</code></pre>
-</li>
-<li><p><strong>actions/widget.js</strong></p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> {generateActions} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;action-u&apos;</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions.root({
-  widget: {
-    fetch: {
-                  actionMeta: {
-                    traits: [<span class="hljs-string">&apos;selCrit&apos;</span>]
-                  },
-      complete: {
-                  actionMeta: {
-                    traits: [<span class="hljs-string">&apos;widget&apos;</span>]
-                  }
-      },
-      fail: {
-                  actionMeta: {
-                    traits: [<span class="hljs-string">&apos;err&apos;</span>]
-                  }
-      }
-    }
-  }
-});
-</code></pre>
-</li>
-</ul>
-<p><strong>Usage:</strong></p>
-<p>In this scenario, we import/use the specific action module of interest.</p>
-<ul>
-<li><p><strong>foo.js</strong></p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> userMsg <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions/userMsg&apos;</span>;
-
-...
-
-dispatch( userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
-</code></pre>
-</li>
-</ul>
-<h2 id="hybrid">Hybrid</h2>
-<p>This strategy combines the best of both worlds.  It is a hybrid
-technique where we maintain inner-related actions within their own
-separate modules, but promote them via a single central module.  In
-essence it is a <strong>Multiple Modules - Single Import</strong> tactic.</p>
-<p>This is the <strong>preferred approach</strong> for most projects.</p>
-<p><strong>Generation</strong>:</p>
-<ul>
-<li><strong>actions/userMsg.js</strong> ... same as above</li>
-<li><strong>actions/widget.js</strong> ... same as above</li>
-<li><p><strong>actions/index.js</strong></p>
-<pre><code class="lang-js">import userMsg from &apos;./userMsg&apos;;
-import widget  from &apos;./widget;
-
-export default {
-  userMsg,
-  widget
-};
-</code></pre>
-</li>
-</ul>
-<p><strong>Usage:</strong></p>
-<p>Using this technique, we may choose to import either a specific
-action, or the combined actions.</p>
-<ul>
-<li><p><strong>foo1.js</strong> <em>(combined actions)</em></p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> actions <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions&apos;</span>;
-
-...
-
-dispatch( actions.userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
-</code></pre>
-</li>
-<li><p><strong>foo2.js</strong> <em>(specific action)</em></p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> userMsg <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./actions/userMsg&apos;</span>;
-
-...
-
-dispatch( userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</span>) );
-</code></pre>
-</li>
+<li>located in one logical discipline (i.e. dedicated &quot;logic&quot; modules)</li>
+<li>making it testable in isolation (very nice)!!</li>
+<li>has more concise and succinct goals</li>
+<li>promotes modular reuse</li>
+<li>provides traceable &quot;cause and effects&quot;</li>
+<li>is greatly simplified!</li>
 </ul>
 
                                 
@@ -769,8 +782,12 @@ dispatch( userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</
 
             
                 
+                <a href="default.html" class="navigation navigation-prev " aria-label="Previous page: Defaulting Parameters">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="promotion.html#single-module" class="navigation navigation-next navigation-unique" aria-label="Next page: Single Module">
+                
+                <a href="api.html" class="navigation navigation-next " aria-label="Next page: API Reference">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -781,7 +798,7 @@ dispatch( userMsg.display(<span class="hljs-string">&apos;Hello action-u&apos;</
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Action Promotion","level":"4.1.1","depth":2,"next":{"title":"Single Module","level":"4.1.1.1","depth":3,"anchor":"#single-module","path":"promotion.md","ref":"promotion.md#single-module","articles":[]},"previous":{"title":"Organization ...","level":"4.1","depth":1,"ref":"","articles":[{"title":"Action Promotion","level":"4.1.1","depth":2,"path":"promotion.md","ref":"promotion.md","articles":[{"title":"Single Module","level":"4.1.1.1","depth":3,"anchor":"#single-module","path":"promotion.md","ref":"promotion.md#single-module","articles":[]},{"title":"Multiple Modules","level":"4.1.1.2","depth":3,"anchor":"#multiple-modules","path":"promotion.md","ref":"promotion.md#multiple-modules","articles":[]},{"title":"Hybrid","level":"4.1.1.3","depth":3,"anchor":"#hybrid","path":"promotion.md","ref":"promotion.md#hybrid","articles":[]}]},{"title":"Action Documentation","level":"4.1.2","depth":2,"path":"actionDoc.md","ref":"actionDoc.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","thunks":"[`Thunk Action Creators`](/thunks.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","actionMetaDOTthunk":"[`actionMeta.thunk`](/api.md#ActionMeta)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"promotion.md","mtime":"2017-05-15T14:35:07.080Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-30T14:52:39.207Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Thunk Action Creators","level":"2.1.6","depth":2,"next":{"title":"API Reference","level":"3.1","depth":1,"path":"api.md","ref":"api.md","articles":[{"title":"generateActions","level":"3.1.1","depth":2,"anchor":"#generateActions","path":"api.md","ref":"api.md#generateActions","articles":[]},{"title":"generateActions.root","level":"3.1.2","depth":2,"anchor":"#generateActions_root","path":"api.md","ref":"api.md#generateActions_root","articles":[]},{"title":"Meta Inputs ...","level":"3.1.3","depth":2,"ref":"","articles":[{"title":"ActionGenesis","level":"3.1.3.1","depth":3,"anchor":"#ActionGenesis","path":"api.md","ref":"api.md#ActionGenesis","articles":[]},{"title":"ActionMeta","level":"3.1.3.2","depth":3,"anchor":"#ActionMeta","path":"api.md","ref":"api.md#ActionMeta","articles":[]},{"title":"ratifyFn","level":"3.1.3.3","depth":3,"anchor":"#ratifyFn","path":"api.md","ref":"api.md#ratifyFn","articles":[]}]},{"title":"Run-Time Outputs ...","level":"3.1.4","depth":2,"ref":"","articles":[{"title":"ActionStruct","level":"3.1.4.1","depth":3,"anchor":"#ActionStruct","path":"api.md","ref":"api.md#ActionStruct","articles":[]},{"title":"ActionNode","level":"3.1.4.2","depth":3,"anchor":"#ActionNode","path":"api.md","ref":"api.md#ActionNode","articles":[]}]}]},"previous":{"title":"Defaulting Parameters","level":"2.1.5","depth":2,"path":"default.md","ref":"default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","thunks":"[`Thunk Action Creators`](/thunks.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","actionMetaDOTthunk":"[`actionMeta.thunk`](/api.md#ActionMeta)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"thunks.md","mtime":"2017-05-30T12:34:02.261Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-30T14:52:39.207Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

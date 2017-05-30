@@ -62,7 +62,7 @@
     <link rel="next" href="api.html" />
     
     
-    <link rel="prev" href="default.html" />
+    <link rel="prev" href="thunks.html" />
     
 
     </head>
@@ -89,7 +89,7 @@
 
     
         
-        <li class="header">action-u (0.1.0)</li>
+        <li class="header">action-u (0.2.0)</li>
         
         
     
@@ -198,6 +198,19 @@
             
                     
                     Defaulting Parameters
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.6" data-path="thunks.html">
+            
+                <a href="thunks.html">
+            
+                    
+                    Thunk Action Creators
             
                 </a>
             
@@ -575,8 +588,9 @@ A higher-order function that mirrors the supplied
 <a href="api.html#ActionGenesis"><code>actionGenesis</code></a> structure, returning an
 <a href="api.html#ActionStruct"><code>ActionStruct</code></a>, injecting generated action creators that
 are decorated with their coresponding action types.<p></p>
-<p>The <a href="formalTypes.html"><code>A Closer Look</code></a> section has a diagram that sheds
-light on this process.</p>
+<p><a href="formalTypes.html"><code>A Closer Look</code></a> diagrams this process.  Examples can be
+found throughout the <a href="index.html"><strong>Dev Guide</strong></a>, starting with
+<a href="basics.html"><code>Basics</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -641,6 +655,8 @@ thrown exceptions)</p>
 and returning the arguments</p>
 </li>
 </ul>
+<p>Please refer to <a href="validation.html"><code>Parameter Validation</code></a> and
+<a href="default.html"><code>Defaulting Parameters</code></a> for complete examples.</p>
 <table>
 <thead>
 <tr>
@@ -672,6 +688,7 @@ JSON node in the <a href="api.html#ActionStruct"><code>ActionStruct</code></a>.<
 <p>The ActionNode promotes it&apos;s action type through a string coercion
 of the action creator function itself (i.e. the function&apos;s
 toString() has been overloaded).</p>
+<p><a href="formalTypes.html"><code>A Closer Look</code></a> diagrams the action-u formal types.</p>
 <table>
 <thead>
 <tr>
@@ -699,6 +716,7 @@ ActionGenesis is a JSON meta structure (used by
 <a href="api.html#generateActions"><code>generateActions()</code></a>) that provides the master definition
 for the generated <a href="api.html#ActionStruct"><code>ActionStruct</code></a>, promoting one or more
 action creators and types.<p></p>
+<p><a href="formalTypes.html"><code>A Closer Look</code></a> diagrams the action-u formal types.</p>
 <ul>
 <li><p>The structure is app-specific and can employ depth to highlight
 inner-relationships between various action creators.</p>
@@ -769,6 +787,7 @@ subordinate actions: <code>widget.fetch.complete(widget)</code>.</p>
 An ActionMeta is a sub-node (named <code>actionMeta</code>) in the
 <a href="api.html#ActionGenesis"><code>ActionGenesis</code></a> that identifies it&apos;s parent as being an
 <a href="api.html#ActionNode"><code>ActionNode</code></a> (i.e. an action creator).<p></p>
+<p><a href="formalTypes.html"><code>A Closer Look</code></a> diagrams the action-u formal types.</p>
 <p>Supported properties of ActionMeta are:</p>
 <p><strong>Properties</strong></p>
 <table>
@@ -783,12 +802,17 @@ An ActionMeta is a sub-node (named <code>actionMeta</code>) in the
 <tr>
 <td>traits</td>
 <td>Array.&lt;string&gt;</td>
-<td>An array of names that serve BOTH as the: <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO <code>traits</code> property is supplied, the Action merely has NO properties <em>(other than it&apos;s <code>type</code> [of course])</em>.</td>
+<td>An array of names that serve BOTH as the: <ul> <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO `traits` property is supplied, the Action merely has NO properties (other than it&apos;s `type` [of course]). </ul> Please refer to the <a href="basics.html"><code>Basics</code></a> discussion for complete examples.</td>
 </tr>
 <tr>
 <td>ratify</td>
 <td><a href="#ratifyFn"><code>ratifyFn</code></a></td>
-<td>An optional hook to validate and/or default action creator parameters.<br> When NO <code>ratify</code> function is supplied, only simple validation is performed <em>(ex: the number of arguments supplied)</em>.</td>
+<td>An optional hook to validate and/or default action creator parameters.<br>  When NO <code>ratify</code> function is supplied, only simple validation is performed <em>(ex: the number of arguments supplied)</em>.  Please refer to <a href="validation.html"><code>Parameter Validation</code></a> and <a href="default.html"><code>Defaulting Parameters</code></a> for complete examples.</td>
+</tr>
+<tr>
+<td>thunk</td>
+<td>function</td>
+<td>An action creator function that promotes a thunk.  When <code>thunk</code> is used, no other ActionMeta properties are allowed.  Please refer to <a href="thunks.html"><code>Thunk Action Creators</code></a> for a complete description.</td>
 </tr>
 </tbody>
 </table>
@@ -809,6 +833,7 @@ your application.</li>
 <a href="api.html#generateActions"><code>generateActions()</code></a>) that promotes a series of action
 creators and types in an app-specific structure (mirroring the
 shape of the <a href="api.html#ActionGenesis"><code>ActionGenesis</code></a>).</p>
+<p><a href="formalTypes.html"><code>A Closer Look</code></a> diagrams the action-u formal types.</p>
 <ul>
 <li><p>The structure is app-specific and can employ depth to highlight
 inner-relationships between various action creators.</p>
@@ -905,7 +930,7 @@ that drives the reduction process.<p></p>
 
             
                 
-                <a href="default.html" class="navigation navigation-prev " aria-label="Previous page: Defaulting Parameters">
+                <a href="thunks.html" class="navigation navigation-prev " aria-label="Previous page: Thunk Action Creators">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -921,7 +946,7 @@ that drives the reduction process.<p></p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"API Reference","level":"3.1","depth":1,"next":{"title":"generateActions","level":"3.1.1","depth":2,"anchor":"#generateActions","path":"api.md","ref":"api.md#generateActions","articles":[]},"previous":{"title":"Defaulting Parameters","level":"2.1.5","depth":2,"path":"default.md","ref":"default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"api.md","mtime":"2017-05-24T19:51:33.140Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-24T19:51:34.868Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"API Reference","level":"3.1","depth":1,"next":{"title":"generateActions","level":"3.1.1","depth":2,"anchor":"#generateActions","path":"api.md","ref":"api.md#generateActions","articles":[]},"previous":{"title":"Thunk Action Creators","level":"2.1.6","depth":2,"path":"thunks.md","ref":"thunks.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","thunks":"[`Thunk Action Creators`](/thunks.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","actionMetaDOTthunk":"[`actionMeta.thunk`](/api.md#ActionMeta)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"api.md","mtime":"2017-05-30T14:52:37.580Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-30T14:52:39.207Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

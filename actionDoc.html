@@ -89,7 +89,7 @@
 
     
         
-        <li class="header">action-u (0.1.0)</li>
+        <li class="header">action-u (0.2.0)</li>
         
         
     
@@ -198,6 +198,19 @@
             
                     
                     Defaulting Parameters
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.6" data-path="thunks.html">
+            
+                <a href="thunks.html">
+            
+                    
+                    Thunk Action Creators
             
                 </a>
             
@@ -578,13 +591,85 @@ meaning to your actions through the shape of your
 (<a href="http://www.azlyrics.com/lyrics/arloguthrie/alicesrestaurantmassacree.html" target="_blank"><strong>Alice&apos;s
 Restaurant</strong></a>).
 This provides additional context to better understand each action.</p>
-<p>?? example code</p>
+<p>Here is an example from my <a href="https://github.com/KevinAst/GeekU" target="_blank">GeekU</a>
+sandbox application:</p>
+<ul>
+<li><p><strong>actions/itemsView.js</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions.root({
+
+  itemsView: { <span class="hljs-comment">// itemsView(itemType, [retriee], [activate]): Action</span>
+               <span class="hljs-comment">// ... retrieve and/or activate the itemsView for the specified itemType</span>
+               <span class="hljs-comment">//     INTENT: #byUser, #noReducer</span>
+               actionMeta: {
+                 traits: [<span class="hljs-string">&apos;itemType&apos;</span>, <span class="hljs-string">&apos;retrieve&apos;</span>, <span class="hljs-string">&apos;activate&apos;</span>],
+                 ratify(itemType,
+                        retrieve=<span class="hljs-literal">null</span>,
+                        activate=retrieve!==<span class="hljs-string">&apos;refresh&apos;</span> ? <span class="hljs-string">&apos;activate&apos;</span> : <span class="hljs-string">&apos;no-activate&apos;</span>) {
+                   assert(itemTypes[itemType],
+                          <span class="hljs-string">`actions.itemsView() Invalid itemType param: <span class="hljs-subst">${FMT(itemType)}</span>`</span>);
+                   assert(retrieve === <span class="hljs-literal">null</span>      ||
+                          retrieve === <span class="hljs-string">&apos;refresh&apos;</span> ||
+                          SelCrit.isSelCrit(retrieve),
+                          <span class="hljs-string">`actions.itemsView() Invalid retrieve param: <span class="hljs-subst">${FMT(retrieve)}</span>`</span>);
+                   assert(activate === <span class="hljs-string">&apos;activate&apos;</span> ||
+                          activate === <span class="hljs-string">&apos;no-activate&apos;</span>,
+                          <span class="hljs-string">`actions.itemsView() Invalid activate param: <span class="hljs-subst">${FMT(activate)}</span>`</span>);
+                   <span class="hljs-keyword">return</span> [itemType, retrieve, activate];
+                 },
+               },
+
+    retrieve: { <span class="hljs-comment">// itemsView.retrieve(itemType, selCrit): Action</span>
+                <span class="hljs-comment">// ... retrieve the itemsView for the specified itemType</span>
+                <span class="hljs-comment">//     INTENT: #byUser, #byLogic, #reducer(spinner only)</span>
+                actionMeta: {
+                  traits: [<span class="hljs-string">&apos;itemType&apos;</span>, <span class="hljs-string">&apos;selCrit&apos;</span>],
+                  ratify(itemType, selCrit) {
+                    assert(itemTypes[itemType],
+                           <span class="hljs-string">`actions.itemsView.retrieve() Invalid itemType param: <span class="hljs-subst">${FMT(itemType)}</span>`</span>);
+                    assert(selCrit === <span class="hljs-string">&apos;refresh&apos;</span> ||
+                           SelCrit.isSelCrit(selCrit),
+                           <span class="hljs-string">`actions.itemsView.retrieve() Invalid selCrit param: <span class="hljs-subst">${FMT(selCrit)}</span>`</span>);
+                    <span class="hljs-keyword">return</span> [itemType, selCrit];
+                  },
+                },
+
+      complete: { <span class="hljs-comment">// itemsView.retrieve.complete(itemType, selCrit, items): Action</span>
+                  <span class="hljs-comment">// ... retrieval completed of items for the temsView</span>
+                  <span class="hljs-comment">//     INTENT: #byLogic, #reducer</span>
+                  actionMeta: {
+                    traits: [<span class="hljs-string">&apos;itemType&apos;</span>, <span class="hljs-string">&apos;selCrit&apos;</span>, <span class="hljs-string">&apos;items&apos;</span>],
+                  },
+      },
+
+      fail: { <span class="hljs-comment">// itemsView.retrieve.fail(itemType, selCrit, err): Action</span>
+              <span class="hljs-comment">// ... retrieval failed of items for the temsView</span>
+              <span class="hljs-comment">//     INTENT: #byLogic, #reducer(spinner only)</span>
+              actionMeta: {
+                traits: [<span class="hljs-string">&apos;itemType&apos;</span>, <span class="hljs-string">&apos;selCrit&apos;</span>, <span class="hljs-string">&apos;err&apos;</span>],
+              },
+      },
+
+    },
+
+    activate: { <span class="hljs-comment">// itemsView.activate(itemType): Action</span>
+                <span class="hljs-comment">// ... activate the itemsView for the specified itemType</span>
+                <span class="hljs-comment">//     INTENT: #byUser, #byLogic, #reducer</span>
+                actionMeta: {
+                  traits: [<span class="hljs-string">&apos;itemType&apos;</span>],
+                },
+    },
+
+  }
+});
+</code></pre>
+</li>
+</ul>
 <h2 id="intent">Intent</h2>
-<p>Sometimes it is helpful to promote the <strong>intent</strong> of each action.
-As an example, you may have actions that are exclusively intended to be used
-internally <em>(say by a logic module)</em>, and therefore are of no interest
-to a reducer.  This is especially useful when using a dedicated logic
-framework - such as
+<p>Quite often it is helpful to promote the <strong>intent</strong> of each action.
+As an example, you may have actions that are exclusively intended to
+be used internally <em>(say by a logic module)</em>, and therefore are of no
+interest to a reducer.  This is especially useful when using a
+dedicated logic framework - such as
 <a href="https://www.npmjs.com/package/redux-logic" target="_blank">redux-logic</a> <strong>(I highly
 recommend this utility)</strong>!</p>
 <ul>
@@ -597,22 +682,91 @@ each action:</p>
 </code></pre></li>
 <li><p>Here is a concrete note from my
 <a href="https://github.com/KevinAst/GeekU" target="_blank">GeekU</a> sandbox application:</p>
-<pre><code>/**
- * The &apos;selCrit.edit.save&apos; action is of no interest to reducers
- * (#noReducer) because application logic monitoring this action
- * will emit a more general action &apos;selCrit.changed&apos; which provides
- * a more central opportunity to maintain our state (#byLogic,
- * #reducer).
- */
-</code></pre></li>
+<p><em>As an example, the <code>selCrit.save</code> action is of no interest to
+reducers (#noReducer) because application logic monitoring this
+action will emit a more general action &apos;selCrit.changed&apos; which
+provides a more central opportunity to maintain our state 
+(#byLogic, #reducer).</em></p>
+</li>
+<li><p>You can <strong>see these tags in use</strong>, <em>in the example (above)</em>.</p>
+</li>
 </ul>
-<p>?? example code   </p>
 <h2 id="javadoc">JavaDoc</h2>
-<p>If you are &quot;in to&quot; <a href="http://usejsdoc.org/" target="_blank">JSDoc</a> (a descendant of
+<p>If you are &quot;into&quot; <a href="http://usejsdoc.org/" target="_blank">JSDoc</a> (a descendant of
 <a href="https://en.wikipedia.org/wiki/Javadoc" target="_blank">JavaDoc</a>), you can apply more
 formal documentation to your actions.</p>
-<p>?? example code</p>
-<p>?? screen print</p>
+<p>Here is the same example (from above) embellished with JavaDocs:</p>
+<ul>
+<li><p><strong>The following code snippet</strong>:</p>
+<pre><code class="lang-js"><span class="hljs-comment">/**
+ * @constant {app-node} &apos;itemsView&apos;
+ * @function
+ * @description Actions rooted in &apos;itemsView&apos; (items in view).
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> generateActions.root({
+
+  <span class="hljs-comment">/**
+   * @function &apos;itemsView&apos;
+   *
+   * @description
+   * Retrieve and/or activate the itemsView for the specified
+   * itemType.  Use this action when you wish to do BOTH
+   * retrieve/activate.
+   *
+   * @intent #byUser, #noReducer
+   *
+   * @param {string} itemType the itemType (&apos;student&apos;/&apos;course&apos;).
+   *
+   * @param {any} [retrieve=.null] the retrieval directive, one of:
+   * &lt;ul&gt;
+   *   &lt;li&gt; null:        no retrieval at all (DEFAULT)&lt;/li&gt;
+   *   &lt;li&gt; SelCrit:     conditionally retrieve items when supplied selCrit is different (or out-of-date) from ItemsView selCrit&lt;/li&gt;
+   *   &lt;li&gt; &apos;refresh&apos;:   unconditionally refresh ItemsView with latest items (using view&apos;s current selCrit)&lt;/li&gt;
+   * &lt;/ul&gt;
+   *
+   * @param {string} [activate=see desc]: an activate directive, one of:
+   * &lt;ul&gt;
+   *   &lt;li&gt; &apos;activate&apos;:    activate/visualize this itemType ItemsView (DEFAULT for all but &apos;refresh&apos; retrieval)&lt;/li&gt;
+   *   &lt;li&gt; &apos;no-activate&apos;: DO NOT activate                            (DEFAULT for &apos;refresh&apos; retrieval)&lt;/li&gt;
+   * &lt;/ul&gt;
+   * 
+   * @return {Action}
+   */</span>
+  itemsView: {
+               actionMeta: {
+                 traits: [<span class="hljs-string">&apos;itemType&apos;</span>, <span class="hljs-string">&apos;retrieve&apos;</span>, <span class="hljs-string">&apos;activate&apos;</span>],
+                 ratify(itemType,
+                        retrieve=<span class="hljs-literal">null</span>,
+                        activate=retrieve!==<span class="hljs-string">&apos;refresh&apos;</span> ? <span class="hljs-string">&apos;activate&apos;</span> : <span class="hljs-string">&apos;no-activate&apos;</span>) {
+                   assert(itemTypes[itemType],
+                          <span class="hljs-string">`actions.itemsView() Invalid itemType param: <span class="hljs-subst">${FMT(itemType)}</span>`</span>);
+                   assert(retrieve === <span class="hljs-literal">null</span>      ||
+                          retrieve === <span class="hljs-string">&apos;refresh&apos;</span> ||
+                          SelCrit.isSelCrit(retrieve),
+                          <span class="hljs-string">`actions.itemsView() Invalid retrieve param: <span class="hljs-subst">${FMT(retrieve)}</span>`</span>);
+                   assert(activate === <span class="hljs-string">&apos;activate&apos;</span> ||
+                          activate === <span class="hljs-string">&apos;no-activate&apos;</span>,
+                          <span class="hljs-string">`actions.itemsView() Invalid activate param: <span class="hljs-subst">${FMT(activate)}</span>`</span>);
+                   <span class="hljs-keyword">return</span> [itemType, retrieve, activate];
+                 }
+               },
+
+    ... snip snip
+
+  }
+});
+</code></pre>
+</li>
+<li><p><strong>Yields the following nicely formatted API Docs</strong>:</p>
+<p><img src="img/actionJsDoc.png" alt="actionJsDoc"></p>
+</li>
+<li><p>This was accomplished by integrating two technologies:
+<a href="https://github.com/GitbookIO/gitbook" target="_blank">GitBook</a>, and
+<a href="http://usejsdoc.org/" target="_blank">JSDoc</a>, <strong>documented here</strong>: <a href="https://medium.com/@kevinast/integrate-gitbook-jsdoc-974be8df6fb3" target="_blank">Integrating GitBook
+with JSDoc to Document Your Open Source
+Project</a>.</p>
+</li>
+</ul>
 
                                 
                                 </section>
@@ -656,7 +810,7 @@ formal documentation to your actions.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Action Documentation","level":"4.1.2","depth":2,"next":{"title":"Distribution","level":"5.1","depth":1,"path":"dist.md","ref":"dist.md","articles":[]},"previous":{"title":"Hybrid","level":"4.1.1.3","depth":3,"anchor":"#hybrid","path":"promotion.md","ref":"promotion.md#hybrid","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"actionDoc.md","mtime":"2017-05-14T13:50:03.650Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-24T19:51:34.868Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Action Documentation","level":"4.1.2","depth":2,"next":{"title":"Distribution","level":"5.1","depth":1,"path":"dist.md","ref":"dist.md","articles":[]},"previous":{"title":"Hybrid","level":"4.1.1.3","depth":3,"anchor":"#hybrid","path":"promotion.md","ref":"promotion.md#hybrid","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["twitter","facebook","google","weibo","instapaper"]},"toolbar":{"buttons":[{"label":"GitHub","icon":"fa fa-github","url":"https://github.com/KevinAst/action-u"},{"label":"NPM","icon":"fa fa-bullseye","url":"https://www.npmjs.com/package/action-u"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Kevin J. Bridges <kevinast@gmail.com> (https://github.com/KevinAst)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"intro.md","glossary":"GLOSSARY.md","summary":"toc.md"},"variables":{"guide":{"LICENSE":"[`MIT License`](/LICENSE.md)","default":"[`Defaulting Parameters`](/default.md)","start":"[`Getting Started`](/start.md)","actionDoc":"[`Action Documentation`](/actionDoc.md)","promotion":"[`Action Promotion`](/promotion.md)","basics":"[`Basics`](/basics.md)","dist":"[`Distribution`](/dist.md)","devGuide":"[**Dev Guide**](/index.html)","why":"[`Why action-u?`](/why.md)","formalTypes":"[`A Closer Look`](/formalTypes.md)","shapes":"[`ActionStruct Shapes`](/shapes.md)","history":"[`Revision History`](/history.md)","thunks":"[`Thunk Action Creators`](/thunks.md)","validation":"[`Parameter Validation`](/validation.md)"},"api":{"generateActionsDOTroot":"[`generateActions.root()`](/api.md#generateActions_root)","actionMetaDOTratify":"[`actionMeta.ratify`](/api.md#ActionMeta)","generateActions":"[`generateActions()`](/api.md#generateActions)","ActionStruct":"[`ActionStruct`](/api.md#ActionStruct)","actionMetaDOTthunk":"[`actionMeta.thunk`](/api.md#ActionMeta)","ActionGenesis":"[`ActionGenesis`](/api.md#ActionGenesis)","actionGenesis":"[`actionGenesis`](/api.md#ActionGenesis)","ref":"[`API Reference`](/api.md)","actionMetaDOTtraits":"[`actionMeta.traits`](/api.md#ActionMeta)","ActionNode":"[`ActionNode`](/api.md#ActionNode)","actionMeta":"[`actionMeta`](/api.md#ActionMeta)","ActionMeta":"[`ActionMeta`](/api.md#ActionMeta)","ActionNodes":"[`ActionNodes`](/api.md#ActionNode)","ratifyFn":"[`ratifyFn()`](/api.md#ratifyFn)"},"ext":{"redux":"[`redux`](http://redux.js.org/)","actions":"[`actions`](http://redux.js.org/docs/basics/Actions.html)","actionCreator":"[`action creator`](http://redux.js.org/docs/basics/Actions.html#action-creators)","actionCreators":"[`action creators`](http://redux.js.org/docs/basics/Actions.html#action-creators)"}},"title":"action-u","gitbook":"3.2.2","description":"Redux Action Generator (promoting action creators and types)"},"file":{"path":"actionDoc.md","mtime":"2017-05-28T12:40:31.548Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-30T14:52:39.207Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
