@@ -8,8 +8,9 @@ import verify        from '../util/verify';
  * {{book.api.ActionStruct}}, injecting generated action creators that
  * are decorated with their coresponding action types.
  * 
- * The {{book.guide.formalTypes}} section has a diagram that sheds
- * light on this process.
+ * {{book.guide.formalTypes}} diagrams this process.  Examples can be
+ * found throughout the {{book.guide.devGuide}}, starting with
+ * {{book.guide.basics}}.
  * 
  * @param {ActionGenesis} actionGenesis - an "organizational" JSON
  * structure that defines one or more action creators, with implicitly
@@ -208,6 +209,8 @@ function morph2Runtime(genesisNode, actionType) {
  * {{book.api.generateActions}}) that provides the master definition
  * for the generated {{book.api.ActionStruct}}, promoting one or more
  * action creators and types.
+ *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
  * 
  * - The structure is app-specific and can employ depth to highlight
  *   inner-relationships between various action creators.
@@ -274,6 +277,8 @@ function morph2Runtime(genesisNode, actionType) {
  * {{book.api.ActionGenesis}} that identifies it's parent as being an
  * {{book.api.ActionNode}} (i.e. an action creator).
  *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
+ *
  * Supported properties of ActionMeta are:
  *
  * @property {string[]} traits - An array of names that serve BOTH as the:
@@ -314,7 +319,7 @@ function morph2Runtime(genesisNode, actionType) {
  * 
  * Please refer to {{book.guide.validation}} and
  * {{book.guide.default}} for complete examples.
-
+ *
  * @param {...*} args - the parameters to this function should match
  * that of the action creator it is defining
  * 
@@ -340,6 +345,8 @@ function morph2Runtime(genesisNode, actionType) {
  * {{book.api.generateActions}}) that promotes a series of action
  * creators and types in an app-specific structure (mirroring the
  * shape of the {{book.api.ActionGenesis}}).
+ *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
  * 
  * - The structure is app-specific and can employ depth to highlight
  *   inner-relationships between various action creators.
@@ -389,6 +396,8 @@ function morph2Runtime(genesisNode, actionType) {
  * The ActionNode promotes it's action type through a string coercion
  * of the action creator function itself (i.e. the function's
  * toString() has been overloaded).
+ *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
  * 
  * @param {...*} args - the parameters are app-specific to this action
  * type.
