@@ -68,6 +68,9 @@ generateActions.root = function(actionGenesis) {
 //*** Internals ...
 //***
 
+const knownMetaProps = ['traits', 'ratify', 'thunk'];
+
+
 /**
  * Our default ActionMeta.ratify() function ... simply no-op.
  * @private
@@ -108,12 +111,16 @@ function morph2Runtime(genesisNode, actionType) {
     // insure actionMeta is an object literal
     check(isPlainObject(actionMeta), '.actionMeta is NOT an object literal');
 
+    // insure all actionMeta properties are known
+    const metaProps = Object.keys(actionMeta);
+    const unknownMetaProps = metaProps.filter( (prop) => knownMetaProps.indexOf(prop) < 0 );
+    check(unknownMetaProps.length === 0, `.actionMeta contains unrecognized properties: ${unknownMetaProps}`);
+
     // thunk definition
     if (actionMeta.thunk) {
       // insure actionMeta.thunk is a function
       check(isFunction(actionMeta.thunk), `.actionMeta.thunk is NOT a function ... ${actionMeta.thunk}`);
       // insure no other actionMeta properties are provided
-      const metaProps = Object.keys(actionMeta);
       check(metaProps.length ===1, `.actionMeta.thunk is NOT allowed with any other actionMeta property (found following properties: ${metaProps})`);
 
       // thunks are simply injected directly in our ActionStruct (as is)

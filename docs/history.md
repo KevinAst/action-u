@@ -37,15 +37,15 @@ Release           | What                                   | *When*
 &bull;
 [GitHub Docs Content](https://github.com/KevinAst/action-u/tree/v0.2.0-docs)
 
-1. **Support was added for {{book.guide.thunks}}**
+1. **Support was added for {{book.guide.thunks}}**.
+
+1. Unknown {{book.api.actionMeta}} properties are now validated (throwing error).
 
 1. The {{book.guide.actionDoc}} section was embellished with
    applicable examples.
 
-1. The {{book.guide.dist}} section now highlights how the docs were
+1. The {{book.guide.dist}} section now highlights how our docs are
    produced.
-
-1. ?? running notes here
 
 
 <!-- ************************************************************* -->

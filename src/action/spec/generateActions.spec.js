@@ -299,6 +299,11 @@ describe('generateActions() tests', () => {
       expect(()=>generateActions({userMsg:{actionMeta:'ouch'}})).toThrow('actionMeta is NOT an object literal');
     });
 
+    it('actionGenesis.actionMeta must contain all known properties', () => {
+      // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta contains unrecognized properties: bad1,bad2
+      expect(()=>generateActions({userMsg:{actionMeta:{bad1:1,bad2:2}}})).toThrow('actionMeta contains unrecognized properties: bad1,bad2');
+    });
+
     it('actionGenesis.actionMeta.traits must be a string[]', () => {
       // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta.traits is NOT a string[]
       expect(()=>generateActions({userMsg:{actionMeta:{traits:123}}})).toThrow('traits is NOT a string[]');
