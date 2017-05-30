@@ -18,7 +18,7 @@ Notes](https://github.com/KevinAst/action-u/releases))*.
 
 Release           | What                                   | *When*
 ------------------|----------------------------------------|------------------
-[v0.2.0](#v0_2_0) | Added thunk support                    | *June ??, 2017*
+[v0.2.0](#v0_2_0) | Added thunk support                    | *May 30, 2017*
 [v0.1.0](#v0_1_0) | Initial Release                        | *May 24, 2017*
 
 
@@ -29,7 +29,7 @@ Release           | What                                   | *When*
 <!-- ************************************************************* -->
 <br/><br/><br/>
 <h3 id="v0_2_0" style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
-  v0.2.0 - Added thunk support <i>(June ??, 2017)</i>
+  v0.2.0 - Added thunk support <i>(May 30, 2017)</i>
 </h3>
 [GitHub Release](https://github.com/KevinAst/action-u/releases/tag/v0.2.0)
 &bull;
