@@ -10,6 +10,7 @@
   * [ActionStruct Shapes](shapes.md)
   * [Parameter Validation](validation.md)
   * [Defaulting Parameters](default.md)
+  * [Thunk Action Creators](thunks.md)
 
 ----
 * [API Reference](api.md)

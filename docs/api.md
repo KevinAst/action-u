@@ -35,7 +35,7 @@ The `generateActions.root()` function is identical to{{book.api.generateActions
 
 <h5 style="margin: 10px 0px; border-width: 5px 0px; padding: 5px; border-style: solid;">
   ratifyFn(...args) ⇒ args</h5>
-An optional hook of {{book.api.ActionMeta}} to validate and/or defaultaction creator parameters.- validation is accomplished by app-specific means (typically  thrown exceptions)- default parameters are accomplished by applying default semantics  and returning the arguments
+An optional hook of {{book.api.ActionMeta}} to validate and/or defaultaction creator parameters.- validation is accomplished by app-specific means (typically  thrown exceptions)- default parameters are accomplished by applying default semantics  and returning the argumentsPlease refer to {{book.guide.validation}} and{{book.guide.default}} for complete examples.
 
 
 | Param | Type | Description |
@@ -102,8 +102,9 @@ An ActionMeta is a sub-node (named `actionMeta`) in the{{book.api.ActionGenesis
 
 | Name | Type | Description |
 | --- | --- | --- |
-| traits | Array.&lt;string&gt; | An array of names that serve BOTH as the: <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO `traits` property is supplied, the Action merely has NO properties *(other than it's `type` [of course])*. |
-| ratify | [`ratifyFn`](#ratifyFn) | An optional hook to validate and/or default action creator parameters.<br/> When NO `ratify` function is supplied, only simple validation is performed *(ex: the number of arguments supplied)*. |
+| traits | Array.&lt;string&gt; | An array of names that serve BOTH as the: <ul> <li>expected parameter names of the action creator</li> <li>and the Action property names (returned from the action creator)</li> When NO `traits` property is supplied, the Action merely has NO properties (other than it's `type` [of course]). </ul> Please refer to the {{book.guide.basics}} discussion for complete examples. |
+| ratify | [`ratifyFn`](#ratifyFn) | An optional hook to validate and/or default action creator parameters.<br/>  When NO `ratify` function is supplied, only simple validation is performed *(ex: the number of arguments supplied)*.  Please refer to {{book.guide.validation}} and {{book.guide.default}} for complete examples. |
+| thunk | function | An action creator function that promotes a thunk.  When `thunk` is used, no other ActionMeta properties are allowed.  Please refer to {{book.guide.thunks}} for a complete description. |
 
 
 <br/><br/><br/>

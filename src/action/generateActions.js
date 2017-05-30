@@ -56,7 +56,7 @@ generateActions.root = function(actionGenesis) {
   // validae only one root node
   const rootNodeNames = Object.keys(actionGenesis); // ... use actionGenesis so as NOT to get the injected 'toString' of actionStruct
   const check         = verify.prefix('ActionU.generateActions.root() parameter violation: ');
-  check(rootNodeNames.length === 1, 'actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}');
+  check(rootNodeNames.length === 1, `actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}`);
 
   // expose the ActionStruct root
   return actionStruct[rootNodeNames[0]];
@@ -103,39 +103,56 @@ function morph2Runtime(genesisNode, actionType) {
 
   // morph the genesisNode into a runtimeNode (of the ActionStruct)
   let runtimeNode = null;
-  if (actionMeta) { // *** node is an action creator (an ActionNode)
+  if (actionMeta) { // *** node is an action creator (i.e. an ActionNode)
+
     // insure actionMeta is an object literal
     check(isPlainObject(actionMeta), '.actionMeta is NOT an object literal');
 
-    // insure actionMeta.traits (if supplied) is a string[]
-    const traits = actionMeta.traits || [];
-    check(Array.isArray(traits), '.actionMeta.traits is NOT a string[]'); // consider also lodash.isString() on each elm
+    // thunk definition
+    if (actionMeta.thunk) {
+      // insure actionMeta.thunk is a function
+      check(isFunction(actionMeta.thunk), `.actionMeta.thunk is NOT a function ... ${actionMeta.thunk}`);
+      // insure no other actionMeta properties are provided
+      const metaProps = Object.keys(actionMeta);
+      check(metaProps.length ===1, `.actionMeta.thunk is NOT allowed with any other actionMeta property (found following properties: ${metaProps})`);
 
-    // insure actionMeta.ratify (if supplied) is a function
-    const ratify = actionMeta.ratify || ratifyDefault;
-    check(isFunction(ratify), '.actionMeta.ratify is NOT a function');
+      // thunks are simply injected directly in our ActionStruct (as is)
+      runtimeNode = actionMeta.thunk;
+    }
 
-    // ***
-    // *** THIS IS IT ... here is a generated action creator (i.e. an ActionNode)
-    // ***
-    runtimeNode = (...args) => {
+    // action creator generation (i.e. NON thunk)
+    else {
 
-      // apply app-specific action creator parameter validation/defaults
-      args = ratify(...args);
-
-      // apply standard validation (insuring correct number of arguments passed in)
-      if (traits.length !== args.length) {
-        // ex: ERROR: action-u action creator: userMsg.display(msg) expecting 1 parameters, but received 0.
-        throw new TypeError(`ERROR: action-u action creator: ${actionType}(${traits.toString()}) expecting ${traits.length} parameters, but received ${args.length}.`);
-      }
-
-      // build/return our action object
-      const action = { type: actionType }; // baseline action with it's type
-      for (let i=0; i<args.length; i++) {  // inject the arguments into our action
-        action[traits[i]] = args[i];
-      }
-      return action;
-    };
+      // insure actionMeta.traits (if supplied) is a string[]
+      const traits = actionMeta.traits || [];
+      check(Array.isArray(traits), '.actionMeta.traits is NOT a string[]'); // consider also lodash.isString() on each elm
+      
+      // insure actionMeta.ratify (if supplied) is a function
+      const ratify = actionMeta.ratify || ratifyDefault;
+      check(isFunction(ratify), `.actionMeta.ratify is NOT a function ... ${ratify}`);
+      
+      // ***
+      // *** THIS IS IT ... here is a generated action creator (i.e. an ActionNode)
+      // ***
+      runtimeNode = (...args) => {
+      
+        // apply app-specific action creator parameter validation/defaults
+        args = ratify(...args);
+      
+        // apply standard validation (insuring correct number of arguments passed in)
+        if (traits.length !== args.length) {
+          // ex: ERROR: action-u action creator: userMsg.display(msg) expecting 1 parameters, but received 0.
+          throw new TypeError(`ERROR: action-u action creator: ${actionType}(${traits.toString()}) expecting ${traits.length} parameters, but received ${args.length}.`);
+        }
+      
+        // build/return our action object
+        const action = { type: actionType }; // baseline action with it's type
+        for (let i=0; i<args.length; i++) {  // inject the arguments into our action
+          action[traits[i]] = args[i];
+        }
+        return action;
+      };
+    }
 
     // overload toString() to promote our action type
     runtimeNode.toString = () => actionType;
@@ -252,17 +269,26 @@ function morph2Runtime(genesisNode, actionType) {
  *
  * Supported properties of ActionMeta are:
  *
- * @property {string[]} traits - An array of names that serve BOTH as
- * the:
+ * @property {string[]} traits - An array of names that serve BOTH as the:
+ * <ul>
  * <li>expected parameter names of the action creator</li>
  * <li>and the Action property names (returned from the action creator)</li>
  * When NO `traits` property is supplied, the Action merely has NO properties
- * *(other than it's `type` [of course])*.
+ * (other than it's `type` [of course]).
+ * </ul>
+ * Please refer to the {{book.guide.basics}} discussion for complete examples.
  *
  * @property {ratifyFn} ratify - An optional hook to validate and/or
- * default action creator parameters.<br/>
+ * default action creator parameters.<br/> 
  * When NO `ratify` function is supplied, only simple validation is
- * performed *(ex: the number of arguments supplied)*.
+ * performed *(ex: the number of arguments supplied)*.  Please refer
+ * to {{book.guide.validation}} and {{book.guide.default}} for
+ * complete examples.
+ *
+ * @property {function} thunk - An action creator function that
+ * promotes a thunk.  When `thunk` is used, no other ActionMeta
+ * properties are allowed.  Please refer to {{book.guide.thunks}} for
+ * a complete description.
  */
 
 
@@ -279,6 +305,9 @@ function morph2Runtime(genesisNode, actionType) {
  * - default parameters are accomplished by applying default semantics
  *   and returning the arguments
  * 
+ * Please refer to {{book.guide.validation}} and
+ * {{book.guide.default}} for complete examples.
+
  * @param {...*} args - the parameters to this function should match
  * that of the action creator it is defining
  * 
