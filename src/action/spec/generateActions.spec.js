@@ -161,7 +161,7 @@ describe('generateActions() tests', () => {
 
 
     it('generateActions.root() actionGenesis argument may ONLY contain a single root node', () => {
-      // Error: ActionU.generateActions.root() parameter violation: actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}
+      // Error: ActionU.generateActions.root() parameter violation: actionGenesis argument may ONLY contain a single root node (what will be returned) ... userMsg,secondRootBad
       expect( () => generateActions.root({
         userMsg: {
           actionMeta: {
@@ -223,6 +223,48 @@ describe('generateActions() tests', () => {
   });
 
 
+
+  //****************************************************************************
+  describe('test actionMeta.thunk', () => {
+
+    const actions = generateActions({
+      widget: {
+        fetch: { // widget.fetch(selCrit)
+                 actionMeta: {
+                   thunk(selCrit) { // kool - we can use this in-line function format too
+                     return (dispatch, getState) => {
+                       // simple test
+                       //  - just validate that function is operational
+                       //  - and that we can access actions at this point (generated above)!
+                       //    ... implicitly through it's usage
+                       //  - and that app params and thunk parms are accessable
+                       return `${String(actions.widget.fetch.complete)}, selCrit: ${selCrit}, dispatch: ${dispatch}`;
+                     };
+                   }
+                 },
+          complete: { // widget.fetch.complete(widget)
+                      actionMeta: {
+                        traits: ['widget']
+                      }
+          },
+        },
+      }
+    });
+
+    it('widget.fetch(selCrit) action creator', () => {
+      const thunk = actions.widget.fetch('selCritTest');
+      const result = thunk('dispatchTest'); // a crude simulation of redux thunk middleware
+      expect(result).toEqual('widget.fetch.complete, selCrit: selCritTest, dispatch: dispatchTest');
+    });
+
+    it('widget.fetch type coercion', () => {
+      expect(String(actions.widget.fetch)).toEqual('widget.fetch');
+    });
+
+  });
+
+
+
   //****************************************************************************
   describe('generation errors, from generateActions()', () => {
 
@@ -257,6 +299,11 @@ describe('generateActions() tests', () => {
       expect(()=>generateActions({userMsg:{actionMeta:'ouch'}})).toThrow('actionMeta is NOT an object literal');
     });
 
+    it('actionGenesis.actionMeta must contain all known properties', () => {
+      // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta contains unrecognized properties: bad1,bad2
+      expect(()=>generateActions({userMsg:{actionMeta:{bad1:1,bad2:2}}})).toThrow('actionMeta contains unrecognized properties: bad1,bad2');
+    });
+
     it('actionGenesis.actionMeta.traits must be a string[]', () => {
       // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta.traits is NOT a string[]
       expect(()=>generateActions({userMsg:{actionMeta:{traits:123}}})).toThrow('traits is NOT a string[]');
@@ -265,6 +312,16 @@ describe('generateActions() tests', () => {
     it('actionGenesis.actionMeta.ratify must be a function', () => {
       // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta.ratify is NOT a function
       expect(()=>generateActions({userMsg:{actionMeta:{ratify:'ouch'}}})).toThrow('ratify is NOT a function');
+    });
+
+    it('actionGenesis.actionMeta.thunk must be a function', () => {
+      // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta.thunk is NOT a function ... ouch
+      expect(()=>generateActions({userMsg:{actionMeta:{thunk:'ouch'}}})).toThrow('thunk is NOT a function');
+    });
+
+    it('actionGenesis.actionMeta.thunk cannot contain other properties', () => {
+      // Error: ActionU.generateActions() actionGenesis node userMsg.actionMeta.thunk is NOT allowed with any other actionMeta property (found following properties: thunk,traits)
+      expect(()=>generateActions({userMsg:{actionMeta:{thunk:(i)=>i,traits:['trait1']}}})).toThrow('thunk is NOT allowed with any other actionMeta property');
     });
 
   });

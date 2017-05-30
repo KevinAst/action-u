@@ -45,6 +45,7 @@
       "shapes":                 "[`ActionStruct Shapes`](/shapes.md)",
       "validation":             "[`Parameter Validation`](/validation.md)",
       "default":                "[`Defaulting Parameters`](/default.md)",
+      "thunks":                 "[`Thunk Action Creators`](/thunks.md)",
 
       "promotion":              "[`Action Promotion`](/promotion.md)",
       "actionDoc":              "[`Action Documentation`](/actionDoc.md)",
@@ -65,8 +66,9 @@
       "actionGenesis":          "[`actionGenesis`](/api.md#ActionGenesis)",
       "ActionMeta":             "[`ActionMeta`](/api.md#ActionMeta)",
       "actionMeta":             "[`actionMeta`](/api.md#ActionMeta)",
-      "actionMetaDOTratify":    "[`actionMeta.ratify`](/api.md#ActionMeta)",
       "actionMetaDOTtraits":    "[`actionMeta.traits`](/api.md#ActionMeta)",
+      "actionMetaDOTratify":    "[`actionMeta.ratify`](/api.md#ActionMeta)",
+      "actionMetaDOTthunk":     "[`actionMeta.thunk`](/api.md#ActionMeta)",
       "ratifyFn":               "[`ratifyFn()`](/api.md#ratifyFn)",
 
       "ActionStruct":           "[`ActionStruct`](/api.md#ActionStruct)",

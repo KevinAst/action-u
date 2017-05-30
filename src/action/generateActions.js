@@ -8,8 +8,9 @@ import verify        from '../util/verify';
  * {{book.api.ActionStruct}}, injecting generated action creators that
  * are decorated with their coresponding action types.
  * 
- * The {{book.guide.formalTypes}} section has a diagram that sheds
- * light on this process.
+ * {{book.guide.formalTypes}} diagrams this process.  Examples can be
+ * found throughout the {{book.guide.devGuide}}, starting with
+ * {{book.guide.basics}}.
  * 
  * @param {ActionGenesis} actionGenesis - an "organizational" JSON
  * structure that defines one or more action creators, with implicitly
@@ -56,7 +57,7 @@ generateActions.root = function(actionGenesis) {
   // validae only one root node
   const rootNodeNames = Object.keys(actionGenesis); // ... use actionGenesis so as NOT to get the injected 'toString' of actionStruct
   const check         = verify.prefix('ActionU.generateActions.root() parameter violation: ');
-  check(rootNodeNames.length === 1, 'actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}');
+  check(rootNodeNames.length === 1, `actionGenesis argument may ONLY contain a single root node (what will be returned) ... ${rootNodeNames}`);
 
   // expose the ActionStruct root
   return actionStruct[rootNodeNames[0]];
@@ -67,6 +68,9 @@ generateActions.root = function(actionGenesis) {
 //***
 //*** Internals ...
 //***
+
+const knownMetaProps = ['traits', 'ratify', 'thunk'];
+
 
 /**
  * Our default ActionMeta.ratify() function ... simply no-op.
@@ -103,39 +107,60 @@ function morph2Runtime(genesisNode, actionType) {
 
   // morph the genesisNode into a runtimeNode (of the ActionStruct)
   let runtimeNode = null;
-  if (actionMeta) { // *** node is an action creator (an ActionNode)
+  if (actionMeta) { // *** node is an action creator (i.e. an ActionNode)
+
     // insure actionMeta is an object literal
     check(isPlainObject(actionMeta), '.actionMeta is NOT an object literal');
 
-    // insure actionMeta.traits (if supplied) is a string[]
-    const traits = actionMeta.traits || [];
-    check(Array.isArray(traits), '.actionMeta.traits is NOT a string[]'); // consider also lodash.isString() on each elm
+    // insure all actionMeta properties are known
+    const metaProps = Object.keys(actionMeta);
+    const unknownMetaProps = metaProps.filter( (prop) => knownMetaProps.indexOf(prop) < 0 );
+    check(unknownMetaProps.length === 0, `.actionMeta contains unrecognized properties: ${unknownMetaProps}`);
 
-    // insure actionMeta.ratify (if supplied) is a function
-    const ratify = actionMeta.ratify || ratifyDefault;
-    check(isFunction(ratify), '.actionMeta.ratify is NOT a function');
+    // thunk definition
+    if (actionMeta.thunk) {
+      // insure actionMeta.thunk is a function
+      check(isFunction(actionMeta.thunk), `.actionMeta.thunk is NOT a function ... ${actionMeta.thunk}`);
+      // insure no other actionMeta properties are provided
+      check(metaProps.length ===1, `.actionMeta.thunk is NOT allowed with any other actionMeta property (found following properties: ${metaProps})`);
 
-    // ***
-    // *** THIS IS IT ... here is a generated action creator (i.e. an ActionNode)
-    // ***
-    runtimeNode = (...args) => {
+      // thunks are simply injected directly in our ActionStruct (as is)
+      runtimeNode = actionMeta.thunk;
+    }
 
-      // apply app-specific action creator parameter validation/defaults
-      args = ratify(...args);
+    // action creator generation (i.e. NON thunk)
+    else {
 
-      // apply standard validation (insuring correct number of arguments passed in)
-      if (traits.length !== args.length) {
-        // ex: ERROR: action-u action creator: userMsg.display(msg) expecting 1 parameters, but received 0.
-        throw new TypeError(`ERROR: action-u action creator: ${actionType}(${traits.toString()}) expecting ${traits.length} parameters, but received ${args.length}.`);
-      }
-
-      // build/return our action object
-      const action = { type: actionType }; // baseline action with it's type
-      for (let i=0; i<args.length; i++) {  // inject the arguments into our action
-        action[traits[i]] = args[i];
-      }
-      return action;
-    };
+      // insure actionMeta.traits (if supplied) is a string[]
+      const traits = actionMeta.traits || [];
+      check(Array.isArray(traits), '.actionMeta.traits is NOT a string[]'); // consider also lodash.isString() on each elm
+      
+      // insure actionMeta.ratify (if supplied) is a function
+      const ratify = actionMeta.ratify || ratifyDefault;
+      check(isFunction(ratify), `.actionMeta.ratify is NOT a function ... ${ratify}`);
+      
+      // ***
+      // *** THIS IS IT ... here is a generated action creator (i.e. an ActionNode)
+      // ***
+      runtimeNode = (...args) => {
+      
+        // apply app-specific action creator parameter validation/defaults
+        args = ratify(...args);
+      
+        // apply standard validation (insuring correct number of arguments passed in)
+        if (traits.length !== args.length) {
+          // ex: ERROR: action-u action creator: userMsg.display(msg) expecting 1 parameters, but received 0.
+          throw new TypeError(`ERROR: action-u action creator: ${actionType}(${traits.toString()}) expecting ${traits.length} parameters, but received ${args.length}.`);
+        }
+      
+        // build/return our action object
+        const action = { type: actionType }; // baseline action with it's type
+        for (let i=0; i<args.length; i++) {  // inject the arguments into our action
+          action[traits[i]] = args[i];
+        }
+        return action;
+      };
+    }
 
     // overload toString() to promote our action type
     runtimeNode.toString = () => actionType;
@@ -184,6 +209,8 @@ function morph2Runtime(genesisNode, actionType) {
  * {{book.api.generateActions}}) that provides the master definition
  * for the generated {{book.api.ActionStruct}}, promoting one or more
  * action creators and types.
+ *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
  * 
  * - The structure is app-specific and can employ depth to highlight
  *   inner-relationships between various action creators.
@@ -250,19 +277,30 @@ function morph2Runtime(genesisNode, actionType) {
  * {{book.api.ActionGenesis}} that identifies it's parent as being an
  * {{book.api.ActionNode}} (i.e. an action creator).
  *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
+ *
  * Supported properties of ActionMeta are:
  *
- * @property {string[]} traits - An array of names that serve BOTH as
- * the:
+ * @property {string[]} traits - An array of names that serve BOTH as the:
+ * <ul>
  * <li>expected parameter names of the action creator</li>
  * <li>and the Action property names (returned from the action creator)</li>
  * When NO `traits` property is supplied, the Action merely has NO properties
- * *(other than it's `type` [of course])*.
+ * (other than it's `type` [of course]).
+ * </ul>
+ * Please refer to the {{book.guide.basics}} discussion for complete examples.
  *
  * @property {ratifyFn} ratify - An optional hook to validate and/or
- * default action creator parameters.<br/>
+ * default action creator parameters.<br/> 
  * When NO `ratify` function is supplied, only simple validation is
- * performed *(ex: the number of arguments supplied)*.
+ * performed *(ex: the number of arguments supplied)*.  Please refer
+ * to {{book.guide.validation}} and {{book.guide.default}} for
+ * complete examples.
+ *
+ * @property {function} thunk - An action creator function that
+ * promotes a thunk.  When `thunk` is used, no other ActionMeta
+ * properties are allowed.  Please refer to {{book.guide.thunks}} for
+ * a complete description.
  */
 
 
@@ -279,6 +317,9 @@ function morph2Runtime(genesisNode, actionType) {
  * - default parameters are accomplished by applying default semantics
  *   and returning the arguments
  * 
+ * Please refer to {{book.guide.validation}} and
+ * {{book.guide.default}} for complete examples.
+ *
  * @param {...*} args - the parameters to this function should match
  * that of the action creator it is defining
  * 
@@ -304,6 +345,8 @@ function morph2Runtime(genesisNode, actionType) {
  * {{book.api.generateActions}}) that promotes a series of action
  * creators and types in an app-specific structure (mirroring the
  * shape of the {{book.api.ActionGenesis}}).
+ *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
  * 
  * - The structure is app-specific and can employ depth to highlight
  *   inner-relationships between various action creators.
@@ -353,6 +396,8 @@ function morph2Runtime(genesisNode, actionType) {
  * The ActionNode promotes it's action type through a string coercion
  * of the action creator function itself (i.e. the function's
  * toString() has been overloaded).
+ *
+ * {{book.guide.formalTypes}} diagrams the action-u formal types.
  * 
  * @param {...*} args - the parameters are app-specific to this action
  * type.

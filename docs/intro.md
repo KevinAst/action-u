@@ -51,6 +51,8 @@ a key aspect of action-u, it:
   - {{book.guide.default}} ... learn how to apply default semantics to
     your action creator parameters
 
+  - {{book.guide.thunks}} ... learn how to integrate thunks into action-u
+
 
 - {{book.api.ref}} ... details the low-level functional API
 

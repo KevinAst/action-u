@@ -173,6 +173,9 @@ including:
 - [Defaulting Parameters] ... learn how to apply default semantics to
   your action creator parameters
 
+- [Thunk Action Creators] ... learn how to integrate thunks into
+  action-u
+
 - [Action Promotion] ... options to maintain and promote the
   actions within your application
 
@@ -200,6 +203,7 @@ I hope you enjoy this effort, and comments are always welcome.
 [ActionStruct Shapes]:    https://action-u.js.org/shapes.html
 [Parameter Validation]:   https://action-u.js.org/validation.html
 [Defaulting Parameters]:  https://action-u.js.org/default.html
+[Thunk Action Creators]:  https://action-u.js.org/thunks.html
 [Action Promotion]:       https://action-u.js.org/promotion.html
 [Action Documentation]:   https://action-u.js.org/actionDoc.html
 [Distribution]:           https://action-u.js.org/dist.html
